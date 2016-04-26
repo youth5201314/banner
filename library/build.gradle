@@ -32,7 +32,7 @@ dependencies {
 def siteUrl = 'https://github.com/youth5201314/banner' // 项目的主页
 def gitUrl = 'https://github.com/youth5201314/banner.git' // Git仓库的url
 group = "com.youth.banner" //一般填你唯一的包名
-
+//gradlew bintrayUpload
 install {
     repositories.mavenInstaller {
         // This generates POM.xml with proper parameters

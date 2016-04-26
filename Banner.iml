@@ -7,23 +7,13 @@
         <option name="BUILDABLE" value="false" />
       </configuration>
     </facet>
-    <facet type="android-gradle" name="Android-Gradle">
-      <configuration>
-        <option name="GRADLE_PROJECT_PATH" value=":" />
-      </configuration>
-    </facet>
-    <facet type="android" name="Android">
-      <configuration>
-        <option name="ALLOW_USER_CONFIGURATION" value="false" />
-      </configuration>
-    </facet>
   </component>
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_7" inherit-compiler-output="true">
     <exclude-output />
     <content url="file://$MODULE_DIR$">
       <excludeFolder url="file://$MODULE_DIR$/.gradle" />
     </content>
-    <orderEntry type="jdk" jdkName="1.7" jdkType="JavaSDK" />
+    <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
 </module>
