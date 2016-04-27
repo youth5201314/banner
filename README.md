@@ -5,6 +5,10 @@
 我就把项目中的控件剔了出来，希望大家觉得有用。
 ## 效果图
 ![效果示例](https://raw.githubusercontent.com/youth5201314/banner/master/image/banner.png)
+### 联系方式
+* 邮箱地址： 1028729086@qq.com
+* 如果遇到问题和建议欢迎在给我发送邮件，希望让这个工程越来越完善。
+
 ##Gradle
 ```groovy
 dependencies{
