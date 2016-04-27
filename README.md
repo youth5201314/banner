@@ -11,6 +11,21 @@ dependencies{
     compile 'com.youth:banner:1.0.1'
 }
 ```
+##Maven
+```groovy
+<dependency>
+  <groupId>com.youth</groupId>
+  <artifactId>banner</artifactId>
+  <version>1.0.1</version>
+  <type>pom</type>
+</dependency>
+```
+##Ivy
+```groovy
+<dependency org='com.youth' name='banner' rev='1.0.1'>
+  <artifact name='$AID' ext='pom'></artifact>
+</dependency>
+```
 ##方法
 |方法名|参数|描述
 |:---:|:---:|:---:|
