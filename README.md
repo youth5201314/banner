@@ -23,7 +23,7 @@ compile project(':banner')
 ##方法
 |方法名|参数|描述
 |:---:|:---:|:---:|
-|setDelayTime|int(时间)| 设置轮播图片间隔时间（默认为2000）
+|setDelayTime|毫秒值| 设置轮播图片间隔时间（默认为2000）
 |setImages|url/resources| 设置轮播图片 
 |setOnBannerClickListener|/|设置点击事件
 
