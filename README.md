@@ -8,23 +8,13 @@
 ##Gradle
 ```groovy
 dependencies{
-    compile 'com.youth:banner:1.0.1'
+    compile 'com.youth:banner:1.0.2'  //指定版本
+    compile 'com.youth:banner:+' //最新版本
 }
 ```
-##Maven
+或者引用本地lib
 ```groovy
-<dependency>
-  <groupId>com.youth</groupId>
-  <artifactId>banner</artifactId>
-  <version>1.0.1</version>
-  <type>pom</type>
-</dependency>
-```
-##Ivy
-```groovy
-<dependency org='com.youth' name='banner' rev='1.0.1'>
-  <artifact name='$AID' ext='pom'></artifact>
-</dependency>
+compile project(':banner')
 ```
 ##方法
 |方法名|参数|描述

@@ -18,7 +18,7 @@ import com.bumptech.glide.Glide;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Banner extends FrameLayout {
+public class Banner extends FrameLayout implements ViewPager.OnPageChangeListener {
     private int count;
     private List<ImageView> imageViews;
     private Context context;
@@ -68,7 +68,7 @@ public class Banner extends FrameLayout {
         }
         for (int i = 0; i <= count + 1; i++) {
             ImageView iv = new ImageView(context);
-            iv.setScaleType(ScaleType.FIT_XY);
+            iv.setScaleType(ScaleType.CENTER_CROP);
             if (i == 0) {
                 Glide.with(context).load(imagesUrl[count - 1]).into(iv);
             } else if (i == count + 1) {
@@ -86,7 +86,7 @@ public class Banner extends FrameLayout {
         viewPager.setFocusable(true);
         viewPager.setCurrentItem(1);
         currentItem = 1;
-        viewPager.addOnPageChangeListener(new MyOnPageChangeListener());
+        viewPager.addOnPageChangeListener(this);
         startAutoPlay();
     }
     
@@ -148,44 +148,40 @@ public class Banner extends FrameLayout {
 
     }
 
-    class MyOnPageChangeListener implements ViewPager.OnPageChangeListener {
-
-        @Override
-        public void onPageScrollStateChanged(int arg0) {
-            switch (arg0) {
-                case 1:
-                    isAutoPlay = false;
-                    break;
-                case 2:
-                    isAutoPlay = true;
-                    break;
-                case 0:
-                    if (viewPager.getCurrentItem() == 0) {
-                        viewPager.setCurrentItem(count, false);
-                    } else if (viewPager.getCurrentItem() == count + 1) {
-                        viewPager.setCurrentItem(1, false);
-                    }
-                    currentItem = viewPager.getCurrentItem();
-                    isAutoPlay = true;
-                    break;
-            }
-        }
-
-        @Override
-        public void onPageScrolled(int arg0, float arg1, int arg2) {
-        }
-
-        @Override
-        public void onPageSelected(int arg0) {
-            for (int i = 0; i < indicatorImages.size(); i++) {
-                if (i == arg0 - 1) {
-                    indicatorImages.get(i).setImageResource(R.drawable.gray_radius);
-                } else {
-                    indicatorImages.get(i).setImageResource(R.drawable.white_radius);
+    @Override
+    public void onPageScrollStateChanged(int arg0) {
+        switch (arg0) {
+            case 1:
+                isAutoPlay = false;
+                break;
+            case 2:
+                isAutoPlay = true;
+                break;
+            case 0:
+                if (viewPager.getCurrentItem() == 0) {
+                    viewPager.setCurrentItem(count, false);
+                } else if (viewPager.getCurrentItem() == count + 1) {
+                    viewPager.setCurrentItem(1, false);
                 }
+                currentItem = viewPager.getCurrentItem();
+                isAutoPlay = true;
+                break;
+        }
+    }
+
+    @Override
+    public void onPageScrolled(int arg0, float arg1, int arg2) {
+    }
+
+    @Override
+    public void onPageSelected(int arg0) {
+        for (int i = 0; i < indicatorImages.size(); i++) {
+            if (i == arg0 - 1) {
+                indicatorImages.get(i).setImageResource(R.drawable.gray_radius);
+            } else {
+                indicatorImages.get(i).setImageResource(R.drawable.white_radius);
             }
         }
-
     }
 
     public OnBannerClickListener getOnBannerClickListener() {
