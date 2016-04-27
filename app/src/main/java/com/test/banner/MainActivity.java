@@ -19,6 +19,7 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         banner = (Banner) findViewById(R.id.banner);
+        banner.setDelayTime(500);//设置轮播间隔时间
         banner.setImages(images);//可以选择设置图片网址，或者资源文件
         banner.setOnBannerClickListener(new Banner.OnBannerClickListener() {//设置点击事件
             @Override

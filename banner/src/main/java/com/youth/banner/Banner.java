@@ -43,14 +43,19 @@ public class Banner extends FrameLayout {
         this.context = context;
         imageViews = new ArrayList<ImageView>();
         indicatorImages = new ArrayList<ImageView>();
-    }
-
-    public void setImages(Object[] images) {
         initView();
-        initImage(images);
-        showTime();
     }
-    private void initImage(Object[] imagesUrl) {
+    private void initView() {
+        imageViews.clear();
+        View view = LayoutInflater.from(context).inflate(R.layout.banner, this, true);
+        viewPager = (ViewPager) view.findViewById(R.id.viewpager);
+        indicator = (LinearLayout) view.findViewById(R.id.indicator);
+        indicator.removeAllViews();
+    }
+    public void setDelayTime(int time) {
+        delayTime=time;
+    }
+    public void setImages(Object[] imagesUrl) {
         count = imagesUrl.length;
         for (int i = 0; i < count; i++) {
             ImageView imageView = new ImageView(context);
@@ -73,16 +78,10 @@ public class Banner extends FrameLayout {
             }
             imageViews.add(iv);
         }
+        setData();
     }
-    private void initView() {
-        imageViews.clear();
-        View view = LayoutInflater.from(context).inflate(R.layout.banner, this, true);
-        viewPager = (ViewPager) view.findViewById(R.id.viewpager);
-        indicator = (LinearLayout) view.findViewById(R.id.indicator);
-        indicator.removeAllViews();
-    }
-    
-    private void showTime() {
+
+    private void setData() {
         viewPager.setAdapter(new BannerPagerAdapter());
         viewPager.setFocusable(true);
         viewPager.setCurrentItem(1);
@@ -90,7 +89,7 @@ public class Banner extends FrameLayout {
         viewPager.addOnPageChangeListener(new MyOnPageChangeListener());
         startAutoPlay();
     }
-
+    
     private void startAutoPlay() {
         isAutoPlay = true;
         handler.postDelayed(task, delayTime);
