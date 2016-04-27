@@ -8,7 +8,7 @@
 ##Gradle
 ```groovy
 dependencies{
-    compile 'com.youth.banner:library:1.0'
+    compile 'com.youth:banner:1.0.1'
 }
 ```
 ##方法
