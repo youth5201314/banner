@@ -12,8 +12,8 @@
 ##Gradle
 ```groovy
 dependencies{
-    compile 'com.youth:banner:1.0.2'  //指定版本
-    compile 'com.youth:banner:+' //最新版本
+    compile 'com.youth.banner:banner:1.0.2'  //指定版本
+    compile 'com.youth.banner:banner:+' //最新版本
 }
 ```
 或者引用本地lib
