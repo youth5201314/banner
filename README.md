@@ -22,7 +22,7 @@ compile project(':banner')
 ```
 ##方法
 |方法名|描述
-|:---:|:---:|
+|---|---|
 |setDelayTime(int time)| 设置轮播图片间隔时间（默认为2000）
 |setImages(Object[] imagesUrl)| 设置轮播图片 
 |setOnBannerClickListener(OnBannerClickListener listener)|设置点击事件
