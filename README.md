@@ -21,11 +21,11 @@ dependencies{
 compile project(':banner')
 ```
 ##方法
-|方法名|参数|描述
-|:---:|:---:|:---:|
-|setDelayTime|毫秒值| 设置轮播图片间隔时间（默认为2000）
-|setImages|url/resources| 设置轮播图片 
-|setOnBannerClickListener|/|设置点击事件
+|方法名|描述
+|:---:|:---:|
+|setDelayTime(int time)| 设置轮播图片间隔时间（默认为2000）
+|setImages(Object[] imagesUrl)| 设置轮播图片 
+|setOnBannerClickListener|设置点击事件
 
 ##使用步骤
 
@@ -36,7 +36,7 @@ compile project(':banner')
     android:layout_width="match_parent"
     android:layout_height="200dp" />
 ```
-#### 3.在Activity或者Fragment中配置Banner 
+#### 2.在Activity或者Fragment中配置Banner 
 ```java
 private Banner banner;
 String[] images= new String[] {"url"};
