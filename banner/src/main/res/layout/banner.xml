@@ -3,20 +3,51 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
     <android.support.v4.view.ViewPager
         android:id="@+id/viewpager"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <LinearLayout
-        android:id="@+id/indicator"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:gravity="right"
-        android:orientation="horizontal"
-        android:padding="8dp">
+        android:layout_gravity="bottom">
+        <LinearLayout
+            android:id="@+id/indicator"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:gravity="right"
+            android:orientation="horizontal"
+            android:padding="10dp"
+            android:visibility="gone"/>
+        <TextView
+            android:id="@+id/bannerTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_toLeftOf="@+id/numIndicator"
+            android:layout_below="@+id/indicator"
+            android:ellipsize="marquee"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:padding="10dp"
+            android:singleLine="true"
+            android:textColor="#ffffff"
+            android:background="#44000000"
+            android:visibility="gone"/>
 
-    </LinearLayout>
-
+        <TextView
+            android:id="@+id/numIndicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/indicator"
+            android:padding="10dp"
+            android:text="1/1"
+            android:textColor="#ffffff"
+            android:background="#44000000"
+            android:visibility="gone"/>
+    </RelativeLayout>
 </merge>

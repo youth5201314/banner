@@ -1,10 +1,14 @@
 package com.youth.banner;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.os.Handler;
+import android.support.annotation.AnimatorRes;
+import android.support.annotation.DrawableRes;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +16,8 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
@@ -19,17 +25,30 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Banner extends FrameLayout implements ViewPager.OnPageChangeListener {
+    public static final int NOT_INDICATOR=0;
+    public static final int CIRCLE_INDICATOR=1;
+    public static final int NUM_INDICATOR=2;
+    public static final int NUM_INDICATOR_TITLE=3;
+    public static final int CIRCLE_INDICATOR_TITLE=4;
+    private int mIndicatorMargin = 5;
+    private int mIndicatorWidth = 8;
+    private int mIndicatorHeight = 8;
+    private int mIndicatorSelectedResId = R.drawable.gray_radius;
+    private int mIndicatorUnselectedResId = R.drawable.white_radius;
+    private int bannerStyle=CIRCLE_INDICATOR;
     private int count;
-    private List<ImageView> imageViews;
-    private Context context;
-    private ViewPager viewPager;
-    private boolean isAutoPlay;
     private int currentItem;
     private int delayTime=2000;
-    private LinearLayout indicator;
+    private boolean isAutoPlay;
+    private List<ImageView> imageViews;
     private List<ImageView> indicatorImages;
+    private Context context;
+    private ViewPager viewPager;
+    private LinearLayout indicator;
     private Handler handler = new Handler();
     private OnBannerClickListener listener;
+    private String[] titles;
+    private TextView bannerTitle , numIndicator;
 
     public Banner(Context context) {
         this(context, null);
@@ -43,25 +62,77 @@ public class Banner extends FrameLayout implements ViewPager.OnPageChangeListene
         this.context = context;
         imageViews = new ArrayList<ImageView>();
         indicatorImages = new ArrayList<ImageView>();
-        initView();
+        initView(context, attrs);
     }
-    private void initView() {
+    private void handleTypedArray(Context context, AttributeSet attrs) {
+        if (attrs == null) {
+            return;
+        }
+        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.Banner);
+        mIndicatorWidth =typedArray.getDimensionPixelSize(R.styleable.Banner_indicator_width, 8);
+        mIndicatorHeight =typedArray.getDimensionPixelSize(R.styleable.Banner_indicator_height, 8);
+        mIndicatorMargin =typedArray.getDimensionPixelSize(R.styleable.Banner_indicator_margin, 5);
+        mIndicatorSelectedResId =typedArray.getResourceId(R.styleable.Banner_indicator_drawable_selected,
+                R.drawable.gray_radius);
+        mIndicatorUnselectedResId =typedArray.getResourceId(R.styleable.Banner_indicator_drawable_unselected,
+                R.drawable.white_radius);
+        typedArray.recycle();
+    }
+    private void initView(Context context, AttributeSet attrs) {
         imageViews.clear();
         View view = LayoutInflater.from(context).inflate(R.layout.banner, this, true);
         viewPager = (ViewPager) view.findViewById(R.id.viewpager);
         indicator = (LinearLayout) view.findViewById(R.id.indicator);
-        indicator.removeAllViews();
+        bannerTitle = (TextView) view.findViewById(R.id.bannerTitle);
+        numIndicator = (TextView) view.findViewById(R.id.numIndicator);
+        handleTypedArray(context, attrs);
     }
-    public void setDelayTime(int time) {
-        delayTime=time;
+    public void setDelayTime(int delayTime) {
+        this.delayTime=delayTime;
+    }
+    public void setBannerTitle(String[] titles) {
+        this.titles=titles;
+        if (bannerStyle==CIRCLE_INDICATOR_TITLE||bannerStyle==NUM_INDICATOR_TITLE) {
+            if (titles != null && titles.length > 0) {
+                bannerTitle.setVisibility(View.VISIBLE);
+                indicator.setGravity(Gravity.LEFT|Gravity.CENTER_VERTICAL);
+            }else{
+                numIndicator.setBackgroundResource(R.drawable.black_background);
+            }
+        }
+    }
+    public void setBannerStyle(int bannerStyle) {
+        this.bannerStyle=bannerStyle;
+        switch (bannerStyle){
+            case CIRCLE_INDICATOR:
+                indicator.setVisibility(View.VISIBLE);
+                break;
+            case NUM_INDICATOR:
+                numIndicator.setVisibility(View.VISIBLE);
+                numIndicator.setBackgroundResource(R.drawable.black_background);
+                RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                layoutParams.setMargins(0,0,10,10);
+                layoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+                numIndicator.setLayoutParams(layoutParams);
+                numIndicator.setPadding(5,6,5,6);
+                break;
+            case NUM_INDICATOR_TITLE:
+                numIndicator.setVisibility(View.VISIBLE);
+                break;
+            case CIRCLE_INDICATOR_TITLE:
+                indicator.setVisibility(View.VISIBLE);
+                break;
+        }
     }
     public void setImages(Object[] imagesUrl) {
+        if (imagesUrl==null||imagesUrl.length<=0)
+            return;
         count = imagesUrl.length;
         for (int i = 0; i < count; i++) {
             ImageView imageView = new ImageView(context);
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(8,8);
-            params.leftMargin = 4;
-            params.rightMargin = 4;
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(mIndicatorWidth,mIndicatorHeight);
+            params.leftMargin = mIndicatorMargin;
+            params.rightMargin = mIndicatorMargin;
             imageView.setBackgroundResource(R.drawable.white_radius);
             indicator.addView(imageView, params);
             indicatorImages.add(imageView);
@@ -89,7 +160,7 @@ public class Banner extends FrameLayout implements ViewPager.OnPageChangeListene
         viewPager.addOnPageChangeListener(this);
         startAutoPlay();
     }
-    
+
     private void startAutoPlay() {
         isAutoPlay = true;
         handler.postDelayed(task, delayTime);
@@ -149,8 +220,8 @@ public class Banner extends FrameLayout implements ViewPager.OnPageChangeListene
     }
 
     @Override
-    public void onPageScrollStateChanged(int arg0) {
-        switch (arg0) {
+    public void onPageScrollStateChanged(int state) {
+        switch (state) {
             case 1:
                 isAutoPlay = false;
                 break;
@@ -170,18 +241,42 @@ public class Banner extends FrameLayout implements ViewPager.OnPageChangeListene
     }
 
     @Override
-    public void onPageScrolled(int arg0, float arg1, int arg2) {
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
     }
 
     @Override
-    public void onPageSelected(int arg0) {
+    public void onPageSelected(int position) {
         for (int i = 0; i < indicatorImages.size(); i++) {
-            if (i == arg0 - 1) {
-                indicatorImages.get(i).setImageResource(R.drawable.gray_radius);
+            if (i == position - 1) {
+                indicatorImages.get(i).setImageResource(mIndicatorSelectedResId);
             } else {
-                indicatorImages.get(i).setImageResource(R.drawable.white_radius);
+                indicatorImages.get(i).setImageResource(mIndicatorUnselectedResId);
             }
         }
+        if (position>count) position=count;
+        switch (bannerStyle){
+            case CIRCLE_INDICATOR:
+                break;
+            case NUM_INDICATOR:
+                numIndicator.setText(position+"/"+count);
+                break;
+            case NUM_INDICATOR_TITLE:
+                numIndicator.setText(position+"/"+count);
+                if (titles!=null&&titles.length>0){
+                    if (position<=titles.length+1) {
+                        bannerTitle.setText(titles[position - 1]);
+                    }
+                }
+                break;
+            case CIRCLE_INDICATOR_TITLE:
+                if (titles!=null&&titles.length>0){
+                    if (position<=titles.length+1) {
+                        bannerTitle.setText(titles[position - 1]);
+                    }
+                }
+                break;
+        }
+
     }
 
     public OnBannerClickListener getOnBannerClickListener() {
