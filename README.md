@@ -4,9 +4,13 @@
 所以要实现循环还得需要自己去动手，所以其他的轮播控件大多都是重写viewpager，而且代码很臃肿。
 我就把项目中的控件剔了出来，希望大家觉得有用。
 ## 效果图
+>默认指示器模式
 ![效果示例](https://raw.githubusercontent.com/youth5201314/banner/master/image/1.png)
+>数字模式
 ![效果示例](https://raw.githubusercontent.com/youth5201314/banner/master/image/2.png)
+>数字加标题模式
 ![效果示例](https://raw.githubusercontent.com/youth5201314/banner/master/image/3.png)
+>指示器加标题模式
 ![效果示例](https://raw.githubusercontent.com/youth5201314/banner/master/image/4.png)
 ### 联系方式
 * 邮箱地址： 1028729086@qq.com 
