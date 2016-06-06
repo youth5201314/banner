@@ -4,14 +4,15 @@
 所以要实现循环还得需要自己去动手，所以其他的轮播控件大多都是重写viewpager，而且代码很臃肿。
 我就把项目中的控件剔了出来，希望大家觉得有用。
 ## 效果图
->默认指示器模式<br>
++ 默认指示器模式<br>
 ![效果示例](https://raw.githubusercontent.com/youth5201314/banner/master/image/1.png)<br>
->数字模式<br>
++ 数字模式<br>
 ![效果示例](https://raw.githubusercontent.com/youth5201314/banner/master/image/2.png)<br>
->数字加标题模式<br>
++ 数字加标题模式<br>
 ![效果示例](https://raw.githubusercontent.com/youth5201314/banner/master/image/3.png)<br>
->指示器加标题模式<br>
++ 指示器加标题模式<br>
 ![效果示例](https://raw.githubusercontent.com/youth5201314/banner/master/image/4.png)
+
 ### 联系方式
 * 邮箱地址： 1028729086@qq.com 
 * 如果遇到问题和建议欢迎在给我发送邮件，希望让这个工程越来越完善。
@@ -83,9 +84,10 @@ protected void onCreate(Bundle savedInstanceState) {
 }
 ```
 
->## 更新说明
->v1.1.0  感谢 <997058003@qq.com> 朋友提的意见，做出了如下更改：<br>
- -修改指示器样式<br>
- -增加5种轮播样式，更加灵活方便的运用轮播控件，满足项目需求<br>
+> ## 更新说明
+
+> v1.1.0  感谢 <997058003@qq.com> 朋友提的意见，做出了如下更改：<br>
+     - 修改指示器样式<br>
+     - 增加5种轮播样式，更加灵活方便的运用轮播控件，满足项目需求<br>
 
 
