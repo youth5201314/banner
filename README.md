@@ -72,12 +72,7 @@ protected void onCreate(Bundle savedInstanceState) {
     banner.setBannerTitle(titles);//设置轮播标题
     banner.setDelayTime(3000);//设置轮播间隔时间
     banner.setImages(images);//可以选择设置图片网址，或者资源文件
-    banner.setOnBannerClickListener(new Banner.OnBannerClickListener() {//设置点击事件
-        @Override
-        public void OnBannerClick(View view, int position) {
-
-        }
-    });
+    banner.setOnBannerClickListener(this);//设置点击事件
 
 }
 ```
