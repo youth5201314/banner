@@ -26,8 +26,9 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         banner = (Banner) findViewById(R.id.banner);
         //设置样式
+//        banner.setBannerStyle(Banner.NOT_INDICATOR);
 //        banner.setBannerStyle(Banner.CIRCLE_INDICATOR);
-        banner.setBannerStyle(Banner.NUM_INDICATOR);
+//        banner.setBannerStyle(Banner.NUM_INDICATOR);
 //        banner.setBannerStyle(Banner.NUM_INDICATOR_TITLE);
 //        banner.setBannerStyle(Banner.CIRCLE_INDICATOR_TITLE);
 

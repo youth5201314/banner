@@ -6,7 +6,7 @@
 ## 效果图
 |模式|图片
 |---|---|
-|默认指示器模式|![效果示例](https://raw.githubusercontent.com/youth5201314/banner/master/image/1.png)
+|指示器模式（默认）|![效果示例](https://raw.githubusercontent.com/youth5201314/banner/master/image/1.png)
 |数字模式|![效果示例](https://raw.githubusercontent.com/youth5201314/banner/master/image/2.png)
 |数字加标题模式|![效果示例](https://raw.githubusercontent.com/youth5201314/banner/master/image/3.png)
 |指示器加标题模式|![效果示例](https://raw.githubusercontent.com/youth5201314/banner/master/image/4.png)
