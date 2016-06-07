@@ -26,14 +26,6 @@ dependencies{
 ```groovy
 compile project(':banner')
 ```
-##方法
-|方法名|描述
-|---|---|
-|setBannerStyle(int bannerStyle)| 设置轮播样式（默认为Banner.CIRCLE_INDICATOR）
-|setBannerTitle(String[] titles)| 设置轮播要显示的标题和图片对应（如果不传默认不显示标题）
-|setDelayTime(int time)| 设置轮播图片间隔时间（默认为2000）
-|setImages(Object[] imagesUrl)| 设置轮播图片 
-|setOnBannerClickListener(OnBannerClickListener listener)|设置点击事件
 ## 常量
 |方法名|描述
 |---|---|
@@ -42,22 +34,41 @@ compile project(':banner')
 |Banner.NUM_INDICATOR| 显示数字指示器
 |Banner.NUM_INDICATOR_TITLE| 显示数字指示器和标题
 |Banner.CIRCLE_INDICATOR_TITLE| 显示圆形指示器和标题
+##方法
+|方法名|描述
+|---|---|
+|setBannerStyle(int bannerStyle)| 设置轮播样式（默认为Banner.CIRCLE_INDICATOR）
+|setBannerTitle(String[] titles)| 设置轮播要显示的标题和图片对应（如果不传默认不显示标题）
+|setDelayTime(int time)| 设置轮播图片间隔时间（默认为2000）
+|setImages(Object[] imagesUrl)| 设置轮播图片 
+|setOnBannerClickListener(this)|设置点击事件
+
 ##使用步骤
 
-####1.在布局文件中添加Banner
+#### 1.在布局文件中添加Banner，可以设置自定义属性
+
+* 简单使用
+```xml
+<com.youth.banner.Banner
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/banner"
+    android:layout_width="match_parent"
+    android:layout_height="高度自己设置" />
+```
+* 深度自定义 
 ```xml
 <com.youth.banner.Banner
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/banner"
     android:layout_width="match_parent"
     android:layout_height="高度自己设置"
-    //下面为自定义设置，可以不设置全部默认样式
     app:indicator_margin="指示器之间的间距"
     app:indicator_drawable_selected="指示器选中效果"
     app:indicator_drawable_unselected="指示器未选中效果"
     app:indicator_height="指示器圆形按钮的高度"
     app:indicator_width="指示器圆形按钮的宽度" />
 ```
+
 #### 2.在Activity或者Fragment中配置Banner 
 ```java
 private Banner banner;
@@ -68,11 +79,10 @@ protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
     banner = (Banner) findViewById(R.id.banner);
-    banner.setBannerStyle(Banner.CIRCLE_INDICATOR);//设置样式
-    banner.setBannerTitle(titles);//设置轮播标题
-    banner.setDelayTime(3000);//设置轮播间隔时间
+    /**
+     * 需要什么设置，请看着文档在设置图片和标题前完成设置
+     */
     banner.setImages(images);//可以选择设置图片网址，或者资源文件
-    banner.setOnBannerClickListener(this);//设置点击事件
 
 }
 ```
