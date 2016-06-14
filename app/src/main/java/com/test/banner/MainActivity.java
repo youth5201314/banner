@@ -3,6 +3,7 @@ package com.test.banner;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Toast;
 
@@ -30,10 +31,11 @@ public class MainActivity extends Activity {
 //        banner.setBannerStyle(Banner.CIRCLE_INDICATOR);
 //        banner.setBannerStyle(Banner.NUM_INDICATOR);
 //        banner.setBannerStyle(Banner.NUM_INDICATOR_TITLE);
-//        banner.setBannerStyle(Banner.CIRCLE_INDICATOR_TITLE);
+        banner.setBannerStyle(Banner.CIRCLE_INDICATOR_TITLE);
 
-//        banner.setBannerTitle(titles);
-
+        banner.setBannerTitle(titles);
+        banner.setIndicatorGravity(Banner.CENTER);
+        banner.isAutoPlay(true);
         banner.setDelayTime(5000);//设置轮播间隔时间
         banner.setImages(images);//可以选择设置图片网址，或者资源文件
 

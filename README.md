@@ -6,7 +6,7 @@
 ## 效果图
 |模式|图片
 |---|---|
-|指示器模式（默认）|![效果示例](https://raw.githubusercontent.com/youth5201314/banner/master/image/1.png)
+|指示器模式|![效果示例](https://raw.githubusercontent.com/youth5201314/banner/master/image/1.png)
 |数字模式|![效果示例](https://raw.githubusercontent.com/youth5201314/banner/master/image/2.png)
 |数字加标题模式|![效果示例](https://raw.githubusercontent.com/youth5201314/banner/master/image/3.png)
 |指示器加标题模式|![效果示例](https://raw.githubusercontent.com/youth5201314/banner/master/image/4.png)
@@ -18,7 +18,7 @@
 ##Gradle
 ```groovy
 dependencies{
-    compile 'com.youth.banner:banner:1.1.0'  //指定版本
+    compile 'com.youth.banner:banner:1.1.1'  //指定版本
     compile 'com.youth.banner:banner:+' //最新版本
 }
 ```
@@ -34,13 +34,18 @@ compile project(':banner')
 |Banner.NUM_INDICATOR| 显示数字指示器
 |Banner.NUM_INDICATOR_TITLE| 显示数字指示器和标题
 |Banner.CIRCLE_INDICATOR_TITLE| 显示圆形指示器和标题
+|Banner.LEFT| 指示器居左
+|Banner.CENTER| 指示器居中
+|Banner.RIGHT| 指示器居右
 ##方法
 |方法名|描述
 |---|---|
-|setBannerStyle(int bannerStyle)| 设置轮播样式（默认为Banner.CIRCLE_INDICATOR）
+|setBannerStyle(int bannerStyle)| 设置轮播样式（默认为Banner.NOT_INDICATOR）
+|setIndicatorGravity(int type)| 设置轮播样式（没有标题默认为右边,有标题时默认左边）
+|isAutoPlay(boolean isAutoPlay)| 设置是否自动轮播（默认自动）
 |setBannerTitle(String[] titles)| 设置轮播要显示的标题和图片对应（如果不传默认不显示标题）
 |setDelayTime(int time)| 设置轮播图片间隔时间（默认为2000）
-|setImages(Object[] imagesUrl)| 设置轮播图片 
+|setImages(Object[] imagesUrl)| 设置轮播图片(所有设置参数方法都放在此方法之前执行)
 |setOnBannerClickListener(this)|设置点击事件
 
 ##使用步骤
@@ -92,5 +97,8 @@ protected void onCreate(Bundle savedInstanceState) {
     感谢 <997058003@qq.com> 朋友提的意见，做出了如下更改：
  * 修改指示器样式
  * 增加5种轮播样式，更加灵活方便的运用轮播控件，满足项目需求
-
+#### v1.1.1
+    感谢 <969482412@qq.com> 朋友提的意见，做出了如下更改：
+ * 增加圆形指示器的位置方法setIndicatorGravity(int type)
+ * 增加设置是否自动轮播的方法isAutoPlay(boolean isAutoPlay)
 

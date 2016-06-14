@@ -30,6 +30,9 @@ public class Banner extends FrameLayout implements ViewPager.OnPageChangeListene
     public static final int NUM_INDICATOR=2;
     public static final int NUM_INDICATOR_TITLE=3;
     public static final int CIRCLE_INDICATOR_TITLE=4;
+    public static final int LEFT=5;
+    public static final int CENTER=6;
+    public static final int RIGHT=7;
     private int mIndicatorMargin = 5;
     private int mIndicatorWidth = 8;
     private int mIndicatorHeight = 8;
@@ -39,7 +42,8 @@ public class Banner extends FrameLayout implements ViewPager.OnPageChangeListene
     private int count;
     private int currentItem;
     private int delayTime=2000;
-    private boolean isAutoPlay;
+    private int gravity=-1;
+    private boolean isAutoPlay=true;
     private List<ImageView> imageViews;
     private List<ImageView> indicatorImages;
     private Context context;
@@ -90,6 +94,19 @@ public class Banner extends FrameLayout implements ViewPager.OnPageChangeListene
     public void setDelayTime(int delayTime) {
         this.delayTime=delayTime;
     }
+    public void setIndicatorGravity(int type) {
+        switch (type){
+            case LEFT:
+                this.gravity=Gravity.LEFT|Gravity.CENTER_VERTICAL;
+                break;
+            case CENTER:
+                this.gravity=Gravity.CENTER;
+                break;
+            case RIGHT:
+                this.gravity=Gravity.RIGHT|Gravity.CENTER_VERTICAL;
+                break;
+        }
+    }
     public void setBannerTitle(String[] titles) {
         this.titles=titles;
         if (bannerStyle==CIRCLE_INDICATOR_TITLE||bannerStyle==NUM_INDICATOR_TITLE) {
@@ -133,7 +150,7 @@ public class Banner extends FrameLayout implements ViewPager.OnPageChangeListene
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(mIndicatorWidth,mIndicatorHeight);
             params.leftMargin = mIndicatorMargin;
             params.rightMargin = mIndicatorMargin;
-            imageView.setBackgroundResource(R.drawable.white_radius);
+            imageView.setBackgroundResource(mIndicatorUnselectedResId);
             indicator.addView(imageView, params);
             indicatorImages.add(imageView);
         }
@@ -158,9 +175,14 @@ public class Banner extends FrameLayout implements ViewPager.OnPageChangeListene
         viewPager.setCurrentItem(1);
         currentItem = 1;
         viewPager.addOnPageChangeListener(this);
-        startAutoPlay();
+        if (gravity!=-1)
+            indicator.setGravity(gravity);
+        if (isAutoPlay)
+            startAutoPlay();
     }
-
+    public void isAutoPlay(boolean isAutoPlay) {
+        this.isAutoPlay=isAutoPlay;
+    }
     private void startAutoPlay() {
         isAutoPlay = true;
         handler.postDelayed(task, delayTime);
