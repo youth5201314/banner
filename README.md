@@ -97,6 +97,7 @@ protected void onCreate(Bundle savedInstanceState) {
     感谢 <997058003@qq.com> 朋友提的意见，做出了如下更改：
  * 修改指示器样式
  * 增加5种轮播样式，更加灵活方便的运用轮播控件，满足项目需求
+
 #### v1.1.1
     感谢 <969482412@qq.com> 朋友提的意见，做出了如下更改：
  * 增加圆形指示器的位置方法setIndicatorGravity(int type)
