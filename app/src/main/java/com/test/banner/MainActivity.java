@@ -3,10 +3,13 @@ package com.test.banner;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.youth.banner.Banner;
 
 
@@ -37,8 +40,14 @@ public class MainActivity extends Activity {
         banner.setIndicatorGravity(Banner.CENTER);
         banner.isAutoPlay(true);
         banner.setDelayTime(5000);//设置轮播间隔时间
-        banner.setImages(images);//可以选择设置图片网址，或者资源文件
-
+//        banner.setImages(images);//可以选择设置图片网址，或者资源文件，默认用Glide加载
+        //自定义图片加载框架
+        banner.setImages(images, new Banner.OnLoadImageListener() {
+            @Override
+            public void OnLoadImage(ImageView view, Object url) {
+                Glide.with(getApplicationContext()).load(url).into(view);
+            }
+        });
         banner.setOnBannerClickListener(new Banner.OnBannerClickListener() {//设置点击事件
             @Override
             public void OnBannerClick(View view, int position) {

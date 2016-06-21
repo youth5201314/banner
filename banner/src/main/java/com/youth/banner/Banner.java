@@ -51,6 +51,7 @@ public class Banner extends FrameLayout implements ViewPager.OnPageChangeListene
     private LinearLayout indicator;
     private Handler handler = new Handler();
     private OnBannerClickListener listener;
+    private OnLoadImageListener imageListener;
     private String[] titles;
     private TextView bannerTitle , numIndicator;
 
@@ -145,15 +146,7 @@ public class Banner extends FrameLayout implements ViewPager.OnPageChangeListene
         if (imagesUrl==null||imagesUrl.length<=0)
             return;
         count = imagesUrl.length;
-        for (int i = 0; i < count; i++) {
-            ImageView imageView = new ImageView(context);
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(mIndicatorWidth,mIndicatorHeight);
-            params.leftMargin = mIndicatorMargin;
-            params.rightMargin = mIndicatorMargin;
-            imageView.setBackgroundResource(mIndicatorUnselectedResId);
-            indicator.addView(imageView, params);
-            indicatorImages.add(imageView);
-        }
+        createIndicator();
         for (int i = 0; i <= count + 1; i++) {
             ImageView iv = new ImageView(context);
             iv.setScaleType(ScaleType.CENTER_CROP);
@@ -168,6 +161,42 @@ public class Banner extends FrameLayout implements ViewPager.OnPageChangeListene
         }
         setData();
     }
+    public void setImages(Object[] imagesUrl,OnLoadImageListener imageListener) {
+        if (imagesUrl==null||imagesUrl.length<=0)
+            return;
+        count = imagesUrl.length;
+        createIndicator();
+        for (int i = 0; i <= count + 1; i++) {
+            ImageView iv = new ImageView(context);
+            iv.setScaleType(ScaleType.CENTER_CROP);
+            Object url=null;
+            if (i == 0) {
+                url=imagesUrl[count - 1];
+            } else if (i == count + 1) {
+                url=imagesUrl[0];
+            } else {
+                url=imagesUrl[i - 1];
+            }
+            imageViews.add(iv);
+            if(imageListener!=null){
+                imageListener.OnLoadImage(iv,url);
+            }
+        }
+        setData();
+    }
+
+    private void createIndicator() {
+        for (int i = 0; i < count; i++) {
+            ImageView imageView = new ImageView(context);
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(mIndicatorWidth,mIndicatorHeight);
+            params.leftMargin = mIndicatorMargin;
+            params.rightMargin = mIndicatorMargin;
+            imageView.setBackgroundResource(mIndicatorUnselectedResId);
+            indicator.addView(imageView, params);
+            indicatorImages.add(imageView);
+        }
+    }
+
 
     private void setData() {
         viewPager.setAdapter(new BannerPagerAdapter());
@@ -301,15 +330,19 @@ public class Banner extends FrameLayout implements ViewPager.OnPageChangeListene
 
     }
 
-    public OnBannerClickListener getOnBannerClickListener() {
-        return listener;
-    }
 
     public void setOnBannerClickListener(OnBannerClickListener listener) {
         this.listener = listener;
     }
 
+    public void setOnBannerImageListener(OnLoadImageListener imageListener) {
+        this.imageListener = imageListener;
+    }
+
     public interface OnBannerClickListener {
         void OnBannerClick(View view, int position);
+    }
+    public interface OnLoadImageListener {
+        void OnLoadImage(ImageView view,Object url);
     }
 }

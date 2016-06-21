@@ -18,7 +18,7 @@
 ##Gradle
 ```groovy
 dependencies{
-    compile 'com.youth.banner:banner:1.1.1'  //指定版本
+    compile 'com.youth.banner:banner:1.1.2'  //指定版本
     compile 'com.youth.banner:banner:+' //最新版本
 }
 ```
@@ -46,7 +46,9 @@ compile project(':banner')
 |setBannerTitle(String[] titles)| 设置轮播要显示的标题和图片对应（如果不传默认不显示标题）
 |setDelayTime(int time)| 设置轮播图片间隔时间（默认为2000）
 |setImages(Object[] imagesUrl)| 设置轮播图片(所有设置参数方法都放在此方法之前执行)
+|setImages(Object[] imagesUrl,OnLoadImageListener listener)| 设置轮播图片，并且自定义图片加载方式
 |setOnBannerClickListener(this)|设置点击事件
+|setOnBannerImageListener(this)|设置图片加载事件，可以自定义图片加载方式
 
 ##使用步骤
 
@@ -93,11 +95,17 @@ protected void onCreate(Bundle savedInstanceState) {
 ```
 
 ## 更新说明
+
+#### v1.1.2
+    感谢 <cssxn@qq.com> 朋友提的意见，做出了如下更改：
+ * 增加设置轮播图片，并且自定义图片加载方式:setImages(Object[] imagesUrl,OnLoadImageListener listener)
+ * 增加设置图片加载事件，可以自定义图片加载方式:setOnBannerImageListener(this)
+ 
 #### v1.1.1
     感谢 <969482412@qq.com> 朋友提的意见，做出了如下更改：
  * 增加圆形指示器的位置方法setIndicatorGravity(int type)
  * 增加设置是否自动轮播的方法isAutoPlay(boolean isAutoPlay)
- 
+
 #### v1.1.0  
     感谢 <997058003@qq.com> 朋友提的意见，做出了如下更改：
  * 修改指示器样式
