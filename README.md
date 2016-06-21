@@ -89,8 +89,15 @@ protected void onCreate(Bundle savedInstanceState) {
     /**
      * 需要什么设置，请看着文档在设置图片和标题前完成设置
      */
-    banner.setImages(images);//可以选择设置图片网址，或者资源文件
-
+    //可以选择设置图片网址，或者资源文件，默认加载框架Glide
+    //banner.setImages(images);
+    //自定义图片加载框架
+    banner.setImages(images, new Banner.OnLoadImageListener() {
+        @Override
+        public void OnLoadImage(ImageView view, Object url) {
+            Glide.with(getApplicationContext()).load(url).into(view);
+        }
+    });
 }
 ```
 
