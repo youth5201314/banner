@@ -1,5 +1,5 @@
-# Android图片轮播控件![效果示例](https://raw.githubusercontent.com/youth5201314/banner/master/image/star.png)
-<br>
+# Android图片轮播控件
+![效果示例](https://raw.githubusercontent.com/youth5201314/banner/master/image/star.png)
 现在的绝大数app都有banner界面，实现循环播放多个广告图片和手动滑动循环等功能。因为ViewPager并不支持循环翻页，
 所以要实现循环还得需要自己去动手，所以其他的轮播控件大多都是重写viewpager，而且代码很臃肿。
 我就把项目中的控件剔了出来，希望大家觉得有用。
