@@ -20,7 +20,7 @@
 ##Gradle
 ```groovy
 dependencies{
-    compile 'com.youth.banner:banner:1.1.2'  //指定版本
+    compile 'com.youth.banner:banner:1.1.3'  //指定版本
     compile 'com.youth.banner:banner:+' //最新版本
 }
 ```
@@ -104,7 +104,11 @@ protected void onCreate(Bundle savedInstanceState) {
 ```
 
 ## 更新说明
-
+#### v1.1.3
+    修复了 <2316692710@qq.com> 朋友反馈的bug：
+ * bug①  有标题的时候，向左滑动 ,会数组越界崩溃
+ * bug②  指示器为数字的时候，向左滑动时会有一次显示为0/5
+ 
 #### v1.1.2
     感谢 <cssxn@qq.com> 朋友提的意见，做出了如下更改：
  * 增加设置轮播图片，并且自定义图片加载方式:setImages(Object[] imagesUrl,OnLoadImageListener listener)

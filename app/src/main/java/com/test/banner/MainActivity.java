@@ -33,21 +33,14 @@ public class MainActivity extends Activity {
 //        banner.setBannerStyle(Banner.NOT_INDICATOR);
 //        banner.setBannerStyle(Banner.CIRCLE_INDICATOR);
 //        banner.setBannerStyle(Banner.NUM_INDICATOR);
-//        banner.setBannerStyle(Banner.NUM_INDICATOR_TITLE);
-        banner.setBannerStyle(Banner.CIRCLE_INDICATOR_TITLE);
+        banner.setBannerStyle(Banner.NUM_INDICATOR_TITLE);
+//        banner.setBannerStyle(Banner.CIRCLE_INDICATOR_TITLE);
 
         banner.setBannerTitle(titles);
         banner.setIndicatorGravity(Banner.CENTER);
         banner.isAutoPlay(true);
         banner.setDelayTime(5000);//设置轮播间隔时间
-//        banner.setImages(images);//可以选择设置图片网址，或者资源文件，默认用Glide加载
-        //自定义图片加载框架
-        banner.setImages(images, new Banner.OnLoadImageListener() {
-            @Override
-            public void OnLoadImage(ImageView view, Object url) {
-                Glide.with(getApplicationContext()).load(url).into(view);
-            }
-        });
+        banner.setImages(images);//可以选择设置图片网址，或者资源文件，默认用Glide加载
         banner.setOnBannerClickListener(new Banner.OnBannerClickListener() {//设置点击事件
             @Override
             public void OnBannerClick(View view, int position) {

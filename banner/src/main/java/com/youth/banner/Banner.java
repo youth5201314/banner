@@ -8,6 +8,7 @@ import android.support.annotation.DrawableRes;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -304,26 +305,26 @@ public class Banner extends FrameLayout implements ViewPager.OnPageChangeListene
                 indicatorImages.get(i).setImageResource(mIndicatorUnselectedResId);
             }
         }
-        if (position>count) position=count;
+        if (position==0) position=1;
         switch (bannerStyle){
             case CIRCLE_INDICATOR:
                 break;
             case NUM_INDICATOR:
+                if (position>count) position=count;
                 numIndicator.setText(position+"/"+count);
                 break;
             case NUM_INDICATOR_TITLE:
+                if (position>count) position=count;
                 numIndicator.setText(position+"/"+count);
                 if (titles!=null&&titles.length>0){
-                    if (position<=titles.length+1) {
-                        bannerTitle.setText(titles[position - 1]);
-                    }
+                    if (position>titles.length) position=titles.length;
+                    bannerTitle.setText(titles[position-1]);
                 }
                 break;
             case CIRCLE_INDICATOR_TITLE:
                 if (titles!=null&&titles.length>0){
-                    if (position<=titles.length+1) {
-                        bannerTitle.setText(titles[position - 1]);
-                    }
+                    if (position>titles.length) position=titles.length;
+                    bannerTitle.setText(titles[position-1]);
                 }
                 break;
         }
