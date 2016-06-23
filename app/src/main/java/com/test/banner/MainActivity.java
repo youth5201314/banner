@@ -38,7 +38,6 @@ public class MainActivity extends Activity {
 
         banner.setBannerTitle(titles);
         banner.setIndicatorGravity(Banner.CENTER);
-        banner.isAutoPlay(true);
         banner.setDelayTime(5000);//设置轮播间隔时间
         banner.setImages(images);//可以选择设置图片网址，或者资源文件，默认用Glide加载
         banner.setOnBannerClickListener(new Banner.OnBannerClickListener() {//设置点击事件
@@ -47,7 +46,19 @@ public class MainActivity extends Activity {
                 Toast.makeText(getApplicationContext(),"你点击了："+position,Toast.LENGTH_LONG).show();
             }
         });
-
+    }
+    //如果你需要考虑更好的体验，可以这么操作
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.i("--","onStart");
+        banner.isAutoPlay(true);
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.i("--","onStop");
+        banner.isAutoPlay(false);
+    }
 }

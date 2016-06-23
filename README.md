@@ -101,6 +101,22 @@ protected void onCreate(Bundle savedInstanceState) {
         }
     });
 }
+
+//如果你需要考虑更好的体验，可以这么操作
+@Override
+protected void onStart() {
+    super.onStart();
+    //在页面可见时开始轮播，
+    //默认的是页面初始化时就开始轮播了，如果你不需要可以再onCreate方法里设置banner.isAutoPlay(false);
+    banner.isAutoPlay(true);
+}
+
+@Override
+protected void onStop() {
+    super.onStop();
+    //在页面不可见时停止轮播
+    banner.isAutoPlay(false);
+}
 ```
 
 ## 更新说明
