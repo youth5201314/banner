@@ -17,9 +17,6 @@
 * 邮箱地址： 1028729086@qq.com 
 * 如果遇到问题和建议欢迎在给我发送邮件，希望让这个工程越来越完善。
 
-<a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=1028729086&site=鸡蛋掉了&menu=yes"><img border="0" src="http://wpa.qq.com/pa?p=2:1028729086:51" alt="点击这里给我发消息" title="点击这里给我发消息"/></a>
-<a target="_blank" href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=q8fC0t7BwsrFzIXfwOva2oXIxMY" style="text-decoration:none;"><img src="http://rescdn.qqmail.com/zh_CN/htmledition/images/function/qm_open/ico_mailme_02.png"/></a>
-
 ##Gradle
 ```groovy
 dependencies{
