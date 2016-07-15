@@ -6,5 +6,7 @@
         <attr name="indicator_margin" format="dimension" />
         <attr name="indicator_drawable_selected" format="reference" />
         <attr name="indicator_drawable_unselected" format="reference" />
+        <attr name="indicator_animator" format="reference" />
+        <attr name="indicator_animator_reverse" format="reference" />
     </declare-styleable>
 </resources>

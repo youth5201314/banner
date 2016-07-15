@@ -23,29 +23,33 @@ public class MainActivity extends Activity {
             "http://img.zcool.cn/community/01fda356640b706ac725b2c8b99b08.jpg",
             "http://img.zcool.cn/community/01fd2756e142716ac72531cbf8bbbf.jpg",
             "http://img.zcool.cn/community/0114a856640b6d32f87545731c076a.jpg"};
-    String[] titles=new String[]{"十大星级品牌联盟，全场2折起","2","3","4","5","嗨购5折不要停，12.12趁现在","7"};
+    String[] titles=new String[]{"十大星级品牌联盟，全场2折起","全场2折起","十大星级品牌联盟","嗨购5折不要停","12趁现在","嗨购5折不要停，12.12趁现在","实打实大顶顶顶顶"};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         banner = (Banner) findViewById(R.id.banner);
         //设置样式
-//        banner.setBannerStyle(Banner.NOT_INDICATOR);
-//        banner.setBannerStyle(Banner.CIRCLE_INDICATOR);
-//        banner.setBannerStyle(Banner.NUM_INDICATOR);
-        banner.setBannerStyle(Banner.NUM_INDICATOR_TITLE);
-//        banner.setBannerStyle(Banner.CIRCLE_INDICATOR_TITLE);
+        banner.setBannerStyle(Banner.CIRCLE_INDICATOR);
 
         banner.setBannerTitle(titles);
         banner.setIndicatorGravity(Banner.CENTER);
         banner.setDelayTime(5000);//设置轮播间隔时间
         banner.setImages(images);//可以选择设置图片网址，或者资源文件，默认用Glide加载
+        //自定义图片加载框架
+        banner.setImages(images, new Banner.OnLoadImageListener() {
+            @Override
+            public void OnLoadImage(ImageView view, Object url) {
+                Glide.with(getApplicationContext()).load(url).into(view);
+            }
+        });
         banner.setOnBannerClickListener(new Banner.OnBannerClickListener() {//设置点击事件
             @Override
             public void OnBannerClick(View view, int position) {
                 Toast.makeText(getApplicationContext(),"你点击了："+position,Toast.LENGTH_LONG).show();
             }
         });
+
     }
     //如果你需要考虑更好的体验，可以这么操作
     @Override

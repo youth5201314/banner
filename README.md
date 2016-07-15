@@ -20,7 +20,7 @@
 ##Gradle
 ```groovy
 dependencies{
-    compile 'com.youth.banner:banner:1.1.3'  //指定版本
+    compile 'com.youth.banner:banner:1.1.4'  //指定版本
     compile 'com.youth.banner:banner:+' //最新版本
 }
 ```
@@ -47,9 +47,9 @@ compile project(':banner')
 |isAutoPlay(boolean isAutoPlay)| 设置是否自动轮播（默认自动）
 |setBannerTitle(String[] titles)| 设置轮播要显示的标题和图片对应（如果不传默认不显示标题）
 |setDelayTime(int time)| 设置轮播图片间隔时间（默认为2000）
-|setImages(Object[] imagesUrl)| 设置轮播图片(所有设置参数方法都放在此方法之前执行)
-|setImages(Object[] imagesUrl,OnLoadImageListener listener)| 设置轮播图片，并且自定义图片加载方式
-|setOnBannerClickListener(this)|设置点击事件
+|setImages(Object[]/List<?> imagesUrl)| 设置轮播图片(所有设置参数方法都放在此方法之前执行)
+|setImages(Object[]/List<?> imagesUrl,OnLoadImageListener listener)| 设置轮播图片，并且自定义图片加载方式
+|setOnBannerClickListener(this)|设置点击事件，下标是从1开始
 |setOnBannerImageListener(this)|设置图片加载事件，可以自定义图片加载方式
 
 ##使用步骤
@@ -120,6 +120,13 @@ protected void onStop() {
 ```
 
 ## 更新说明
+
+#### v1.1.4
+    更新内容
+ * 增加setImages传参可以接收list集合
+ * 优化在添加数据和创建指示器时的对象内存回收
+ 
+ 
 #### v1.1.3
     修复了 <2316692710@qq.com> 朋友反馈的bug：
  * bug①  有标题的时候，向左滑动 ,会数组越界崩溃
