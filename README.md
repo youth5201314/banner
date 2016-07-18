@@ -20,7 +20,7 @@
 ##Gradle
 ```groovy
 dependencies{
-    compile 'com.youth.banner:banner:1.1.4'  //指定版本
+    compile 'com.youth.banner:banner:1.1.5'  //指定版本
     compile 'com.youth.banner:banner:+' //最新版本
 }
 ```
@@ -122,10 +122,14 @@ protected void onStop() {
 ## 更新说明
 
 #### v1.1.4
+    感谢<imexception>朋友的反馈
+ * 创建指示器初始化时默认的背景的添加，减少延迟等待更新
+ * 优化指示器背景更新操作
+
+#### v1.1.4
     更新内容
  * 增加setImages传参可以接收list集合
  * 优化在添加数据和创建指示器时的对象内存回收
- 
  
 #### v1.1.3
     修复了 <2316692710@qq.com> 朋友反馈的bug：

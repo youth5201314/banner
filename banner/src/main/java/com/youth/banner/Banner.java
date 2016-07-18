@@ -62,6 +62,7 @@ public class Banner extends FrameLayout implements ViewPager.OnPageChangeListene
     private OnLoadImageListener imageListener;
     private String[] titles;
     private TextView bannerTitle , numIndicator;
+    private int lastPosition=1;
 
     public Banner(Context context) {
         this(context, null);
@@ -230,7 +231,11 @@ public class Banner extends FrameLayout implements ViewPager.OnPageChangeListene
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(mIndicatorWidth,mIndicatorHeight);
             params.leftMargin = mIndicatorMargin;
             params.rightMargin = mIndicatorMargin;
-            imageView.setBackgroundResource(mIndicatorUnselectedResId);
+            if(i==0){
+                imageView.setImageResource(mIndicatorSelectedResId);
+            }else{
+                imageView.setImageResource(mIndicatorUnselectedResId);
+            }
             indicator.addView(imageView, params);
             indicatorImages.add(imageView);
         }
@@ -337,14 +342,9 @@ public class Banner extends FrameLayout implements ViewPager.OnPageChangeListene
 
     @Override
     public void onPageSelected(int position) {
-        for (int i = 0; i < indicatorImages.size(); i++) {
-            ImageView mIndicator=indicatorImages.get(i);
-            if (i == position - 1) {
-                mIndicator.setImageResource(mIndicatorSelectedResId);
-            } else {
-                mIndicator.setImageResource(mIndicatorUnselectedResId);
-            }
-        }
+        indicatorImages.get((lastPosition - 1+count)%count).setImageResource(mIndicatorUnselectedResId);
+        indicatorImages.get((position - 1+count)%count).setImageResource(mIndicatorSelectedResId);
+        lastPosition=position;
         if (position==0) position=1;
         switch (bannerStyle){
             case CIRCLE_INDICATOR:
