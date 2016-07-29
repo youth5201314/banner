@@ -20,7 +20,8 @@
 ##Gradle
 ```groovy
 dependencies{
-    compile 'com.youth.banner:banner:1.1.6'  //指定版本
+    注意！jcenter有一定的延迟，发布版本后比一定马上就能更新下来，这是正常现象
+    compile 'com.youth.banner:banner:1.1.7'  //指定版本
     compile 'com.youth.banner:banner:+' //最新版本
 }
 ```
@@ -46,6 +47,7 @@ compile project(':banner')
 |setIndicatorGravity(int type)| 设置指示器位置（没有标题默认为右边,有标题时默认左边）
 |isAutoPlay(boolean isAutoPlay)| 设置是否自动轮播（默认自动）
 |setBannerTitle(String[] titles)| 设置轮播要显示的标题和图片对应（如果不传默认不显示标题）
+|setBannerTitleList(List<String> titles)| 设置轮播要显示的标题和图片对应（如果不传默认不显示标题）
 |setDelayTime(int time)| 设置轮播图片间隔时间（默认为2000）
 |setImages(Object[]/List<?> imagesUrl)| 设置轮播图片(所有设置参数方法都放在此方法之前执行)
 |setImages(Object[]/List<?> imagesUrl,OnLoadImageListener listener)| 设置轮播图片，并且自定义图片加载方式
@@ -100,8 +102,13 @@ protected void onCreate(Bundle savedInstanceState) {
 
 ## 更新说明
 
+
+#### v1.1.7
+    应<wuzhaohui026>朋友的要求，做出更新
+ * 为标题增加设置集合的方法：setBannerTitleList(List<String> titles)
+ 
 #### v1.1.6
-    综合大家的反馈
+    综合大家的反馈，做出一些更新
  * 将代码的常量全部提出到BannerConfig类里了，以前的代码，大家需要修改下
  * 有人喜欢xml属性的方式来设置参数，那么增加了几个xml属性
      app:default_image="默认加载图片"

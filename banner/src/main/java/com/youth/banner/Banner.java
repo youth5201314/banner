@@ -123,6 +123,9 @@ public class Banner extends FrameLayout implements ViewPager.OnPageChangeListene
                 break;
         }
     }
+    public void setBannerTitleList(List<String> titles) {
+        setBannerTitle((String[]) titles.toArray());
+    }
     public void setBannerTitle(String[] titles) {
         this.titles=titles;
         if (bannerStyle==BannerConfig.CIRCLE_INDICATOR_TITLE||
