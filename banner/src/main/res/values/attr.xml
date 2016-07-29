@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="Banner">
+        <attr name="default_image" format="reference" />
+        <attr name="delay_time" format="dimension" />
+        <attr name="is_auto_play" format="boolean" />
         <attr name="indicator_width" format="dimension" />
         <attr name="indicator_height" format="dimension" />
         <attr name="indicator_margin" format="dimension" />
         <attr name="indicator_drawable_selected" format="reference" />
         <attr name="indicator_drawable_unselected" format="reference" />
-        <attr name="indicator_animator" format="reference" />
-        <attr name="indicator_animator_reverse" format="reference" />
+        <!--<attr name="indicator_animator" format="reference" />-->
+        <!--<attr name="indicator_animator_reverse" format="reference" />-->
     </declare-styleable>
 </resources>

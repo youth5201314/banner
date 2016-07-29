@@ -20,7 +20,7 @@
 ##Gradle
 ```groovy
 dependencies{
-    compile 'com.youth.banner:banner:1.1.5'  //指定版本
+    compile 'com.youth.banner:banner:1.1.6'  //指定版本
     compile 'com.youth.banner:banner:+' //最新版本
 }
 ```
@@ -31,19 +31,19 @@ compile project(':banner')
 ## 常量
 |方法名|描述
 |---|---|
-|Banner.NOT_INDICATOR| 不显示指示器和标题
-|Banner.CIRCLE_INDICATOR| 显示圆形指示器
-|Banner.NUM_INDICATOR| 显示数字指示器
-|Banner.NUM_INDICATOR_TITLE| 显示数字指示器和标题
-|Banner.CIRCLE_INDICATOR_TITLE| 显示圆形指示器和标题
-|Banner.LEFT| 指示器居左
-|Banner.CENTER| 指示器居中
-|Banner.RIGHT| 指示器居右
+|BannerConfig.NOT_INDICATOR| 不显示指示器和标题
+|BannerConfig.CIRCLE_INDICATOR| 显示圆形指示器
+|BannerConfig.NUM_INDICATOR| 显示数字指示器
+|BannerConfig.NUM_INDICATOR_TITLE| 显示数字指示器和标题
+|BannerConfig.CIRCLE_INDICATOR_TITLE| 显示圆形指示器和标题
+|BannerConfig.LEFT| 指示器居左
+|BannerConfig.CENTER| 指示器居中
+|BannerConfig.RIGHT| 指示器居右
 ##方法
 |方法名|描述
 |---|---|
 |setBannerStyle(int bannerStyle)| 设置轮播样式（默认为Banner.NOT_INDICATOR）
-|setIndicatorGravity(int type)| 设置轮播样式（没有标题默认为右边,有标题时默认左边）
+|setIndicatorGravity(int type)| 设置指示器位置（没有标题默认为右边,有标题时默认左边）
 |isAutoPlay(boolean isAutoPlay)| 设置是否自动轮播（默认自动）
 |setBannerTitle(String[] titles)| 设置轮播要显示的标题和图片对应（如果不传默认不显示标题）
 |setDelayTime(int time)| 设置轮播图片间隔时间（默认为2000）
@@ -52,10 +52,9 @@ compile project(':banner')
 |setOnBannerClickListener(this)|设置点击事件，下标是从1开始
 |setOnBannerImageListener(this)|设置图片加载事件，可以自定义图片加载方式
 
-##使用步骤
+##使用步骤 \* 更多用法请下载demo
 
 #### 1.在布局文件中添加Banner，可以设置自定义属性
-
 * 简单使用
 ```xml
 <com.youth.banner.Banner
@@ -64,13 +63,17 @@ compile project(':banner')
     android:layout_width="match_parent"
     android:layout_height="高度自己设置" />
 ```
-* 深度自定义 
+* 深度自定义,xml扩展属性
+* !!!! 有些属性和方法有重复的地方，完全是为了考虑不同人的习惯
 ```xml
 <com.youth.banner.Banner
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/banner"
     android:layout_width="match_parent"
     android:layout_height="高度自己设置"
+    app:default_image="默认加载图片"
+    app:delay_time="轮播间隔时间"
+    app:is_auto_play="是否自动轮播"
     app:indicator_margin="指示器之间的间距"
     app:indicator_drawable_selected="指示器选中效果"
     app:indicator_drawable_unselected="指示器未选中效果"
@@ -88,38 +91,25 @@ protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
     banner = (Banner) findViewById(R.id.banner);
-    /**
-     * 需要什么设置，请看着文档在设置图片和标题前完成设置
-     */
-    //可以选择设置图片网址，或者资源文件，默认加载框架Glide
-    //banner.setImages(images);
-    //自定义图片加载框架
-    banner.setImages(images, new Banner.OnLoadImageListener() {
-        @Override
-        public void OnLoadImage(ImageView view, Object url) {
-            Glide.with(getApplicationContext()).load(url).into(view);
-        }
-    });
+    //一步搞定，设置图片就行了
+    banner.setImages(images);
+ 
 }
 
-//如果你需要考虑更好的体验，可以这么操作
-@Override
-protected void onStart() {
-    super.onStart();
-    //在页面可见时开始轮播，
-    //默认的是页面初始化时就开始轮播了，如果你不需要可以再onCreate方法里设置banner.isAutoPlay(false);
-    banner.isAutoPlay(true);
-}
-
-@Override
-protected void onStop() {
-    super.onStop();
-    //在页面不可见时停止轮播
-    banner.isAutoPlay(false);
-}
 ```
 
 ## 更新说明
+
+#### v1.1.6
+    综合大家的反馈
+ * 将代码的常量全部提出到BannerConfig类里了，以前的代码，大家需要修改下
+ * 有人喜欢xml属性的方式来设置参数，那么增加了几个xml属性
+     app:default_image="默认加载图片"
+     app:delay_time="轮播间隔时间"
+     app:is_auto_play="是否自动轮播"
+ * 增加了设置glide加载方式的默认加载图片方法
+     app:default_image="默认加载图片"
+ * 重新写了一下demo，方便大家更加容易懂
 
 #### v1.1.5
     感谢<imexception>朋友的反馈
