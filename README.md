@@ -20,7 +20,7 @@
 ```groovy
 dependencies{
     注意！jcenter有一定的延迟，发布版本后比一定马上就能更新下来，这是正常现象
-    compile 'com.youth.banner:banner:1.1.7'  //指定版本
+    compile 'com.youth.banner:banner:1.1.8'  //指定版本
     compile 'com.youth.banner:banner:+' //最新版本
 }
 ```
@@ -101,7 +101,11 @@ protected void onCreate(Bundle savedInstanceState) {
 
 ## 更新说明
 
-
+#### v1.1.8
+    bug修改
+ * 可能的存在的图片拉伸问题，替换为glide的图片加载大小计算
+ * 修改关于非arraylist集合的强转问题。
+ 
 #### v1.1.7
     应<wuzhaohui026>朋友的要求，做出更新
  * 为标题增加设置集合的方法：setBannerTitleList(List<String> titles)

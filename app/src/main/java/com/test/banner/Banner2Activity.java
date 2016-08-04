@@ -11,6 +11,9 @@ import com.bumptech.glide.Glide;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Banner2Activity extends AppCompatActivity {
     private Banner banner;
     @Override
@@ -47,6 +50,7 @@ public class Banner2Activity extends AppCompatActivity {
                         .placeholder(R.mipmap.loading2)
                         .crossFade()
                         .into(view);
+                Log.e("--",url.toString());
             }
         });
         banner.setOnBannerClickListener(new Banner.OnBannerClickListener() {//设置点击事件

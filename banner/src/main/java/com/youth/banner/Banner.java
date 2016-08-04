@@ -53,7 +53,7 @@ public class Banner extends FrameLayout implements ViewPager.OnPageChangeListene
     private boolean isAutoPlay=BannerConfig.IS_AUTO_PLAY;
     private int mIndicatorSelectedResId = R.drawable.gray_radius;
     private int mIndicatorUnselectedResId = R.drawable.white_radius;
-    private int defaultImage = R.drawable.default_image;
+    private int defaultImage = R.drawable.loading;
     private int count;
     private int currentItem;
     private int gravity=-1;
@@ -93,7 +93,7 @@ public class Banner extends FrameLayout implements ViewPager.OnPageChangeListene
         mIndicatorMargin =typedArray.getDimensionPixelSize(R.styleable.Banner_indicator_margin, BannerConfig.PADDING_SIZE);
         mIndicatorSelectedResId =typedArray.getResourceId(R.styleable.Banner_indicator_drawable_selected, R.drawable.gray_radius);
         mIndicatorUnselectedResId =typedArray.getResourceId(R.styleable.Banner_indicator_drawable_unselected, R.drawable.white_radius);
-        defaultImage =typedArray.getResourceId(R.styleable.Banner_default_image, R.drawable.default_image);
+        defaultImage =typedArray.getResourceId(R.styleable.Banner_default_image, defaultImage);
         delayTime =typedArray.getDimensionPixelSize(R.styleable.Banner_delay_time, BannerConfig.TIME);
         isAutoPlay =typedArray.getBoolean(R.styleable.Banner_is_auto_play, BannerConfig.IS_AUTO_PLAY);
         typedArray.recycle();
@@ -124,7 +124,7 @@ public class Banner extends FrameLayout implements ViewPager.OnPageChangeListene
         }
     }
     public void setBannerTitleList(List<String> titles) {
-        setBannerTitle((String[]) titles.toArray());
+        setBannerTitle(titles.toArray(new String[titles.size()]));
     }
     public void setBannerTitle(String[] titles) {
         this.titles=titles;
@@ -198,6 +198,8 @@ public class Banner extends FrameLayout implements ViewPager.OnPageChangeListene
             }else{
                 Glide.with(context)
                         .load(url)
+                        .centerCrop()
+                        .crossFade()
                         .placeholder(defaultImage)
                         .into(iv);
             }
@@ -214,7 +216,6 @@ public class Banner extends FrameLayout implements ViewPager.OnPageChangeListene
         imageViews.clear();
         for (int i = 0; i <= count + 1; i++) {
             ImageView iv = new ImageView(context);
-            iv.setScaleType(ScaleType.CENTER_CROP);
             Object url=null;
             if (i == 0) {
                 url=imagesUrl.get(count - 1);
@@ -229,6 +230,8 @@ public class Banner extends FrameLayout implements ViewPager.OnPageChangeListene
             }else{
                 Glide.with(context)
                         .load(url)
+                        .centerCrop()
+                        .crossFade()
                         .placeholder(defaultImage)
                         .into(iv);
             }
