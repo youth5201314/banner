@@ -20,7 +20,7 @@
 ```groovy
 dependencies{
     注意！jcenter有一定的延迟，发布版本后比一定马上就能更新下来，这是正常现象
-    compile 'com.youth.banner:banner:1.1.8'  //指定版本
+    compile 'com.youth.banner:banner:1.1.9'  //指定版本
     compile 'com.youth.banner:banner:+' //最新版本
 }
 ```
@@ -101,6 +101,11 @@ protected void onCreate(Bundle savedInstanceState) {
 
 ## 更新说明
 
+#### v1.1.9
+    优化更新
+ * 当图片为一张时，禁止轮播
+ * 优化标题初始化速度
+ 
 #### v1.1.8
     bug修改
  * 可能的存在的图片拉伸问题，替换为glide的图片加载大小计算

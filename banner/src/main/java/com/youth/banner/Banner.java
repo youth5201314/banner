@@ -131,6 +131,7 @@ public class Banner extends FrameLayout implements ViewPager.OnPageChangeListene
         if (bannerStyle==BannerConfig.CIRCLE_INDICATOR_TITLE||
                 bannerStyle==BannerConfig.NUM_INDICATOR_TITLE) {
             if (titles != null && titles.length > 0) {
+                bannerTitle.setText(titles[0]);
                 bannerTitle.setVisibility(View.VISIBLE);
                 indicator.setGravity(Gravity.LEFT|Gravity.CENTER_VERTICAL);
             }else{
@@ -273,8 +274,10 @@ public class Banner extends FrameLayout implements ViewPager.OnPageChangeListene
         this.isAutoPlay=isAutoPlay;
     }
     private void startAutoPlay() {
-        handler.removeCallbacks(task);
-        handler.postDelayed(task, delayTime);
+        if (count>1) {
+            handler.removeCallbacks(task);
+            handler.postDelayed(task, delayTime);
+        }
     }
 
     private final Runnable task = new Runnable() {
