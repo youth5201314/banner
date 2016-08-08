@@ -2,12 +2,9 @@ package com.test.banner;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 
@@ -23,9 +20,11 @@ public class BannerActivity extends AppCompatActivity {
         Banner banner = (Banner) findViewById(R.id.banner1);
         switch (position){
             case 0:
+                //设置样式 默认样式
+                banner.setBannerStyle(BannerConfig.NOT_INDICATOR);
                 break;
             case 1:
-                //设置样式 显示圆形指示器
+                //显示圆形指示器
                 banner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR);
                 break;
             case 2:

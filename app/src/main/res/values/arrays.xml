@@ -1,20 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <array name="url">
+        <item>http://img.zcool.cn/community/0192a557a352ef0000012e7ed104e4.jpg</item>
         <item>http://img.zcool.cn/community/01ae5656e1427f6ac72531cb72bac5.jpg</item>
         <item>http://img.zcool.cn/community/0166c756e1427432f875520f7cc838.jpg</item>
         <item>http://img.zcool.cn/community/018fdb56e1428632f875520f7b67cb.jpg</item>
         <item>http://img.zcool.cn/community/01c8dc56e1428e6ac72531cbaa5f2c.jpg</item>
-        <item>http://img.zcool.cn/community/01fda356640b706ac725b2c8b99b08.jpg</item>
         <item>http://img.zcool.cn/community/01fd2756e142716ac72531cbf8bbbf.jpg</item>
         <item>http://img.zcool.cn/community/0114a856640b6d32f87545731c076a.jpg</item>
     </array>
+    <array name="url2">
+        <item>http://img.zcool.cn/community/01b72057a7e0790000018c1bf4fce0.png</item>
+        <item>http://img.zcool.cn/community/01fca557a7f5f90000012e7e9feea8.jpg</item>
+        <item>http://img.zcool.cn/community/01996b57a7f6020000018c1bedef97.jpg</item>
+        <item>http://img.zcool.cn/community/01700557a7f42f0000018c1bd6eb23.jpg</item>
+    </array>
     <array name="title">
+        <item>51巅峰钜惠</item>
         <item>十大星级品牌联盟，全场2折起</item>
         <item>生命不是要超越别人，而是要超越自己。</item>
         <item>己所不欲，勿施于人。——孔子</item>
         <item>嗨购5折不要停</item>
-        <item>失败是成功之母!</item>
         <item>以诚感人者，人亦诚而应。</item>
         <item>习惯改变命运，细节铸就终身。</item>
     </array>

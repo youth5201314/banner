@@ -7,8 +7,10 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -43,7 +45,7 @@ public class Banner extends FrameLayout implements ViewPager.OnPageChangeListene
     public static final int CENTER=6;
     @Deprecated
     public static final int RIGHT=7;
-    
+
     public String tag="banner";
     private int mIndicatorMargin = BannerConfig.PADDING_SIZE;
     private int mIndicatorWidth = BannerConfig.INDICATOR_SIZE;
@@ -57,6 +59,7 @@ public class Banner extends FrameLayout implements ViewPager.OnPageChangeListene
     private int count;
     private int currentItem;
     private int gravity=-1;
+    private int lastPosition=1;
     private List<ImageView> imageViews;
     private List<ImageView> indicatorImages;
     private Context context;
@@ -67,7 +70,7 @@ public class Banner extends FrameLayout implements ViewPager.OnPageChangeListene
     private OnLoadImageListener imageListener;
     private String[] titles;
     private TextView bannerTitle , numIndicator;
-    private int lastPosition=1;
+    private ViewPager.OnPageChangeListener mOnPageChangeListener;
 
     public Banner(Context context) {
         this(context, null);
@@ -184,7 +187,7 @@ public class Banner extends FrameLayout implements ViewPager.OnPageChangeListene
         imageViews.clear();
         for (int i = 0; i <= count + 1; i++) {
             ImageView iv = new ImageView(context);
-            iv.setScaleType(ScaleType.CENTER_CROP);
+            iv.setScaleType(ScaleType.FIT_XY);
             Object url=null;
             if (i == 0) {
                 url=imagesUrl[count - 1];
@@ -217,6 +220,7 @@ public class Banner extends FrameLayout implements ViewPager.OnPageChangeListene
         imageViews.clear();
         for (int i = 0; i <= count + 1; i++) {
             ImageView iv = new ImageView(context);
+            iv.setScaleType(ScaleType.FIT_XY);
             Object url=null;
             if (i == 0) {
                 url=imagesUrl.get(count - 1);
@@ -296,6 +300,24 @@ public class Banner extends FrameLayout implements ViewPager.OnPageChangeListene
         }
     };
 
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        Log.i(tag,ev.getAction()+"--"+isAutoPlay);
+        if (count>1) {
+            switch (ev.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    isAutoPlay(false);
+                    Log.i(tag,"--"+isAutoPlay);
+                    break;
+                case MotionEvent.ACTION_UP:
+                case MotionEvent.ACTION_CANCEL:
+                    isAutoPlay(true);
+                    Log.i(tag,"--"+isAutoPlay);
+                    break;
+            }
+        }
+        return super.dispatchTouchEvent(ev);
+    }
 
     class BannerPagerAdapter extends PagerAdapter {
 
@@ -350,14 +372,23 @@ public class Banner extends FrameLayout implements ViewPager.OnPageChangeListene
                 isAutoPlay = true;
                 break;
         }
+        if (mOnPageChangeListener != null) {
+            mOnPageChangeListener.onPageScrollStateChanged(state);
+        }
     }
 
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+        if (mOnPageChangeListener != null) {
+            mOnPageChangeListener.onPageScrolled(position, positionOffset, positionOffsetPixels);
+        }
     }
 
     @Override
     public void onPageSelected(int position) {
+        if (mOnPageChangeListener != null) {
+            mOnPageChangeListener.onPageSelected(position);
+        }
         indicatorImages.get((lastPosition - 1+count)%count).setImageResource(mIndicatorUnselectedResId);
         indicatorImages.get((position - 1+count)%count).setImageResource(mIndicatorSelectedResId);
         lastPosition=position;
@@ -395,7 +426,9 @@ public class Banner extends FrameLayout implements ViewPager.OnPageChangeListene
     public void setOnBannerImageListener(OnLoadImageListener imageListener) {
         this.imageListener = imageListener;
     }
-
+    public void setOnPageChangeListener(ViewPager.OnPageChangeListener onPageChangeListener) {
+        mOnPageChangeListener = onPageChangeListener;
+    }
     public interface OnBannerClickListener {
         void OnBannerClick(View view, int position);
     }

@@ -20,7 +20,7 @@
 ```groovy
 dependencies{
     注意！jcenter有一定的延迟，发布版本后比一定马上就能更新下来，这是正常现象
-    compile 'com.youth.banner:banner:1.1.9'  //指定版本
+    compile 'com.youth.banner:banner:1.2.0'  //指定版本
     compile 'com.youth.banner:banner:+' //最新版本
 }
 ```
@@ -52,6 +52,7 @@ compile project(':banner')
 |setImages(Object[]/List<?> imagesUrl,OnLoadImageListener listener)| 设置轮播图片，并且自定义图片加载方式
 |setOnBannerClickListener(this)|设置点击事件，下标是从1开始
 |setOnBannerImageListener(this)|设置图片加载事件，可以自定义图片加载方式
+|setOnPageChangeListener(this)|viewpager的滑动监听
 
 ##使用步骤 \* 更多用法请下载demo
 
@@ -101,6 +102,14 @@ protected void onCreate(Bundle savedInstanceState) {
 
 ## 更新说明
 
+#### v1.2.0
+    优化更新
+ * 修复小图片每次轮播被放大的问题
+ * 开放了viewpager的滑动事件setOnPageChangeListener()
+ * 增加触摸轮播图时暂停轮播，离开时继续轮播
+ * 增加demo代码解释，关于刷新下标越界问题这个不存在，不懂的请看demo，
+    不要一出问题就认为是banner的错，看看自己的用法是不是出来问题。
+ 
 #### v1.1.9
     优化更新
  * 当图片为一张时，禁止轮播

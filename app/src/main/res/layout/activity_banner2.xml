@@ -1,17 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:orientation="vertical">
+
     <com.youth.banner.Banner
         android:id="@+id/banner2"
         android:layout_width="match_parent"
         android:layout_height="200dp"
         app:default_image="@mipmap/loading2"
-        app:indicator_width="8dp"
+        app:indicator_drawable_selected="@drawable/selected_radius"
+        app:indicator_drawable_unselected="@drawable/unselected_radius"
         app:indicator_height="8dp"
         app:indicator_margin="5dp"
-        app:indicator_drawable_unselected="@drawable/unselected_radius"
-        app:indicator_drawable_selected="@drawable/selected_radius"/>
-</RelativeLayout>
+        app:indicator_width="8dp" />
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="刷新"/>
+</LinearLayout>
