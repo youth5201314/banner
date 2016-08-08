@@ -70,6 +70,7 @@ public class Banner extends FrameLayout implements ViewPager.OnPageChangeListene
     private OnLoadImageListener imageListener;
     private String[] titles;
     private TextView bannerTitle , numIndicator;
+    private BannerPagerAdapter adapter;
     private ViewPager.OnPageChangeListener mOnPageChangeListener;
 
     public Banner(Context context) {
@@ -265,7 +266,12 @@ public class Banner extends FrameLayout implements ViewPager.OnPageChangeListene
 
     private void setData() {
         currentItem = 1;
-        viewPager.setAdapter(new BannerPagerAdapter());
+        if (adapter==null) {
+            adapter = new BannerPagerAdapter();
+            viewPager.setAdapter(adapter);
+        }else{
+            adapter.notifyDataSetChanged();
+        }
         viewPager.setFocusable(true);
         viewPager.setCurrentItem(1);
         viewPager.addOnPageChangeListener(this);
