@@ -55,7 +55,7 @@ public class Banner extends FrameLayout implements ViewPager.OnPageChangeListene
     private boolean isAutoPlay=BannerConfig.IS_AUTO_PLAY;
     private int mIndicatorSelectedResId = R.drawable.gray_radius;
     private int mIndicatorUnselectedResId = R.drawable.white_radius;
-    private int defaultImage = R.drawable.loading;
+    private int defaultImage=-1;
     private int count;
     private int currentItem;
     private int gravity=-1;
@@ -110,6 +110,9 @@ public class Banner extends FrameLayout implements ViewPager.OnPageChangeListene
         bannerTitle = (TextView) view.findViewById(R.id.bannerTitle);
         numIndicator = (TextView) view.findViewById(R.id.numIndicator);
         handleTypedArray(context, attrs);
+    }
+    public void isAutoPlay(boolean isAutoPlay) {
+        this.isAutoPlay=isAutoPlay;
     }
     public void setDelayTime(int delayTime) {
         this.delayTime=delayTime;
@@ -183,9 +186,15 @@ public class Banner extends FrameLayout implements ViewPager.OnPageChangeListene
             Log.e(tag,"Please set the images data.");
             return;
         }
-        count = imagesUrl.length;
-        createIndicator();
         imageViews.clear();
+        count = imagesUrl.length;
+        if (bannerStyle==BannerConfig.CIRCLE_INDICATOR||
+                bannerStyle==BannerConfig.CIRCLE_INDICATOR_TITLE) {
+            createIndicator();
+        }else if (bannerStyle==BannerConfig.NUM_INDICATOR||
+                bannerStyle==BannerConfig.NUM_INDICATOR_TITLE){
+            numIndicator.setText("1/"+count);
+        }
         for (int i = 0; i <= count + 1; i++) {
             ImageView iv = new ImageView(context);
             iv.setScaleType(ScaleType.FIT_XY);
@@ -201,12 +210,19 @@ public class Banner extends FrameLayout implements ViewPager.OnPageChangeListene
             if(imageListener!=null){
                 imageListener.OnLoadImage(iv,url);
             }else{
-                Glide.with(context)
+                if (defaultImage!=-1)
+                    Glide.with(context)
                         .load(url)
                         .centerCrop()
                         .crossFade()
-                        .placeholder(defaultImage)
                         .into(iv);
+                else
+                    Glide.with(context)
+                            .load(url)
+                            .centerCrop()
+                            .crossFade()
+                            .placeholder(defaultImage)
+                            .into(iv);
             }
         }
         setData();
@@ -216,9 +232,15 @@ public class Banner extends FrameLayout implements ViewPager.OnPageChangeListene
             Log.e(tag,"Please set the images data.");
             return;
         }
-        count = imagesUrl.size();
-        createIndicator();
         imageViews.clear();
+        count = imagesUrl.size();
+        if (bannerStyle==BannerConfig.CIRCLE_INDICATOR||
+                bannerStyle==BannerConfig.CIRCLE_INDICATOR_TITLE) {
+            createIndicator();
+        }else if (bannerStyle==BannerConfig.NUM_INDICATOR||
+                bannerStyle==BannerConfig.NUM_INDICATOR_TITLE){
+            numIndicator.setText("1/"+count);
+        }
         for (int i = 0; i <= count + 1; i++) {
             ImageView iv = new ImageView(context);
             iv.setScaleType(ScaleType.FIT_XY);
@@ -234,12 +256,19 @@ public class Banner extends FrameLayout implements ViewPager.OnPageChangeListene
             if(imageListener!=null){
                 imageListener.OnLoadImage(iv,url);
             }else{
-                Glide.with(context)
-                        .load(url)
-                        .centerCrop()
-                        .crossFade()
-                        .placeholder(defaultImage)
-                        .into(iv);
+                if (defaultImage!=-1)
+                    Glide.with(context)
+                            .load(url)
+                            .centerCrop()
+                            .crossFade()
+                            .into(iv);
+                else
+                    Glide.with(context)
+                            .load(url)
+                            .centerCrop()
+                            .crossFade()
+                            .placeholder(defaultImage)
+                            .into(iv);
             }
         }
         setData();
@@ -280,9 +309,7 @@ public class Banner extends FrameLayout implements ViewPager.OnPageChangeListene
         if (isAutoPlay)
             startAutoPlay();
     }
-    public void isAutoPlay(boolean isAutoPlay) {
-        this.isAutoPlay=isAutoPlay;
-    }
+
     private void startAutoPlay() {
         if (count>1) {
             handler.removeCallbacks(task);
@@ -395,9 +422,12 @@ public class Banner extends FrameLayout implements ViewPager.OnPageChangeListene
         if (mOnPageChangeListener != null) {
             mOnPageChangeListener.onPageSelected(position);
         }
-        indicatorImages.get((lastPosition - 1+count)%count).setImageResource(mIndicatorUnselectedResId);
-        indicatorImages.get((position - 1+count)%count).setImageResource(mIndicatorSelectedResId);
-        lastPosition=position;
+        if (bannerStyle==BannerConfig.CIRCLE_INDICATOR||
+                bannerStyle==BannerConfig.CIRCLE_INDICATOR_TITLE) {
+            indicatorImages.get((lastPosition - 1 + count) % count).setImageResource(mIndicatorUnselectedResId);
+            indicatorImages.get((position - 1 + count) % count).setImageResource(mIndicatorSelectedResId);
+            lastPosition = position;
+        }
         if (position==0) position=1;
         switch (bannerStyle){
             case BannerConfig.CIRCLE_INDICATOR:

@@ -20,7 +20,7 @@
 ```groovy
 dependencies{
     注意！jcenter有一定的延迟，发布版本后比一定马上就能更新下来，这是正常现象
-    compile 'com.youth.banner:banner:1.2.0-bate'  //指定版本
+    compile 'com.youth.banner:banner:1.2.1'  //指定版本
     compile 'com.youth.banner:banner:+' //最新版本
 }
 ```
@@ -101,6 +101,11 @@ protected void onCreate(Bundle savedInstanceState) {
 ```
 
 ## 更新说明
+
+#### v1.2.1
+    优化更新
+ * 修复NUM_INDICATOR和NUM_INDICATOR_TITLE模式下，没有轮播初始化为“1/1”的情况
+ * 将图片加载默认图片取消，开发者可根据需要设置
 
 #### v1.2.0
     优化更新
