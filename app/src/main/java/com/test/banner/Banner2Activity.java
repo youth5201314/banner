@@ -30,11 +30,9 @@ public class Banner2Activity extends AppCompatActivity {
         Button button= (Button) findViewById(R.id.button);
         banner = (Banner) findViewById(R.id.banner2);
         //显示圆形指示器和标题
-        banner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR_TITLE);
+        banner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR_TITLE_INSIDE);
         //设置标题列表
         banner.setBannerTitle(titles);
-        //设置指示器居中
-        banner.setIndicatorGravity(BannerConfig.CENTER);
         //设置轮播间隔时间
         banner.setDelayTime(3000);
         /**

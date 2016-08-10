@@ -64,12 +64,12 @@ public class Banner extends FrameLayout implements ViewPager.OnPageChangeListene
     private List<ImageView> indicatorImages;
     private Context context;
     private ViewPager viewPager;
-    private LinearLayout indicator;
+    private LinearLayout indicator,indicatorInside;
     private Handler handler = new Handler();
     private OnBannerClickListener listener;
     private OnLoadImageListener imageListener;
     private String[] titles;
-    private TextView bannerTitle , numIndicator;
+    private TextView bannerTitle , numIndicatorInside , numIndicator;
     private BannerPagerAdapter adapter;
     private ViewPager.OnPageChangeListener mOnPageChangeListener;
 
@@ -107,8 +107,10 @@ public class Banner extends FrameLayout implements ViewPager.OnPageChangeListene
         View view = LayoutInflater.from(context).inflate(R.layout.banner, this, true);
         viewPager = (ViewPager) view.findViewById(R.id.viewpager);
         indicator = (LinearLayout) view.findViewById(R.id.indicator);
+        indicatorInside = (LinearLayout) view.findViewById(R.id.indicatorInside);
         bannerTitle = (TextView) view.findViewById(R.id.bannerTitle);
         numIndicator = (TextView) view.findViewById(R.id.numIndicator);
+        numIndicatorInside = (TextView) view.findViewById(R.id.numIndicatorInside);
         handleTypedArray(context, attrs);
     }
     public void isAutoPlay(boolean isAutoPlay) {
@@ -136,13 +138,11 @@ public class Banner extends FrameLayout implements ViewPager.OnPageChangeListene
     public void setBannerTitle(String[] titles) {
         this.titles=titles;
         if (bannerStyle==BannerConfig.CIRCLE_INDICATOR_TITLE||
-                bannerStyle==BannerConfig.NUM_INDICATOR_TITLE) {
+                bannerStyle==BannerConfig.NUM_INDICATOR_TITLE||
+                bannerStyle==BannerConfig.CIRCLE_INDICATOR_TITLE_INSIDE) {
             if (titles != null && titles.length > 0) {
                 bannerTitle.setText(titles[0]);
                 bannerTitle.setVisibility(View.VISIBLE);
-                indicator.setGravity(Gravity.LEFT|Gravity.CENTER_VERTICAL);
-            }else{
-                numIndicator.setBackgroundResource(R.drawable.black_background);
             }
         }
     }
@@ -154,18 +154,15 @@ public class Banner extends FrameLayout implements ViewPager.OnPageChangeListene
                 break;
             case BannerConfig.NUM_INDICATOR:
                 numIndicator.setVisibility(View.VISIBLE);
-                numIndicator.setBackgroundResource(R.drawable.black_background);
-                RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                layoutParams.setMargins(0,0,10,10);
-                layoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-                numIndicator.setLayoutParams(layoutParams);
-                numIndicator.setPadding(5,6,5,6);
                 break;
             case BannerConfig.NUM_INDICATOR_TITLE:
-                numIndicator.setVisibility(View.VISIBLE);
+                numIndicatorInside.setVisibility(View.VISIBLE);
                 break;
             case BannerConfig.CIRCLE_INDICATOR_TITLE:
                 indicator.setVisibility(View.VISIBLE);
+                break;
+            case BannerConfig.CIRCLE_INDICATOR_TITLE_INSIDE:
+                indicatorInside.setVisibility(VISIBLE);
                 break;
         }
     }
@@ -189,10 +186,12 @@ public class Banner extends FrameLayout implements ViewPager.OnPageChangeListene
         imageViews.clear();
         count = imagesUrl.length;
         if (bannerStyle==BannerConfig.CIRCLE_INDICATOR||
-                bannerStyle==BannerConfig.CIRCLE_INDICATOR_TITLE) {
+                bannerStyle==BannerConfig.CIRCLE_INDICATOR_TITLE||
+                bannerStyle==BannerConfig.CIRCLE_INDICATOR_TITLE_INSIDE) {
             createIndicator();
-        }else if (bannerStyle==BannerConfig.NUM_INDICATOR||
-                bannerStyle==BannerConfig.NUM_INDICATOR_TITLE){
+        }else if (bannerStyle==BannerConfig.NUM_INDICATOR_TITLE){
+            numIndicatorInside.setText("1/"+count);
+        }else if (bannerStyle==BannerConfig.NUM_INDICATOR){
             numIndicator.setText("1/"+count);
         }
         for (int i = 0; i <= count + 1; i++) {
@@ -211,18 +210,9 @@ public class Banner extends FrameLayout implements ViewPager.OnPageChangeListene
                 imageListener.OnLoadImage(iv,url);
             }else{
                 if (defaultImage!=-1)
-                    Glide.with(context)
-                        .load(url)
-                        .centerCrop()
-                        .crossFade()
-                        .into(iv);
+                    Glide.with(context).load(url).centerCrop().crossFade().into(iv);
                 else
-                    Glide.with(context)
-                            .load(url)
-                            .centerCrop()
-                            .crossFade()
-                            .placeholder(defaultImage)
-                            .into(iv);
+                    Glide.with(context).load(url).centerCrop().crossFade().placeholder(defaultImage).into(iv);
             }
         }
         setData();
@@ -235,10 +225,12 @@ public class Banner extends FrameLayout implements ViewPager.OnPageChangeListene
         imageViews.clear();
         count = imagesUrl.size();
         if (bannerStyle==BannerConfig.CIRCLE_INDICATOR||
-                bannerStyle==BannerConfig.CIRCLE_INDICATOR_TITLE) {
+                bannerStyle==BannerConfig.CIRCLE_INDICATOR_TITLE||
+                bannerStyle==BannerConfig.CIRCLE_INDICATOR_TITLE_INSIDE) {
             createIndicator();
-        }else if (bannerStyle==BannerConfig.NUM_INDICATOR||
-                bannerStyle==BannerConfig.NUM_INDICATOR_TITLE){
+        }else if (bannerStyle==BannerConfig.NUM_INDICATOR_TITLE){
+            numIndicatorInside.setText("1/"+count);
+        }else if (bannerStyle==BannerConfig.NUM_INDICATOR){
             numIndicator.setText("1/"+count);
         }
         for (int i = 0; i <= count + 1; i++) {
@@ -257,18 +249,9 @@ public class Banner extends FrameLayout implements ViewPager.OnPageChangeListene
                 imageListener.OnLoadImage(iv,url);
             }else{
                 if (defaultImage!=-1)
-                    Glide.with(context)
-                            .load(url)
-                            .centerCrop()
-                            .crossFade()
-                            .into(iv);
+                    Glide.with(context).load(url).centerCrop().crossFade().into(iv);
                 else
-                    Glide.with(context)
-                            .load(url)
-                            .centerCrop()
-                            .crossFade()
-                            .placeholder(defaultImage)
-                            .into(iv);
+                    Glide.with(context).load(url).centerCrop().crossFade().placeholder(defaultImage).into(iv);
             }
         }
         setData();
@@ -276,6 +259,7 @@ public class Banner extends FrameLayout implements ViewPager.OnPageChangeListene
     private void createIndicator() {
         indicatorImages.clear();
         indicator.removeAllViews();
+        indicatorInside.removeAllViews();
         for (int i = 0; i < count; i++) {
             ImageView imageView = new ImageView(context);
             imageView.setScaleType(ScaleType.CENTER_CROP);
@@ -287,8 +271,12 @@ public class Banner extends FrameLayout implements ViewPager.OnPageChangeListene
             }else{
                 imageView.setImageResource(mIndicatorUnselectedResId);
             }
-            indicator.addView(imageView, params);
             indicatorImages.add(imageView);
+            if (bannerStyle==BannerConfig.CIRCLE_INDICATOR||
+                    bannerStyle==BannerConfig.CIRCLE_INDICATOR_TITLE)
+                indicator.addView(imageView, params);
+            else if(bannerStyle==BannerConfig.CIRCLE_INDICATOR_TITLE_INSIDE)
+                indicatorInside.addView(imageView, params);
         }
     }
 
@@ -423,7 +411,8 @@ public class Banner extends FrameLayout implements ViewPager.OnPageChangeListene
             mOnPageChangeListener.onPageSelected(position);
         }
         if (bannerStyle==BannerConfig.CIRCLE_INDICATOR||
-                bannerStyle==BannerConfig.CIRCLE_INDICATOR_TITLE) {
+                bannerStyle==BannerConfig.CIRCLE_INDICATOR_TITLE||
+                bannerStyle==BannerConfig.CIRCLE_INDICATOR_TITLE_INSIDE) {
             indicatorImages.get((lastPosition - 1 + count) % count).setImageResource(mIndicatorUnselectedResId);
             indicatorImages.get((position - 1 + count) % count).setImageResource(mIndicatorSelectedResId);
             lastPosition = position;
@@ -438,13 +427,19 @@ public class Banner extends FrameLayout implements ViewPager.OnPageChangeListene
                 break;
             case BannerConfig.NUM_INDICATOR_TITLE:
                 if (position>count) position=count;
-                numIndicator.setText(position+"/"+count);
+                numIndicatorInside.setText(position+"/"+count);
                 if (titles!=null&&titles.length>0){
                     if (position>titles.length) position=titles.length;
                     bannerTitle.setText(titles[position-1]);
                 }
                 break;
             case BannerConfig.CIRCLE_INDICATOR_TITLE:
+                if (titles!=null&&titles.length>0){
+                    if (position>titles.length) position=titles.length;
+                    bannerTitle.setText(titles[position-1]);
+                }
+                break;
+            case BannerConfig.CIRCLE_INDICATOR_TITLE_INSIDE:
                 if (titles!=null&&titles.length>0){
                     if (position>titles.length) position=titles.length;
                     bannerTitle.setText(titles[position-1]);

@@ -17,8 +17,9 @@ import com.youth.banner.Banner;
 
 
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
-    private String[] des = {"默认模式", "显示圆形指示器", "显示数字指示器", "显示数字指示器和标题",
-            "显示圆形指示器和标题", "设置指示器位置", "高级api自定义调用"};
+    private String[] des = {"默认模式", "显示圆形指示器", "显示数字指示器",
+            "显示数字指示器和标题","显示圆形指示器和标题（垂直显示）", "显示圆形指示器和标题（水平显示）",
+            "设置指示器位置", "高级api自定义调用"};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

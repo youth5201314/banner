@@ -9,7 +9,8 @@
 |指示器模式|![效果示例](https://raw.githubusercontent.com/youth5201314/banner/master/image/1.png)
 |数字模式|![效果示例](https://raw.githubusercontent.com/youth5201314/banner/master/image/2.png)
 |数字加标题模式|![效果示例](https://raw.githubusercontent.com/youth5201314/banner/master/image/3.png)
-|指示器加标题模式|![效果示例](https://raw.githubusercontent.com/youth5201314/banner/master/image/4.png)
+|指示器加标题模式<br>垂直显示|![效果示例](https://raw.githubusercontent.com/youth5201314/banner/master/image/4.png)
+|指示器加标题模式<br>水平显示|![效果示例](https://raw.githubusercontent.com/youth5201314/banner/master/image/5.png)
 
 ### 联系方式  <a target="_blank" href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=KBkYGhAfGhEYEB5oWVkGS0dF" style="text-decoration:none;"><img src="http://rescdn.qqmail.com/zh_CN/htmledition/images/function/qm_open/ico_mailme_11.png"/></a>
 ![效果示例](https://raw.githubusercontent.com/youth5201314/banner/master/image/Android技术交流群二维码.png)
@@ -20,7 +21,7 @@
 ```groovy
 dependencies{
     注意！jcenter有一定的延迟，发布版本后比一定马上就能更新下来，这是正常现象
-    compile 'com.youth.banner:banner:1.2.1'  //指定版本
+    compile 'com.youth.banner:banner:1.2.2'  //指定版本
     compile 'com.youth.banner:banner:+' //最新版本
 }
 ```
@@ -35,7 +36,8 @@ compile project(':banner')
 |BannerConfig.CIRCLE_INDICATOR| 显示圆形指示器
 |BannerConfig.NUM_INDICATOR| 显示数字指示器
 |BannerConfig.NUM_INDICATOR_TITLE| 显示数字指示器和标题
-|BannerConfig.CIRCLE_INDICATOR_TITLE| 显示圆形指示器和标题
+|BannerConfig.CIRCLE_INDICATOR_TITLE| 显示圆形指示器和标题（垂直显示）
+|BannerConfig.CIRCLE_INDICATOR_TITLE_INSIDE| 显示圆形指示器和标题（水平显示）
 |BannerConfig.LEFT| 指示器居左
 |BannerConfig.CENTER| 指示器居中
 |BannerConfig.RIGHT| 指示器居右
@@ -102,6 +104,11 @@ protected void onCreate(Bundle savedInstanceState) {
 
 ## 更新说明
 
+#### v1.2.2
+    优化更新
+ * 增加BannerConfig.CIRCLE_INDICATOR_TITLE_INSIDE显示圆形指示器和标题（水平显示）
+ * 修改数字指示器时，变形问题。
+ 
 #### v1.2.1
     优化更新
  * 修复NUM_INDICATOR和NUM_INDICATOR_TITLE模式下，没有轮播初始化为“1/1”的情况

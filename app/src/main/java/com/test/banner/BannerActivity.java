@@ -44,9 +44,15 @@ public class BannerActivity extends AppCompatActivity {
                 banner.setBannerTitle(titles);
                 break;
             case 5:
+                //显示标题内圆形指示器和标题
+                banner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR_TITLE_INSIDE);
+                //记得设置标题列表哦
+                banner.setBannerTitle(titles);
+                break;
+            case 6:
                 //设置指示器居中（CIRCLE_INDICATOR或者CIRCLE_INDICATOR_TITLE模式下）
                 banner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR);
-                banner.setIndicatorGravity(BannerConfig.CENTER);
+                banner.setIndicatorGravity(BannerConfig.RIGHT);
                 break;
         }
         banner.setImages(images);//可以选择设置图片网址，或者资源文件，默认用Glide加载
