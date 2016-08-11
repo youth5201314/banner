@@ -9,17 +9,35 @@
     <com.youth.banner.Banner
         android:id="@+id/banner2"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="250dp"
         app:default_image="@mipmap/loading2"
         app:indicator_drawable_selected="@drawable/selected_radius"
         app:indicator_drawable_unselected="@drawable/unselected_radius"
         app:indicator_height="8dp"
         app:indicator_margin="5dp"
         app:indicator_width="8dp" />
-    <Button
-        android:id="@+id/button"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="刷新"/>
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/refresh"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="刷新"/>
+        <Button
+            android:id="@+id/stop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="暂停"/>
+        <Button
+            android:id="@+id/start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="开始"/>
+    </LinearLayout>
+
 </LinearLayout>

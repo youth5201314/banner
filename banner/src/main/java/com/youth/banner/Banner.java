@@ -56,7 +56,7 @@ public class Banner extends FrameLayout implements ViewPager.OnPageChangeListene
     private int mIndicatorSelectedResId = R.drawable.gray_radius;
     private int mIndicatorUnselectedResId = R.drawable.white_radius;
     private int defaultImage=-1;
-    private int count;
+    private int count=0;
     private int currentItem;
     private int gravity=-1;
     private int lastPosition=1;
@@ -115,6 +115,7 @@ public class Banner extends FrameLayout implements ViewPager.OnPageChangeListene
     }
     public void isAutoPlay(boolean isAutoPlay) {
         this.isAutoPlay=isAutoPlay;
+        startAutoPlay();
     }
     public void setDelayTime(int delayTime) {
         this.delayTime=delayTime;
@@ -178,13 +179,8 @@ public class Banner extends FrameLayout implements ViewPager.OnPageChangeListene
     public void setImages(List<?> imagesUrl,OnLoadImageListener imageListener) {
         setImageList(imagesUrl, imageListener);
     }
-    private void setImageArray(Object[] imagesUrl, OnLoadImageListener imageListener) {
-        if (imagesUrl==null||imagesUrl.length<=0) {
-            Log.e(tag,"Please set the images data.");
-            return;
-        }
+    private void initImages(){
         imageViews.clear();
-        count = imagesUrl.length;
         if (bannerStyle==BannerConfig.CIRCLE_INDICATOR||
                 bannerStyle==BannerConfig.CIRCLE_INDICATOR_TITLE||
                 bannerStyle==BannerConfig.CIRCLE_INDICATOR_TITLE_INSIDE) {
@@ -194,6 +190,14 @@ public class Banner extends FrameLayout implements ViewPager.OnPageChangeListene
         }else if (bannerStyle==BannerConfig.NUM_INDICATOR){
             numIndicator.setText("1/"+count);
         }
+    }
+    private void setImageArray(Object[] imagesUrl, OnLoadImageListener imageListener) {
+        if (imagesUrl==null||imagesUrl.length<=0) {
+            Log.e(tag,"Please set the images data.");
+            return;
+        }
+        count = imagesUrl.length;
+        initImages();
         for (int i = 0; i <= count + 1; i++) {
             ImageView iv = new ImageView(context);
             iv.setScaleType(ScaleType.FIT_XY);
@@ -222,17 +226,8 @@ public class Banner extends FrameLayout implements ViewPager.OnPageChangeListene
             Log.e(tag,"Please set the images data.");
             return;
         }
-        imageViews.clear();
         count = imagesUrl.size();
-        if (bannerStyle==BannerConfig.CIRCLE_INDICATOR||
-                bannerStyle==BannerConfig.CIRCLE_INDICATOR_TITLE||
-                bannerStyle==BannerConfig.CIRCLE_INDICATOR_TITLE_INSIDE) {
-            createIndicator();
-        }else if (bannerStyle==BannerConfig.NUM_INDICATOR_TITLE){
-            numIndicatorInside.setText("1/"+count);
-        }else if (bannerStyle==BannerConfig.NUM_INDICATOR){
-            numIndicator.setText("1/"+count);
-        }
+        initImages();
         for (int i = 0; i <= count + 1; i++) {
             ImageView iv = new ImageView(context);
             iv.setScaleType(ScaleType.FIT_XY);
@@ -294,12 +289,11 @@ public class Banner extends FrameLayout implements ViewPager.OnPageChangeListene
         viewPager.addOnPageChangeListener(this);
         if (gravity!=-1)
             indicator.setGravity(gravity);
-        if (isAutoPlay)
-            startAutoPlay();
+        startAutoPlay();
     }
 
     private void startAutoPlay() {
-        if (count>1) {
+        if (isAutoPlay) {
             handler.removeCallbacks(task);
             handler.postDelayed(task, delayTime);
         }
@@ -310,14 +304,16 @@ public class Banner extends FrameLayout implements ViewPager.OnPageChangeListene
         @Override
         public void run() {
             if (isAutoPlay) {
-                currentItem = currentItem % (count + 1) + 1;
-                if (currentItem == 1) {
-                    viewPager.setCurrentItem(currentItem, false);
-                } else {
-                    viewPager.setCurrentItem(currentItem);
+                if (count>1) {
+                    currentItem = currentItem % (count + 1) + 1;
+                    if (currentItem == 1) {
+                        viewPager.setCurrentItem(currentItem, false);
+                    } else {
+                        viewPager.setCurrentItem(currentItem);
+                    }
+                    handler.postDelayed(task, delayTime);
                 }
             }
-            handler.postDelayed(task, delayTime);
         }
     };
 

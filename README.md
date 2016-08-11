@@ -21,7 +21,7 @@
 ```groovy
 dependencies{
     注意！jcenter有一定的延迟，发布版本后比一定马上就能更新下来，这是正常现象
-    compile 'com.youth.banner:banner:1.2.2'  //指定版本
+    compile 'com.youth.banner:banner:1.2.3'  //指定版本
     compile 'com.youth.banner:banner:+' //最新版本
 }
 ```
@@ -104,6 +104,11 @@ protected void onCreate(Bundle savedInstanceState) {
 
 ## 更新说明
 
+#### v1.2.3
+    优化更新
+ * 修复刷新banner从多张到1张时，还出现滑动的问题
+ * demo增加功能
+    
 #### v1.2.2
     优化更新
  * 增加BannerConfig.CIRCLE_INDICATOR_TITLE_INSIDE显示圆形指示器和标题（水平显示）

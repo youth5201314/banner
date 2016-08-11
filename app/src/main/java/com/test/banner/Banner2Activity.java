@@ -16,19 +16,28 @@ import com.youth.banner.BannerConfig;
 import java.util.Arrays;
 import java.util.List;
 
-public class Banner2Activity extends AppCompatActivity {
+public class Banner2Activity extends AppCompatActivity implements View.OnClickListener {
     private Banner banner;
+    private Button refresh,stop,start;
     boolean flag=true;
+    String[] images,images2,titles;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_banner2);
         getSupportActionBar().setTitle(getIntent().getStringExtra("des"));
-        final String[] images= getResources().getStringArray(R.array.url);
-        final String[] images2= getResources().getStringArray(R.array.url2);
-        final String[] titles= getResources().getStringArray(R.array.title);
-        Button button= (Button) findViewById(R.id.button);
+        images= getResources().getStringArray(R.array.url);
+        images2= getResources().getStringArray(R.array.url2);
+        titles= getResources().getStringArray(R.array.title);
+        refresh= (Button) findViewById(R.id.refresh);
+        start= (Button) findViewById(R.id.start);
+        stop= (Button) findViewById(R.id.stop);
         banner = (Banner) findViewById(R.id.banner2);
+        refresh.setOnClickListener(this);
+        start.setOnClickListener(this);
+        stop.setOnClickListener(this);
+        
+        
         //显示圆形指示器和标题
         banner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR_TITLE_INSIDE);
         //设置标题列表
@@ -63,9 +72,12 @@ public class Banner2Activity extends AppCompatActivity {
         });
         //开放了viewpager的滑动事件
         //banner.setOnPageChangeListener(this);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+    }
+    
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.refresh:
                 if(flag) {
                     flag=false;
                     banner.setImages(images2);
@@ -73,10 +85,16 @@ public class Banner2Activity extends AppCompatActivity {
                     flag=true;
                     banner.setImages(images);
                 }
-            }
-        });
+                break;
+            case R.id.start:
+                banner.isAutoPlay(true);
+                break;
+            case R.id.stop:
+                banner.isAutoPlay(false);
+                break;
+        }
     }
-
+    
     //如果你需要考虑更好的体验，可以这么操作
     @Override
     protected void onStart() {
@@ -91,4 +109,6 @@ public class Banner2Activity extends AppCompatActivity {
         Log.i("--","onStop");
         banner.isAutoPlay(false);
     }
+
+    
 }

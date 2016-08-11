@@ -19,7 +19,7 @@ import com.youth.banner.Banner;
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
     private String[] des = {"默认模式", "显示圆形指示器", "显示数字指示器",
             "显示数字指示器和标题","显示圆形指示器和标题（垂直显示）", "显示圆形指示器和标题（水平显示）",
-            "设置指示器位置", "高级api自定义调用"};
+            "设置指示器位置", "自定义指示器样式","高级api自定义调用"};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,6 +38,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         if (position == des.length - 1) {
             startActivity(new Intent(this, Banner2Activity.class)
+                    .putExtra("des", des[position]));
+        } else if (position == des.length - 2) {
+            startActivity(new Intent(this, Banner3Activity.class)
                     .putExtra("des", des[position]));
         } else {
             startActivity(new Intent(this, BannerActivity.class)
