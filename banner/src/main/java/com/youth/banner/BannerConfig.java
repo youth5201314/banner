@@ -17,4 +17,9 @@ public class BannerConfig {
     public static final int TIME=2000;
     public static final boolean IS_AUTO_PLAY=true;
 
+    public static final int TITLE_BACKGROUND=-1;
+    public static final int TITLE_HEIGHT=-1;
+    public static final int TITLE_TEXT_COLOR=-1;
+    public static final int TITLE_TEXT_SIZE=-1;
+
 }

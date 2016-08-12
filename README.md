@@ -21,7 +21,7 @@
 ```groovy
 dependencies{
     注意！jcenter有一定的延迟，发布版本后比一定马上就能更新下来，这是正常现象
-    compile 'com.youth.banner:banner:1.2.3'  //指定版本
+    compile 'com.youth.banner:banner:1.2.4'  //指定版本
     compile 'com.youth.banner:banner:+' //最新版本
 }
 ```
@@ -82,7 +82,11 @@ compile project(':banner')
     app:indicator_drawable_selected="指示器选中效果"
     app:indicator_drawable_unselected="指示器未选中效果"
     app:indicator_height="指示器圆形按钮的高度"
-    app:indicator_width="指示器圆形按钮的宽度" />
+    app:indicator_width="指示器圆形按钮的宽度"
+    app:title_background="标题栏的背景色"
+    app:title_height="标题栏高度"
+    app:title_textcolor="标题字体颜色"
+    app:title_textsize="标题字体大小"/>
 ```
 
 #### 2.在Activity或者Fragment中配置Banner 
@@ -104,6 +108,13 @@ protected void onCreate(Bundle savedInstanceState) {
 
 ## 更新说明
 
+#### v1.2.4
+    优化更新
+ * app:title_background="标题栏的背景色"
+ * app:title_height="标题栏高度"
+ * app:title_textcolor="标题字体颜色"
+ * app:title_textsize="标题字体大小"  
+    
 #### v1.2.3
     优化更新
  * 修复刷新banner从多张到1张时，还出现滑动的问题

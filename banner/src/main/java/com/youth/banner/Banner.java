@@ -55,6 +55,10 @@ public class Banner extends FrameLayout implements ViewPager.OnPageChangeListene
     private boolean isAutoPlay=BannerConfig.IS_AUTO_PLAY;
     private int mIndicatorSelectedResId = R.drawable.gray_radius;
     private int mIndicatorUnselectedResId = R.drawable.white_radius;
+    private int titleHeight;
+    private int titleBackground;
+    private int titleTextColor;
+    private int titleTextSize;
     private int defaultImage=-1;
     private int count=0;
     private int currentItem;
@@ -64,7 +68,7 @@ public class Banner extends FrameLayout implements ViewPager.OnPageChangeListene
     private List<ImageView> indicatorImages;
     private Context context;
     private ViewPager viewPager;
-    private LinearLayout indicator,indicatorInside;
+    private LinearLayout indicator,indicatorInside,titleView;
     private Handler handler = new Handler();
     private OnBannerClickListener listener;
     private OnLoadImageListener imageListener;
@@ -100,12 +104,17 @@ public class Banner extends FrameLayout implements ViewPager.OnPageChangeListene
         defaultImage =typedArray.getResourceId(R.styleable.Banner_default_image, defaultImage);
         delayTime =typedArray.getDimensionPixelSize(R.styleable.Banner_delay_time, BannerConfig.TIME);
         isAutoPlay =typedArray.getBoolean(R.styleable.Banner_is_auto_play, BannerConfig.IS_AUTO_PLAY);
+        titleBackground =typedArray.getColor(R.styleable.Banner_title_background, BannerConfig.TITLE_BACKGROUND);
+        titleHeight =typedArray.getDimensionPixelSize(R.styleable.Banner_title_height, BannerConfig.TITLE_HEIGHT);
+        titleTextColor =typedArray.getColor(R.styleable.Banner_title_textcolor, BannerConfig.TITLE_TEXT_COLOR);
+        titleTextSize =typedArray.getDimensionPixelSize(R.styleable.Banner_title_textsize, BannerConfig.TITLE_TEXT_SIZE);
         typedArray.recycle();
     }
     private void initView(Context context, AttributeSet attrs) {
         imageViews.clear();
         View view = LayoutInflater.from(context).inflate(R.layout.banner, this, true);
         viewPager = (ViewPager) view.findViewById(R.id.viewpager);
+        titleView = (LinearLayout) view.findViewById(R.id.titleView);
         indicator = (LinearLayout) view.findViewById(R.id.indicator);
         indicatorInside = (LinearLayout) view.findViewById(R.id.indicatorInside);
         bannerTitle = (TextView) view.findViewById(R.id.bannerTitle);
@@ -113,6 +122,7 @@ public class Banner extends FrameLayout implements ViewPager.OnPageChangeListene
         numIndicatorInside = (TextView) view.findViewById(R.id.numIndicatorInside);
         handleTypedArray(context, attrs);
     }
+
     public void isAutoPlay(boolean isAutoPlay) {
         this.isAutoPlay=isAutoPlay;
         startAutoPlay();
@@ -120,6 +130,7 @@ public class Banner extends FrameLayout implements ViewPager.OnPageChangeListene
     public void setDelayTime(int delayTime) {
         this.delayTime=delayTime;
     }
+
     public void setIndicatorGravity(int type) {
         switch (type){
             case BannerConfig.LEFT:
@@ -141,9 +152,22 @@ public class Banner extends FrameLayout implements ViewPager.OnPageChangeListene
         if (bannerStyle==BannerConfig.CIRCLE_INDICATOR_TITLE||
                 bannerStyle==BannerConfig.NUM_INDICATOR_TITLE||
                 bannerStyle==BannerConfig.CIRCLE_INDICATOR_TITLE_INSIDE) {
+            if (titleBackground!=-1){
+                titleView.setBackgroundColor(titleBackground);
+            }
+            if (titleHeight!=-1){
+                titleView.setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,titleHeight));
+            }
+            if (titleTextColor!=-1){
+                bannerTitle.setTextColor(titleTextColor);
+            }
+            if (titleTextSize!=-1){
+                bannerTitle.setTextSize(titleTextSize);
+            }
             if (titles != null && titles.length > 0) {
                 bannerTitle.setText(titles[0]);
                 bannerTitle.setVisibility(View.VISIBLE);
+                titleView.setVisibility(View.VISIBLE);
             }
         }
     }

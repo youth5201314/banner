@@ -35,52 +35,51 @@
             android:text="1/1"
             android:textColor="#ffffff"
             android:visibility="gone" />
-
-        <TextView
-            android:id="@+id/bannerTitle"
+        <LinearLayout
+            android:id="@+id/titleView"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:layout_alignParentLeft="true"
             android:layout_below="@+id/indicator"
-            android:layout_toLeftOf="@+id/titleIndicator"
+            android:orientation="horizontal"
             android:background="#44000000"
-            android:ellipsize="marquee"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:padding="10dp"
-            android:singleLine="true"
-            android:textColor="#ffffff"
-            android:visibility="gone" />
-
-        <FrameLayout
-            android:id="@+id/titleIndicator"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_below="@+id/indicator"
-            android:background="#44000000"
-            android:visibility="visible">
-
+            android:visibility="gone">
             <TextView
-                android:id="@+id/numIndicatorInside"
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
+                android:id="@+id/bannerTitle"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1000"
+                android:ellipsize="marquee"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:padding="10dp"
                 android:gravity="center_vertical"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:text="1/1"
+                android:singleLine="true"
                 android:textColor="#ffffff"
                 android:visibility="gone" />
 
-            <LinearLayout
-                android:id="@+id/indicatorInside"
+            <FrameLayout
                 android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
+                android:layout_height="match_parent"
                 android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:visibility="gone" />
-        </FrameLayout>
+                android:paddingRight="10dp">
+
+                <TextView
+                    android:id="@+id/numIndicatorInside"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:text="1/1"
+                    android:textColor="#ffffff"
+                    android:visibility="gone" />
+
+                <LinearLayout
+                    android:id="@+id/indicatorInside"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:visibility="gone" />
+            </FrameLayout>
+        </LinearLayout>
     </RelativeLayout>
 </FrameLayout>
