@@ -21,7 +21,7 @@
 ```groovy
 dependencies{
     注意！jcenter有一定的延迟，发布版本后比一定马上就能更新下来，这是正常现象
-    compile 'com.youth.banner:banner:1.2.4'  //指定版本
+    compile 'com.youth.banner:banner:1.2.5'  //指定版本
     compile 'com.youth.banner:banner:+' //最新版本
 }
 ```
@@ -108,6 +108,9 @@ protected void onCreate(Bundle savedInstanceState) {
 
 ## 更新说明
 
+#### v1.2.5
+    修改bug
+ * app:title_height="标题栏高度"，高度过小文字不显示问题
 #### v1.2.4
     优化更新
  * app:title_background="标题栏的背景色"

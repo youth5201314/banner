@@ -51,7 +51,7 @@
                 android:ellipsize="marquee"
                 android:focusable="true"
                 android:focusableInTouchMode="true"
-                android:padding="10dp"
+                android:paddingLeft="10dp"
                 android:gravity="center_vertical"
                 android:singleLine="true"
                 android:textColor="#ffffff"

@@ -17,7 +17,7 @@
         app:indicator_margin="5dp"
         app:indicator_width="8dp"
         app:title_background="#bbF7EB7B"
-        app:title_height="50dp"
+        app:title_height="30dp"
         app:title_textcolor="@color/main_color"
         app:title_textsize="15sp"/>
     <LinearLayout
