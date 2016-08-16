@@ -20,7 +20,6 @@
 ##Gradle
 ```groovy
 dependencies{
-    注意！jcenter有一定的延迟，发布版本后比一定马上就能更新下来，这是正常现象
     compile 'com.youth.banner:banner:1.2.5'  //指定版本
     compile 'com.youth.banner:banner:+' //最新版本
 }
