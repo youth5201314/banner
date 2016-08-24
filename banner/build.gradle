@@ -1,17 +1,17 @@
 apply plugin: 'com.android.library'
 apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'com.jfrog.bintray'
-version = "1.2.6"
+version = "1.2.7"
 
 android {
     compileSdkVersion 23
     buildToolsVersion "23.0.3"
 
     defaultConfig {
-        minSdkVersion 14
+        minSdkVersion 11
         targetSdkVersion 23
-        versionCode 20
-        versionName "1.2.6"
+        versionCode 21
+        versionName "1.2.7"
     }
     buildTypes {
         release {
@@ -26,6 +26,7 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:23.1.1'
     compile 'com.github.bumptech.glide:glide:3.6.1'
+    compile 'com.nineoldandroids:library:2.4.0'
 }
 
 

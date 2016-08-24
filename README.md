@@ -39,6 +39,10 @@ compile project(':banner')
 |BannerConfig.LEFT| 指示器居左
 |BannerConfig.CENTER| 指示器居中
 |BannerConfig.RIGHT| 指示器居右
+|BannerConfig.ZOOMOUT| 放大动画
+|BannerConfig.DEPTH| 层叠动画
+|BannerConfig.ROTATEDOWN| 旋转动画
+
 ##方法
 |方法名|描述
 |---|---|
@@ -52,7 +56,12 @@ compile project(':banner')
 |setImages(Object[]/List<?> imagesUrl,OnLoadImageListener listener)| 设置轮播图片，并且自定义图片加载方式
 |setOnBannerClickListener(this)|设置点击事件，下标是从1开始
 |setOnBannerImageListener(this)|设置图片加载事件，可以自定义图片加载方式
-|setOnPageChangeListener(this)|viewpager的滑动监听
+|setOnPageChangeListener(this)|设置viewpager的滑动监听
+|setBannerAnimation(int type)|设置viewpager的默认动画
+|setPageTransformer(boolean reverseDrawingOrder, ViewPager.PageTransformer transformer)|设置viewpager的自定义动画
+
+### <a href="http://www.springblog.top/2016/08/24/ViewPager%E5%88%87%E6%8D%A2%E5%8A%A8%E7%94%BBPageTransformer%E4%BD%BF%E7%94%A8/" target="_blank"> [ 点击查看 ViewPager的PageTransformer用法 ]
+
 
 ##使用步骤 \* 更多用法请下载demo
 
@@ -106,9 +115,13 @@ protected void onCreate(Bundle savedInstanceState) {
 
 ## 更新说明
 
+#### v1.2.7
+    增加viewpager的切换默认几种动画，和自定义动画方法
+
 #### v1.2.5
     修改bug
  * app:title_height="标题栏高度"，高度过小文字不显示问题
+ 
 #### v1.2.4
     优化更新
  * app:title_background="标题栏的背景色"

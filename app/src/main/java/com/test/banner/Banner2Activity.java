@@ -44,6 +44,8 @@ public class Banner2Activity extends AppCompatActivity implements View.OnClickLi
         banner.setBannerTitle(titles);
         //设置轮播间隔时间
         banner.setDelayTime(3000);
+        //设置动画
+        banner.setBannerAnimation(BannerConfig.ROTATEDOWN);
         /**
          * 可以选择设置图片网址，或者资源文件，默认用Glide加载
          * 如果你想设置默认图片就在xml里设置default_image

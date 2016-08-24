@@ -21,6 +21,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.youth.banner.transformer.DepthPageTransformer;
+import com.youth.banner.transformer.RotateDownPageTransformer;
+import com.youth.banner.transformer.ZoomOutPageTransformer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -146,6 +149,22 @@ public class Banner extends FrameLayout implements ViewPager.OnPageChangeListene
     }
     public void setBannerTitleList(List<String> titles) {
         setBannerTitle(titles.toArray(new String[titles.size()]));
+    }
+    public void setBannerAnimation(int type) {
+        switch (type){
+            case BannerConfig.ZOOMOUT:
+                setPageTransformer(true,new ZoomOutPageTransformer());
+                break;
+            case BannerConfig.DEPTH:
+                setPageTransformer(true,new DepthPageTransformer());
+                break;
+            case BannerConfig.ROTATEDOWN:
+                setPageTransformer(true,new RotateDownPageTransformer());
+                break;
+        }
+    }
+    public void setPageTransformer(boolean reverseDrawingOrder, ViewPager.PageTransformer transformer){
+        viewPager.setPageTransformer(reverseDrawingOrder,transformer);
     }
     public void setBannerTitle(String[] titles) {
         this.titles=titles;
