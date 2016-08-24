@@ -17,8 +17,7 @@ public class RotateDownPageTransformer implements ViewPager.PageTransformer {
             // This page is way off-screen to the left.
             ViewHelper.setRotation(view, 0);
 
-        } else if (position <= 1) // a页滑动至b页 ； a页从 0.0 ~ -1 ；b页从1 ~ 0.0
-        { // [-1,1]
+        } else if (position <= 1) { // [-1,1]
             // Modify the default slide transition to shrink the page as well
             if (position < 0) {
 

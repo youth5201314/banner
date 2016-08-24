@@ -117,6 +117,8 @@ protected void onCreate(Bundle savedInstanceState) {
 
 #### v1.2.7
     增加viewpager的切换默认几种动画，和自定义动画方法
+ * setBannerAnimation(int type)设置viewpager的默认动画
+ * setPageTransformer(boolean reverseDrawingOrder, ViewPager.PageTransformer transformer)设置viewpager的自定义动画
 
 #### v1.2.5
     修改bug
