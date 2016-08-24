@@ -19,7 +19,7 @@
 ##Gradle
 ```groovy
 dependencies{
-    compile 'com.youth.banner:banner:1.2.6'  //指定版本
+    compile 'com.youth.banner:banner:1.2.7'  //指定版本
     compile 'com.youth.banner:banner:+' //最新版本
 }
 ```
