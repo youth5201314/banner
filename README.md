@@ -1,7 +1,8 @@
 # Android图片轮播控件 *如果对你有帮助请star哦！*
 <br>
 现在的绝大数app都有banner界面，实现循环播放多个广告图片和手动滑动循环等功能。因为ViewPager并不支持循环翻页，
-所以要实现循环还得需要自己去动手，我就把项目中的控件剔了出来，希望大家觉得有用。
+所以要实现循环还得需要自己去动手，我就把项目中的控件剔了出来，希望大家觉得有用。目前框架可以进行不同样式、不同动画设置，
+以及完善的api方法能满足大部分的需求了。
 ## 效果图
 |模式|图片
 |---|---|
@@ -19,7 +20,7 @@
 ##Gradle
 ```groovy
 dependencies{
-    compile 'com.youth.banner:banner:1.2.7'  //指定版本
+    compile 'com.youth.banner:banner:1.2.8'  //指定版本
     compile 'com.youth.banner:banner:+' //最新版本
 }
 ```
@@ -28,7 +29,7 @@ dependencies{
 compile project(':banner')
 ```
 ## 常量
-|方法名|描述
+|常量名称|描述
 |---|---|
 |BannerConfig.NOT_INDICATOR| 不显示指示器和标题
 |BannerConfig.CIRCLE_INDICATOR| 显示圆形指示器
@@ -39,9 +40,28 @@ compile project(':banner')
 |BannerConfig.LEFT| 指示器居左
 |BannerConfig.CENTER| 指示器居中
 |BannerConfig.RIGHT| 指示器居右
-|BannerConfig.ZOOMOUT| 放大动画
-|BannerConfig.DEPTH| 层叠动画
-|BannerConfig.ROTATEDOWN| 旋转动画
+
+## 动画常量类
+|常量类名|
+|---|
+|Transformer.Default| 
+|Transformer.Accordion| 
+|Transformer.BackgroundToForeground| 
+|Transformer.ForegroundToBackground| 
+|Transformer.CubeIn| 
+|Transformer.CubeOut| 
+|Transformer.DepthPage| 
+|Transformer.FlipHorizontal| 
+|Transformer.FlipVertical| 
+|Transformer.RotateDown| 
+|Transformer.RotateUp| 
+|Transformer.ScaleInOut| 
+|Transformer.Stack| 
+|Transformer.Tablet| 
+|Transformer.ZoomIn| 
+|Transformer.ZoomOut| 
+|Transformer.ZoomOutSlide| 
+
 
 ##方法
 |方法名|描述
@@ -51,13 +71,14 @@ compile project(':banner')
 |isAutoPlay(boolean isAutoPlay)| 设置是否自动轮播（默认自动）
 |setBannerTitle(String[] titles)| 设置轮播要显示的标题和图片对应（如果不传默认不显示标题）
 |setBannerTitleList(List<String> titles)| 设置轮播要显示的标题和图片对应（如果不传默认不显示标题）
-|setDelayTime(int time)| 设置轮播图片间隔时间（默认为2000）
+|setDelayTime(int time)| 设置轮播图片间隔时间（单位毫秒，默认为2000）
 |setImages(Object[]/List<?> imagesUrl)| 设置轮播图片(所有设置参数方法都放在此方法之前执行)
 |setImages(Object[]/List<?> imagesUrl,OnLoadImageListener listener)| 设置轮播图片，并且自定义图片加载方式
 |setOnBannerClickListener(this)|设置点击事件，下标是从1开始
 |setOnBannerImageListener(this)|设置图片加载事件，可以自定义图片加载方式
 |setOnPageChangeListener(this)|设置viewpager的滑动监听
-|setBannerAnimation(int type)|设置viewpager的默认动画
+|setScrollerTime(int duration)|设置viewpager的切换速度,（单位毫秒，默认800）
+|setBannerAnimation(Class<? extends PageTransformer> transformer)|设置viewpager的默认动画,传值见动画表
 |setPageTransformer(boolean reverseDrawingOrder, ViewPager.PageTransformer transformer)|设置viewpager的自定义动画
 
 ### <a href="http://www.springblog.top/2016/08/24/ViewPager%E5%88%87%E6%8D%A2%E5%8A%A8%E7%94%BBPageTransformer%E4%BD%BF%E7%94%A8/" target="_blank"> [ 点击查看 ViewPager的PageTransformer用法 ]
@@ -113,8 +134,17 @@ protected void onCreate(Bundle savedInstanceState) {
 
 ```
 
+## Thanks
+
+- [ViewPagerTransforms](https://github.com/ToxicBakery/ViewPagerTransforms)
+
 ## 更新说明
 
+#### v1.2.8
+    增加ViewPager的切换速度设置方法，以及动画的重新封装
+ * 整理了17种viewpager过渡动画，并整理为常量方便调用，改变了传参格式，如果不够用可以自行自定义动画
+ * 增加setScrollerTime(int duration)设置viewpager的切换速度,（单位毫秒，默认800）
+ 
 #### v1.2.7
     增加viewpager的切换默认几种动画，和自定义动画方法
  * setBannerAnimation(int type)设置viewpager的默认动画

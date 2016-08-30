@@ -18,29 +18,19 @@ package com.youth.banner.transformer;
 
 import android.view.View;
 
-public class DepthPageTransformer extends ABaseTransformer {
-
-	private static final float MIN_SCALE = 0.75f;
+public class ZoomOutTranformer extends ABaseTransformer {
 
 	@Override
 	protected void onTransform(View view, float position) {
-		if (position <= 0f) {
-			view.setTranslationX(0f);
-			view.setScaleX(1f);
-			view.setScaleY(1f);
-		} else if (position <= 1f) {
-			final float scaleFactor = MIN_SCALE + (1 - MIN_SCALE) * (1 - Math.abs(position));
-			view.setAlpha(1 - position);
-			view.setPivotY(0.5f * view.getHeight());
-			view.setTranslationX(view.getWidth() * -position);
-			view.setScaleX(scaleFactor);
-			view.setScaleY(scaleFactor);
+		final float scale = 1f + Math.abs(position);
+		view.setScaleX(scale);
+		view.setScaleY(scale);
+		view.setPivotX(view.getWidth() * 0.5f);
+		view.setPivotY(view.getHeight() * 0.5f);
+		view.setAlpha(position < -1f || position > 1f ? 0f : 1f - (scale - 1f));
+		if(position == -1){
+			view.setTranslationX(view.getWidth() * -1);
 		}
-	}
-
-	@Override
-	protected boolean isPagingEnabled() {
-		return true;
 	}
 
 }

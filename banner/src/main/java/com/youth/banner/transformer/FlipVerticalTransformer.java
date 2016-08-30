@@ -18,29 +18,26 @@ package com.youth.banner.transformer;
 
 import android.view.View;
 
-public class DepthPageTransformer extends ABaseTransformer {
-
-	private static final float MIN_SCALE = 0.75f;
+public class FlipVerticalTransformer extends ABaseTransformer {
 
 	@Override
 	protected void onTransform(View view, float position) {
-		if (position <= 0f) {
-			view.setTranslationX(0f);
-			view.setScaleX(1f);
-			view.setScaleY(1f);
-		} else if (position <= 1f) {
-			final float scaleFactor = MIN_SCALE + (1 - MIN_SCALE) * (1 - Math.abs(position));
-			view.setAlpha(1 - position);
-			view.setPivotY(0.5f * view.getHeight());
-			view.setTranslationX(view.getWidth() * -position);
-			view.setScaleX(scaleFactor);
-			view.setScaleY(scaleFactor);
-		}
+		final float rotation = -180f * position;
+
+		view.setAlpha(rotation > 90f || rotation < -90f ? 0f : 1f);
+		view.setPivotX(view.getWidth() * 0.5f);
+		view.setPivotY(view.getHeight() * 0.5f);
+		view.setRotationX(rotation);
 	}
 
 	@Override
-	protected boolean isPagingEnabled() {
-		return true;
-	}
+	protected void onPostTransform(View page, float position) {
+		super.onPostTransform(page, position);
 
+		if (position > -0.5f && position < 0.5f) {
+			page.setVisibility(View.VISIBLE);
+		} else {
+			page.setVisibility(View.INVISIBLE);
+		}
+	}
 }

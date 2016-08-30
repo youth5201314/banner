@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
+import com.youth.banner.Transformer;
 
 import java.util.Arrays;
 import java.util.List;
@@ -45,7 +46,9 @@ public class Banner2Activity extends AppCompatActivity implements View.OnClickLi
         //设置轮播间隔时间
         banner.setDelayTime(3000);
         //设置动画
-        banner.setBannerAnimation(BannerConfig.ROTATEDOWN);
+        banner.setBannerAnimation(Transformer.ZoomIn);
+        //设置ViewPager的切换速度
+        banner.setScrollerTime(2000);
         /**
          * 可以选择设置图片网址，或者资源文件，默认用Glide加载
          * 如果你想设置默认图片就在xml里设置default_image

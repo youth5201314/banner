@@ -17,18 +17,14 @@ public class BannerConfig {
     public static final int LEFT=5;
     public static final int CENTER=6;
     public static final int RIGHT=7;
-    /**
-     * Animation
-     */
-    public static final int ZOOMOUT=10;
-    public static final int DEPTH=11;
-    public static final int ROTATEDOWN=12;
+
     /**
      * banner
      */
     public static final int INDICATOR_SIZE=8;
     public static final int PADDING_SIZE=5;
     public static final int TIME=2000;
+    public static final int DURATION=800;
     public static final boolean IS_AUTO_PLAY=true;
 
     /**
