@@ -7,6 +7,7 @@ import android.widget.Toast;
 
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
+import com.youth.banner.listener.OnBannerClickListener;
 
 public class BannerActivity extends AppCompatActivity {
     @Override
@@ -14,7 +15,7 @@ public class BannerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_banner);
         getSupportActionBar().setTitle(getIntent().getStringExtra("des"));
-        String[] images= getResources().getStringArray(R.array.url);
+        String[] images= getResources().getStringArray(R.array.url2);
         String[] titles= getResources().getStringArray(R.array.title);
         int position=getIntent().getIntExtra("position",0);
         Banner banner = (Banner) findViewById(R.id.banner1);
@@ -56,9 +57,9 @@ public class BannerActivity extends AppCompatActivity {
                 break;
         }
         banner.setImages(images);//可以选择设置图片网址，或者资源文件，默认用Glide加载
-        banner.setOnBannerClickListener(new Banner.OnBannerClickListener() {//设置点击事件
+        banner.setOnBannerClickListener(new OnBannerClickListener() {//设置点击事件
             @Override
-            public void OnBannerClick(View view, int position) {
+            public void OnBannerClick(int position) {
                 Toast.makeText(getApplicationContext(),"你点击了："+position,Toast.LENGTH_LONG).show();
             }
         });

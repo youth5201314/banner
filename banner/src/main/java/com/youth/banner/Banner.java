@@ -12,7 +12,6 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AccelerateInterpolator;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
@@ -21,41 +20,24 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.youth.banner.listener.OnBannerClickListener;
+import com.youth.banner.listener.OnLoadImageListener;
+import com.youth.banner.view.BannerViewPager;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
-import static android.support.v4.view.ViewPager.*;
+import static android.support.v4.view.ViewPager.OnPageChangeListener;
+import static android.support.v4.view.ViewPager.PageTransformer;
 
 public class Banner extends FrameLayout implements OnPageChangeListener {
-    /**
-     * 常量已经移入BannerConfig类里
-     */
-    @Deprecated
-    public static final int NOT_INDICATOR = 0;
-    @Deprecated
-    public static final int CIRCLE_INDICATOR = 1;
-    @Deprecated
-    public static final int NUM_INDICATOR = 2;
-    @Deprecated
-    public static final int NUM_INDICATOR_TITLE = 3;
-    @Deprecated
-    public static final int CIRCLE_INDICATOR_TITLE = 4;
-    @Deprecated
-    public static final int LEFT = 5;
-    @Deprecated
-    public static final int CENTER = 6;
-    @Deprecated
-    public static final int RIGHT = 7;
-
     public String tag = "banner";
     private int mIndicatorMargin = BannerConfig.PADDING_SIZE;
     private int mIndicatorWidth = BannerConfig.INDICATOR_SIZE;
     private int mIndicatorHeight = BannerConfig.INDICATOR_SIZE;
     private int bannerStyle = BannerConfig.NOT_INDICATOR;
     private int delayTime = BannerConfig.TIME;
-    private int duration = BannerConfig.DURATION;
     private boolean isAutoPlay = BannerConfig.IS_AUTO_PLAY;
     private int mIndicatorSelectedResId = R.drawable.gray_radius;
     private int mIndicatorUnselectedResId = R.drawable.white_radius;
@@ -68,20 +50,19 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
     private int currentItem;
     private int gravity = -1;
     private int lastPosition = 1;
+    private String[] titles;
     private List<ImageView> imageViews;
     private List<ImageView> indicatorImages;
     private Context context;
-    private ViewPager viewPager;
+    private BannerViewPager viewPager;
+    private TextView bannerTitle, numIndicatorInside, numIndicator;
     private LinearLayout indicator, indicatorInside, titleView;
     private Handler handler = new Handler();
-    private OnBannerClickListener listener;
     private OnLoadImageListener imageListener;
-    private String[] titles;
-    private TextView bannerTitle, numIndicatorInside, numIndicator;
     private BannerPagerAdapter adapter;
     private OnPageChangeListener mOnPageChangeListener;
     private ViewPagerScroller mScroller;
-
+    private OnBannerClickListener listener;
 
     public Banner(Context context) {
         this(context, null);
@@ -122,7 +103,7 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
     private void initView(Context context, AttributeSet attrs) {
         imageViews.clear();
         View view = LayoutInflater.from(context).inflate(R.layout.banner, this, true);
-        viewPager = (ViewPager) view.findViewById(R.id.viewpager);
+        viewPager = (BannerViewPager) view.findViewById(R.id.viewpager);
         titleView = (LinearLayout) view.findViewById(R.id.titleView);
         indicator = (LinearLayout) view.findViewById(R.id.indicator);
         indicatorInside = (LinearLayout) view.findViewById(R.id.indicatorInside);
@@ -130,19 +111,19 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
         numIndicator = (TextView) view.findViewById(R.id.numIndicator);
         numIndicatorInside = (TextView) view.findViewById(R.id.numIndicatorInside);
         handleTypedArray(context, attrs);
+        initViewPagerScroll();
     }
 
     public void isAutoPlay(boolean isAutoPlay) {
         this.isAutoPlay = isAutoPlay;
-        startAutoPlay();
+        if (isAutoPlay)
+            startAutoPlay();
+        else
+            stopAutoPlay();
     }
 
     public void setDelayTime(int delayTime) {
         this.delayTime = delayTime;
-    }
-
-    public void setScrollerTime(int duration) {
-        this.duration = duration;
     }
 
     public void setIndicatorGravity(int type) {
@@ -342,14 +323,6 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
         if (adapter == null) {
             adapter = new BannerPagerAdapter();
             viewPager.setAdapter(adapter);
-            try {
-                Field mField = ViewPager.class.getDeclaredField("mScroller");
-                mField.setAccessible(true);
-                mScroller = new ViewPagerScroller(viewPager.getContext(), new AccelerateInterpolator());
-                mField.set(viewPager, mScroller);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
         } else {
             adapter.notifyDataSetChanged();
         }
@@ -361,28 +334,43 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
         startAutoPlay();
     }
 
-    private void startAutoPlay() {
-        if (isAutoPlay) {
-            handler.removeCallbacks(task);
-            handler.postDelayed(task, delayTime);
+    private void initViewPagerScroll() {
+        try {
+            Field mField = null;
+            mField = ViewPager.class.getDeclaredField("mScroller");
+            mField.setAccessible(true);
+            mScroller = new ViewPagerScroller(viewPager.getContext());
+            mField.set(viewPager, mScroller);
+
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
         }
     }
-
+    private void startAutoPlay() {
+        if (isAutoPlay) {
+            stopAutoPlay();
+        }
+        handler.postDelayed(task, delayTime);
+    }
+    public void stopAutoPlay() {
+        handler.removeCallbacks(task);
+    }
     private final Runnable task = new Runnable() {
 
         @Override
         public void run() {
-            if (isAutoPlay) {
-                if (count > 1) {
-                    currentItem = currentItem % (count + 1) + 1;
-                    if (currentItem == 1) {
-                        viewPager.setCurrentItem(currentItem, false);
-                    } else {
-                        viewPager.setCurrentItem(currentItem);
-                    }
-                    mScroller.setmDuration(duration);
-                    handler.postDelayed(task, delayTime);
+            if (count > 1) {
+                currentItem = currentItem % (count + 1) + 1;
+                if (currentItem == 1) {
+                    viewPager.setCurrentItem(currentItem, false);
+                } else {
+                    viewPager.setCurrentItem(currentItem);
                 }
+                handler.postDelayed(task, delayTime);
             }
         }
     };
@@ -390,18 +378,11 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
         Log.i(tag, ev.getAction() + "--" + isAutoPlay);
-        if (count > 1) {
-            switch (ev.getAction()) {
-                case MotionEvent.ACTION_DOWN:
-                    isAutoPlay(false);
-                    Log.i(tag, "--" + isAutoPlay);
-                    break;
-                case MotionEvent.ACTION_UP:
-                case MotionEvent.ACTION_CANCEL:
-                    isAutoPlay(true);
-                    Log.i(tag, "--" + isAutoPlay);
-                    break;
-            }
+        int action = ev.getAction();
+        if (action == MotionEvent.ACTION_UP||action == MotionEvent.ACTION_CANCEL||action == MotionEvent.ACTION_OUTSIDE) {
+            isAutoPlay(true);
+        } else if (action == MotionEvent.ACTION_DOWN) {
+            isAutoPlay(false);
         }
         return super.dispatchTouchEvent(ev);
     }
@@ -421,15 +402,15 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
         @Override
         public Object instantiateItem(ViewGroup container, final int position) {
             container.addView(imageViews.get(position));
-            final ImageView view = imageViews.get(position);
-            view.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (listener != null) {
-                        listener.OnBannerClick(v, position);
+            ImageView view = imageViews.get(position);
+            if (listener!=null) {
+                view.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        listener.OnBannerClick(position);
                     }
-                }
-            });
+                });
+            }
             return view;
         }
 
@@ -442,21 +423,21 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
 
     @Override
     public void onPageScrollStateChanged(int state) {
+        currentItem = viewPager.getCurrentItem();
         switch (state) {
             case 1:
-                isAutoPlay = false;
+                isAutoPlay=false;
                 break;
             case 2:
-                isAutoPlay = true;
+                isAutoPlay=true;
                 break;
             case 0:
-                if (viewPager.getCurrentItem() == 0) {
+                if (currentItem == 0) {
                     viewPager.setCurrentItem(count, false);
-                } else if (viewPager.getCurrentItem() == count + 1) {
+                } else if (currentItem == count + 1) {
                     viewPager.setCurrentItem(1, false);
                 }
-                currentItem = viewPager.getCurrentItem();
-                isAutoPlay = true;
+                isAutoPlay=true;
                 break;
         }
         if (mOnPageChangeListener != null) {
@@ -517,7 +498,7 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
 
 
     public void setOnBannerClickListener(OnBannerClickListener listener) {
-        this.listener = listener;
+        this.listener=listener;
     }
 
     public void setOnBannerImageListener(OnLoadImageListener imageListener) {
@@ -528,11 +509,4 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
         mOnPageChangeListener = onPageChangeListener;
     }
 
-    public interface OnBannerClickListener {
-        void OnBannerClick(View view, int position);
-    }
-
-    public interface OnLoadImageListener {
-        void OnLoadImage(ImageView view, Object url);
-    }
 }

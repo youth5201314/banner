@@ -1,18 +1,12 @@
 package com.test.banner;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.youth.banner.Banner;
 
 
@@ -37,10 +31,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         if (position == des.length - 1) {
-            startActivity(new Intent(this, Banner2Activity.class)
+            startActivity(new Intent(this, BannerSeniorActivity.class)
                     .putExtra("des", des[position]));
         } else if (position == des.length - 2) {
-            startActivity(new Intent(this, Banner3Activity.class)
+            startActivity(new Intent(this, BannerCustomActivity.class)
                     .putExtra("des", des[position]));
         } else {
             startActivity(new Intent(this, BannerActivity.class)

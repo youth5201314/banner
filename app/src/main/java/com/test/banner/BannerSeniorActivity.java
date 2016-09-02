@@ -1,6 +1,5 @@
 package com.test.banner;
 
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,11 +12,10 @@ import com.bumptech.glide.Glide;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.Transformer;
+import com.youth.banner.listener.OnBannerClickListener;
+import com.youth.banner.listener.OnLoadImageListener;
 
-import java.util.Arrays;
-import java.util.List;
-
-public class Banner2Activity extends AppCompatActivity implements View.OnClickListener {
+public class BannerSeniorActivity extends AppCompatActivity implements View.OnClickListener {
     private Banner banner;
     private Button refresh,stop,start;
     boolean flag=true;
@@ -25,7 +23,7 @@ public class Banner2Activity extends AppCompatActivity implements View.OnClickLi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_banner2);
+        setContentView(R.layout.activity_banner_senior);
         getSupportActionBar().setTitle(getIntent().getStringExtra("des"));
         images= getResources().getStringArray(R.array.url);
         images2= getResources().getStringArray(R.array.url2);
@@ -46,16 +44,14 @@ public class Banner2Activity extends AppCompatActivity implements View.OnClickLi
         //设置轮播间隔时间
         banner.setDelayTime(3000);
         //设置动画
-        banner.setBannerAnimation(Transformer.ZoomIn);
-        //设置ViewPager的切换速度
-        banner.setScrollerTime(2000);
+        banner.setBannerAnimation(Transformer.CubeOut);
         /**
-         * 可以选择设置图片网址，或者资源文件，默认用Glide加载
+         * 可以选择设置图片网址或者资源文件，默认用Glide加载
          * 如果你想设置默认图片就在xml里设置default_image
          * banner.setImages(images);
          */
         //如果你想用自己项目的图片加载,那么----->自定义图片加载框架
-        banner.setImages(images, new Banner.OnLoadImageListener() {
+        banner.setImages(images, new OnLoadImageListener() {
             @Override
             public void OnLoadImage(ImageView view, Object url) {
                 /**
@@ -63,15 +59,13 @@ public class Banner2Activity extends AppCompatActivity implements View.OnClickLi
                  */
                 Glide.with(getApplicationContext())
                         .load(url)
-                        .centerCrop()
-                        .placeholder(R.mipmap.loading2)
-                        .crossFade()
                         .into(view);
             }
         });
-        banner.setOnBannerClickListener(new Banner.OnBannerClickListener() {//设置点击事件
+        //设置点击事件
+        banner.setOnBannerClickListener(new OnBannerClickListener() {
             @Override
-            public void OnBannerClick(View view, int position) {
+            public void OnBannerClick(int position) {
                 Toast.makeText(getApplicationContext(),"你点击了："+position,Toast.LENGTH_LONG).show();
             }
         });

@@ -19,8 +19,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".BannerActivity" />
-        <activity android:name=".Banner2Activity"/>
-        <activity android:name=".Banner3Activity"/>
+        <activity android:name=".BannerSeniorActivity"/>
+        <activity android:name=".BannerCustomActivity"/>
     </application>
 
 </manifest>

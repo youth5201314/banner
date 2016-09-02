@@ -15,6 +15,10 @@ public class ViewPagerScroller extends Scroller {
         super(context, interpolator);
     }
 
+    public ViewPagerScroller(Context context, Interpolator interpolator, boolean flywheel) {
+        super(context, interpolator, flywheel);
+    }
+
     @Override
     public void startScroll(int startX, int startY, int dx, int dy, int duration) {
         super.startScroll(startX, startY, dx, dy, mDuration);
@@ -25,11 +29,8 @@ public class ViewPagerScroller extends Scroller {
         super.startScroll(startX, startY, dx, dy, mDuration);
     }
 
-    public void setmDuration(int time) {
+    public void setDuration(int time) {
         mDuration = time;
     }
 
-    public int getmDuration() {
-        return mDuration;
-    }
 }
