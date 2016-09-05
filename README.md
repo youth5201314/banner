@@ -22,7 +22,7 @@
 ##Gradle
 ```groovy
 dependencies{
-    compile 'com.youth.banner:banner:1.2.8'  //指定版本
+    compile 'com.youth.banner:banner:1.2.9'  //指定版本
     compile 'com.youth.banner:banner:+' //最新版本
 }
 ```
@@ -107,6 +107,7 @@ compile project(':banner')
     app:default_image="默认加载图片"
     app:delay_time="轮播间隔时间"
     app:is_auto_play="是否自动轮播"
+    app:image_scale_type="fit_xy,和imageview的ScaleType作用一样，不过只提供了两个常用的"
     app:indicator_margin="指示器之间的间距"
     app:indicator_drawable_selected="指示器选中效果"
     app:indicator_drawable_unselected="指示器未选中效果"
@@ -140,6 +141,12 @@ protected void onCreate(Bundle savedInstanceState) {
 - [ViewPagerTransforms](https://github.com/ToxicBakery/ViewPagerTransforms)
 
 ## 更新说明
+
+#### v1.2.9
+    修复bug以及更新功能
+ * app:image_scale_type="fit_xy,和imageview的ScaleType作用一样，不过只提供了两个常用的"
+ * 修复设置动画后点击事件失效的问题。
+ * 取消setScrollerTime设置方法
 
 #### v1.2.8
     增加ViewPager的切换速度设置方法，以及动画的重新封装

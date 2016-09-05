@@ -3,6 +3,7 @@ package com.test.banner;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -14,13 +15,14 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private String[] des = {"默认模式", "显示圆形指示器", "显示数字指示器",
             "显示数字指示器和标题","显示圆形指示器和标题（垂直显示）", "显示圆形指示器和标题（水平显示）",
             "设置指示器位置", "自定义指示器样式","高级api自定义调用"};
+    Banner banner;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         //最简单的用法，获取控件或者new一个控件，再把设置进去就行了
         String[] images= getResources().getStringArray(R.array.url);
-        Banner banner = (Banner) findViewById(R.id.banner);
+        banner = (Banner) findViewById(R.id.banner);
         banner.setImages(images);
 
         ListView list = (ListView) findViewById(R.id.list);
@@ -43,5 +45,18 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         }
     }
 
+    //如果你需要考虑更好的体验，可以这么操作(可避免在切换页面时白屏问题)
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.i("--","onStart");
+        banner.isAutoPlay(true);
+    }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.i("--","onStop");
+        banner.isAutoPlay(false);
+    }
 }

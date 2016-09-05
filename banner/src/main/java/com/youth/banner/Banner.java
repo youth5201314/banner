@@ -22,7 +22,6 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.youth.banner.listener.OnBannerClickListener;
 import com.youth.banner.listener.OnLoadImageListener;
-import com.youth.banner.view.BannerViewPager;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -50,11 +49,12 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
     private int currentItem;
     private int gravity = -1;
     private int lastPosition = 1;
+    private int scaleType=0;
     private String[] titles;
     private List<ImageView> imageViews;
     private List<ImageView> indicatorImages;
     private Context context;
-    private BannerViewPager viewPager;
+    private ViewPager viewPager;
     private TextView bannerTitle, numIndicatorInside, numIndicator;
     private LinearLayout indicator, indicatorInside, titleView;
     private Handler handler = new Handler();
@@ -90,6 +90,7 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
         mIndicatorMargin = typedArray.getDimensionPixelSize(R.styleable.Banner_indicator_margin, BannerConfig.PADDING_SIZE);
         mIndicatorSelectedResId = typedArray.getResourceId(R.styleable.Banner_indicator_drawable_selected, R.drawable.gray_radius);
         mIndicatorUnselectedResId = typedArray.getResourceId(R.styleable.Banner_indicator_drawable_unselected, R.drawable.white_radius);
+        scaleType=typedArray.getInt(R.styleable.Banner_image_scale_type,0);
         defaultImage = typedArray.getResourceId(R.styleable.Banner_default_image, defaultImage);
         delayTime = typedArray.getDimensionPixelSize(R.styleable.Banner_delay_time, BannerConfig.TIME);
         isAutoPlay = typedArray.getBoolean(R.styleable.Banner_is_auto_play, BannerConfig.IS_AUTO_PLAY);
@@ -103,7 +104,7 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
     private void initView(Context context, AttributeSet attrs) {
         imageViews.clear();
         View view = LayoutInflater.from(context).inflate(R.layout.banner, this, true);
-        viewPager = (BannerViewPager) view.findViewById(R.id.viewpager);
+        viewPager = (ViewPager) view.findViewById(R.id.viewpager);
         titleView = (LinearLayout) view.findViewById(R.id.titleView);
         indicator = (LinearLayout) view.findViewById(R.id.indicator);
         indicatorInside = (LinearLayout) view.findViewById(R.id.indicatorInside);
@@ -240,7 +241,10 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
         initImages();
         for (int i = 0; i <= count + 1; i++) {
             ImageView iv = new ImageView(context);
-            iv.setScaleType(ScaleType.FIT_XY);
+            if (scaleType==0)
+                iv.setScaleType(ScaleType.FIT_XY);
+            else
+                iv.setScaleType(ScaleType.CENTER_CROP);
             Object url = null;
             if (i == 0) {
                 url = imagesUrl[count - 1];
@@ -254,9 +258,9 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
                 imageListener.OnLoadImage(iv, url);
             } else {
                 if (defaultImage != -1)
-                    Glide.with(context).load(url).centerCrop().crossFade().into(iv);
+                    Glide.with(context).load(url).crossFade().into(iv);
                 else
-                    Glide.with(context).load(url).centerCrop().crossFade().placeholder(defaultImage).into(iv);
+                    Glide.with(context).load(url).crossFade().placeholder(defaultImage).into(iv);
             }
         }
         setData();
@@ -271,7 +275,10 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
         initImages();
         for (int i = 0; i <= count + 1; i++) {
             ImageView iv = new ImageView(context);
-            iv.setScaleType(ScaleType.FIT_XY);
+            if (scaleType==0)
+                iv.setScaleType(ScaleType.FIT_XY);
+            else
+                iv.setScaleType(ScaleType.CENTER_CROP);
             Object url = null;
             if (i == 0) {
                 url = imagesUrl.get(count - 1);
@@ -285,9 +292,9 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
                 imageListener.OnLoadImage(iv, url);
             } else {
                 if (defaultImage != -1)
-                    Glide.with(context).load(url).centerCrop().crossFade().into(iv);
+                    Glide.with(context).load(url).crossFade().into(iv);
                 else
-                    Glide.with(context).load(url).centerCrop().crossFade().placeholder(defaultImage).into(iv);
+                    Glide.with(context).load(url).crossFade().placeholder(defaultImage).into(iv);
             }
         }
         setData();
