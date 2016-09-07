@@ -92,7 +92,7 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
         mIndicatorUnselectedResId = typedArray.getResourceId(R.styleable.Banner_indicator_drawable_unselected, R.drawable.white_radius);
         scaleType=typedArray.getInt(R.styleable.Banner_image_scale_type,0);
         defaultImage = typedArray.getResourceId(R.styleable.Banner_default_image, defaultImage);
-        delayTime = typedArray.getDimensionPixelSize(R.styleable.Banner_delay_time, BannerConfig.TIME);
+        delayTime = typedArray.getInt(R.styleable.Banner_delay_time, BannerConfig.TIME);
         isAutoPlay = typedArray.getBoolean(R.styleable.Banner_is_auto_play, BannerConfig.IS_AUTO_PLAY);
         titleBackground = typedArray.getColor(R.styleable.Banner_title_background, BannerConfig.TITLE_BACKGROUND);
         titleHeight = typedArray.getDimensionPixelSize(R.styleable.Banner_title_height, BannerConfig.TITLE_HEIGHT);

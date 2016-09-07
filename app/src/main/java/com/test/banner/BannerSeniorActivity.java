@@ -41,8 +41,8 @@ public class BannerSeniorActivity extends AppCompatActivity implements View.OnCl
         banner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR_TITLE_INSIDE);
         //设置标题列表
         banner.setBannerTitle(titles);
-        //设置轮播间隔时间
-        banner.setDelayTime(3000);
+        //设置轮播间隔时间 在布局文件中设置了5秒
+//        banner.setDelayTime(3000);
         //设置动画
         banner.setBannerAnimation(Transformer.CubeOut);
         /**
