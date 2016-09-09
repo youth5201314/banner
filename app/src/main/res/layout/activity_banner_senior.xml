@@ -21,7 +21,7 @@
         app:title_textcolor="@color/main_color"
         app:title_textsize="15sp"
         app:image_scale_type="fit_xy"
-        app:delay_time="5000"/>
+        app:delay_time="3000"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

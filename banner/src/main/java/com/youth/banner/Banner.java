@@ -338,7 +338,8 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
         viewPager.addOnPageChangeListener(this);
         if (gravity != -1)
             indicator.setGravity(gravity);
-        startAutoPlay();
+        if (isAutoPlay)
+            startAutoPlay();
     }
 
     private void initViewPagerScroll() {
@@ -358,9 +359,7 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
         }
     }
     private void startAutoPlay() {
-        if (isAutoPlay) {
-            stopAutoPlay();
-        }
+        handler.removeCallbacks(task);
         handler.postDelayed(task, delayTime);
     }
     public void stopAutoPlay() {
@@ -370,7 +369,7 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
 
         @Override
         public void run() {
-            if (count > 1) {
+            if (count > 1&&isAutoPlay) {
                 currentItem = currentItem % (count + 1) + 1;
                 if (currentItem == 1) {
                     viewPager.setCurrentItem(currentItem, false);
@@ -387,9 +386,9 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
         Log.i(tag, ev.getAction() + "--" + isAutoPlay);
         int action = ev.getAction();
         if (action == MotionEvent.ACTION_UP||action == MotionEvent.ACTION_CANCEL||action == MotionEvent.ACTION_OUTSIDE) {
-            isAutoPlay(true);
+            isAutoPlay=true;
         } else if (action == MotionEvent.ACTION_DOWN) {
-            isAutoPlay(false);
+            isAutoPlay=false;
         }
         return super.dispatchTouchEvent(ev);
     }
