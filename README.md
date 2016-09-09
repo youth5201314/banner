@@ -22,7 +22,7 @@
 ##Gradle
 ```groovy
 dependencies{
-    compile 'com.youth.banner:banner:1.2.9'  //指定版本
+    compile 'com.youth.banner:banner:1.3.0'  //指定版本
     compile 'com.youth.banner:banner:+' //最新版本
 }
 ```
@@ -156,6 +156,7 @@ protected void onCreate(Bundle savedInstanceState) {
 
 ## 更新说明
 
+ 
 #### v1.2.9
     修复bug以及更新功能
  * app:image_scale_type="fit_xy,和imageview的ScaleType作用一样，不过只提供了两个常用的"
