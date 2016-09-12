@@ -22,7 +22,7 @@
 ##Gradle
 ```groovy
 dependencies{
-    compile 'com.youth.banner:banner:1.3.0'  //指定版本
+    compile 'com.youth.banner:banner:1.3.1'  //指定版本
     compile 'com.youth.banner:banner:+' //最新版本
 }
 ```
@@ -156,6 +156,11 @@ protected void onCreate(Bundle savedInstanceState) {
 
 ## 更新说明
 
+#### v1.3.1
+    修复bug
+ * app:delay_time="轮播间隔时间" 参数无用问题
+ * 在暂停轮播时，当你手动滑动时会重新开始轮播问题
+ * 在轮播中，当你按住轮播时暂停，松开后不会轮播问题
  
 #### v1.2.9
     修复bug以及更新功能
