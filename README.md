@@ -158,7 +158,7 @@ protected void onCreate(Bundle savedInstanceState) {
 
 #### v1.3.2
     修复bug
- * 解决在自动轮播中，轮播中途触摸图片时停止轮播，抬起不轮播问题
+ * 解决在自动轮播中，轮播中途触摸图片/左右移动时停止轮播，抬起不自动轮播问题
  
 #### v1.3.1
     修复bug

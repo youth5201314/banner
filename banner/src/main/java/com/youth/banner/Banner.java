@@ -383,7 +383,7 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
-        Log.i(tag, ev.getAction() + "--" + isAutoPlay);
+//        Log.i(tag, ev.getAction() + "--" + isAutoPlay);
         if (isAutoPlay) {
             int action = ev.getAction();
             if (action == MotionEvent.ACTION_UP || action == MotionEvent.ACTION_CANCEL
