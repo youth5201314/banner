@@ -434,19 +434,12 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
     public void onPageScrollStateChanged(int state) {
         currentItem = viewPager.getCurrentItem();
         switch (state) {
-            case 1:
-                isAutoPlay=false;
-                break;
-            case 2:
-                isAutoPlay=true;
-                break;
             case 0:
                 if (currentItem == 0) {
                     viewPager.setCurrentItem(count, false);
                 } else if (currentItem == count + 1) {
                     viewPager.setCurrentItem(1, false);
                 }
-                isAutoPlay=true;
                 break;
         }
         if (mOnPageChangeListener != null) {
