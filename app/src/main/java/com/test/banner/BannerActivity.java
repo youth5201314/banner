@@ -15,8 +15,13 @@ public class BannerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_banner);
         getSupportActionBar().setTitle(getIntent().getStringExtra("des"));
+        //本地资源图片
+        Integer[] image={R.mipmap.a,R.mipmap.b,R.mipmap.c,R.mipmap.d,R.mipmap.e,R.mipmap.f};
+        //网络图片
         String[] images= getResources().getStringArray(R.array.url2);
+        //图片对应title
         String[] titles= getResources().getStringArray(R.array.title);
+
         int position=getIntent().getIntExtra("position",0);
         Banner banner = (Banner) findViewById(R.id.banner1);
         switch (position){
@@ -56,7 +61,8 @@ public class BannerActivity extends AppCompatActivity {
                 banner.setIndicatorGravity(BannerConfig.RIGHT);
                 break;
         }
-        banner.setImages(images);//可以选择设置图片网址，或者资源文件，默认用Glide加载
+        banner.setImages(images);//设置图片网址
+//        banner.setImages(image);//设置资源文件
         banner.setOnBannerClickListener(new OnBannerClickListener() {//设置点击事件
             @Override
             public void OnBannerClick(int position) {
