@@ -349,7 +349,6 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
             mField.setAccessible(true);
             mScroller = new ViewPagerScroller(viewPager.getContext());
             mField.set(viewPager, mScroller);
-
         } catch (NoSuchFieldException e) {
             e.printStackTrace();
         } catch (IllegalArgumentException e) {
@@ -373,10 +372,14 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
                 currentItem = currentItem % (count + 1) + 1;
                 if (currentItem == 1) {
                     viewPager.setCurrentItem(currentItem, false);
-                } else {
+                    handler.postDelayed(task, delayTime);
+                }else if(currentItem==count+1){
                     viewPager.setCurrentItem(currentItem);
+                    handler.postDelayed(task, 500);
+                }else {
+                    viewPager.setCurrentItem(currentItem);
+                    handler.postDelayed(task, delayTime);
                 }
-                handler.postDelayed(task, delayTime);
             }
         }
     };

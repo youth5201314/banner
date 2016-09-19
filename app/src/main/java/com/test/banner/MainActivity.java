@@ -9,6 +9,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.youth.banner.Banner;
+import com.youth.banner.BannerConfig;
 
 
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
@@ -23,6 +24,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         //最简单的用法，获取控件或者new一个控件，再把设置进去就行了
         String[] images= getResources().getStringArray(R.array.url);
         banner = (Banner) findViewById(R.id.banner);
+        banner.setDelayTime(1000);
+        banner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR);
         banner.setImages(images);
 
         ListView list = (ListView) findViewById(R.id.list);

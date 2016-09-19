@@ -22,7 +22,7 @@
 ##Gradle
 ```groovy
 dependencies{
-    compile 'com.youth.banner:banner:1.3.2'  //指定版本
+    compile 'com.youth.banner:banner:1.3.3'  //指定版本
     compile 'com.youth.banner:banner:+' //最新版本
 }
 ```
@@ -155,6 +155,12 @@ protected void onCreate(Bundle savedInstanceState) {
 - [ViewPagerTransforms](https://github.com/ToxicBakery/ViewPagerTransforms)
 
 ## 更新说明
+
+#### v1.3.3
+    优化轮播首尾过渡时间
+ * 再实现轮播从最后一张到第一张时，在第一张前面加了一张图片用于过渡，保证轮播不太生硬。这样也就造成了第一张时间有点长，
+    开始没有发现，感谢大家的反馈，现在简单优化了下依然保留第一张500毫秒的时间用于过渡，让轮播保证流畅性。相信500毫秒的时间
+    对于效果没有什么影响，这段时间很忙后面会对算法进行修改，目前先这样用着吧。
 
 #### v1.3.2
     修复bug
