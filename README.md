@@ -150,9 +150,11 @@ protected void onCreate(Bundle savedInstanceState) {
 ```
 ## 常见问题
 
+<a href="https://dl.bintray.com/youth5201314/maven/com/youth/banner/banner/" target="_blank"> [历史版本资源地址]
+
 * 问：eclipse怎么使用banner？
 
-    * 答：<a href="https://dl.bintray.com/youth5201314/maven/com/youth/banner/banner/" target="_blank"> [在历史版本列表中下载你想要版本的aar包导入eclipse的lib就行了 ]
+    * 答：`在历史版本列表中下载你想要版本的aar包导入eclipse的lib就行了 `
 
 * 问：怎么显示的一片空白？
     * 答：<br>
