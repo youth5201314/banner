@@ -18,9 +18,8 @@
 ![效果示例](https://raw.githubusercontent.com/youth5201314/banner/master/image/Android技术交流群二维码.png)
 * 如果遇到问题和建议欢迎在给我发送邮件或者加入qq群，希望让这个工程越来越完善。
 
-
+###<a href="https://dl.bintray.com/youth5201314/maven/com/youth/banner/banner/" target="_blank"> [ ！！！历史版本查看 可以下载aar/jar包 ]
 ##Gradle 
-<a href="https://dl.bintray.com/youth5201314/maven/com/youth/banner/banner/" target="_blank"> [ 历史版本查看 可以下载aar/jar包 ]
 ```groovy
 dependencies{
     compile 'com.youth.banner:banner:1.3.3'  //指定版本
@@ -150,7 +149,35 @@ protected void onCreate(Bundle savedInstanceState) {
  }
 
 ```
+## 常见问题
 
+* 问：怎么显示的一片空白？
+    * 答：
+        1、没有添加网络权限就抱怨有问题，然后就拒绝使用，我能说什么？
+        2、检查图片链接是否能打开。
+* 问：怎么加载其他图片资源（资源文件、文件、Uri、assets、raw、ContentProvider、sd卡资源）？
+    * 答：
+```java
+
+//资源文件
+Integer[] images={R.mipmap.a,R.mipmap.b,R.mipmap.c};
+//Uri
+Uri uri = resourceIdToUri(context, R.mipmap.ic_launcher);
+Uri[] images={uri};
+//文件对象
+File[] images={"文件对象","文件对象"};
+//raw 两种方式
+String[] images={"Android.resource://com.frank.glide/raw/raw_1"};
+String[] images={"android.resource://com.frank.glide/raw/"+R.raw.raw_1"};
+//ContentProvider
+String[] images={"content://media/external/images/media/139469"};
+//assets
+String[] images={"file:///android_asset/f003.gif"};
+//sd卡资源
+String[] images={"file://"+ Environment.getExternalStorageDirectory().getPath()+"/test.jpg"};
+
+banner.setImages(images);//这里接收的图片类型只要是glide支持的都行,数组和集合都行
+```
 ## Thanks
 
 - [ViewPagerTransforms](https://github.com/ToxicBakery/ViewPagerTransforms)
