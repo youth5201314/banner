@@ -19,7 +19,8 @@
 * 如果遇到问题和建议欢迎在给我发送邮件或者加入qq群，希望让这个工程越来越完善。
 
 
-##Gradle
+##Gradle <a href="https://dl.bintray.com/youth5201314/maven/com/youth/banner/banner/" target="_blank"> [ 历史版本查看或者下载aar/jar包 ]
+
 ```groovy
 dependencies{
     compile 'com.youth.banner:banner:1.3.3'  //指定版本
