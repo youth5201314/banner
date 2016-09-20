@@ -177,6 +177,7 @@ protected void onCreate(Bundle savedInstanceState) {
         
         banner.setImages(images);//这里接收的图片类型只要是glide支持的都行,数组和集合都行
         ```
+        
 ## Thanks
 
 - [ViewPagerTransforms](https://github.com/ToxicBakery/ViewPagerTransforms)
