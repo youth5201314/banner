@@ -151,7 +151,9 @@ protected void onCreate(Bundle savedInstanceState) {
 ## 常见问题
 
 * 问：eclipse怎么使用banner？
+
     * 答：<a href="https://dl.bintray.com/youth5201314/maven/com/youth/banner/banner/" target="_blank"> [在历史版本列表中下载你想要版本的aar包导入eclipse的lib就行了 ]
+
 * 问：怎么显示的一片空白？
     * 答：<br>
         1、没有添加网络权限就抱怨有问题，然后就拒绝使用，我能说什么？<br>
