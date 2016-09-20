@@ -148,9 +148,10 @@ protected void onCreate(Bundle savedInstanceState) {
  }
 
 ```
-## 常见问题
 
 <a href="https://dl.bintray.com/youth5201314/maven/com/youth/banner/banner/" target="_blank"> [历史版本资源地址]
+
+## 常见问题
 
 * 问：eclipse怎么使用banner？
 
