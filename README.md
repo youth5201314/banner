@@ -152,7 +152,7 @@ protected void onCreate(Bundle savedInstanceState) {
 ## 常见问题
 
 * 问：怎么显示的一片空白？
-    * 答：
+    * 答：<br>
         1、没有添加网络权限就抱怨有问题，然后就拒绝使用，我能说什么？<br>
         2、检查图片链接是否能打开。
 * 问：怎么加载其他图片资源（资源文件、文件、Uri、assets、raw、ContentProvider、sd卡资源）？
