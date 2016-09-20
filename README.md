@@ -157,27 +157,26 @@ protected void onCreate(Bundle savedInstanceState) {
         2、检查图片链接是否能打开。
 * 问：怎么加载其他图片资源（资源文件、文件、Uri、assets、raw、ContentProvider、sd卡资源）？
     * 答：
-```java
-
-//资源文件
-Integer[] images={R.mipmap.a,R.mipmap.b,R.mipmap.c};
-//Uri
-Uri uri = resourceIdToUri(context, R.mipmap.ic_launcher);
-Uri[] images={uri};
-//文件对象
-File[] images={"文件对象","文件对象"};
-//raw 两种方式
-String[] images={"Android.resource://com.frank.glide/raw/raw_1"};
-String[] images={"android.resource://com.frank.glide/raw/"+R.raw.raw_1"};
-//ContentProvider
-String[] images={"content://media/external/images/media/139469"};
-//assets
-String[] images={"file:///android_asset/f003.gif"};
-//sd卡资源
-String[] images={"file://"+ Environment.getExternalStorageDirectory().getPath()+"/test.jpg"};
-
-banner.setImages(images);//这里接收的图片类型只要是glide支持的都行,数组和集合都行
-```
+        ```java 
+        //资源文件
+        Integer[] images={R.mipmap.a,R.mipmap.b,R.mipmap.c};
+        //Uri
+        Uri uri = resourceIdToUri(context, R.mipmap.ic_launcher);
+        Uri[] images={uri};
+        //文件对象
+        File[] images={"文件对象","文件对象"};
+        //raw 两种方式
+        String[] images={"Android.resource://com.frank.glide/raw/raw_1"};
+        String[] images={"android.resource://com.frank.glide/raw/"+R.raw.raw_1"};
+        //ContentProvider
+        String[] images={"content://media/external/images/media/139469"};
+        //assets
+        String[] images={"file:///android_asset/f003.gif"};
+        //sd卡资源
+        String[] images={"file://"+ Environment.getExternalStorageDirectory().getPath()+"/test.jpg"};
+        
+        banner.setImages(images);//这里接收的图片类型只要是glide支持的都行,数组和集合都行
+        ```
 ## Thanks
 
 - [ViewPagerTransforms](https://github.com/ToxicBakery/ViewPagerTransforms)
