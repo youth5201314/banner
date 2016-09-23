@@ -155,7 +155,8 @@ protected void onCreate(Bundle savedInstanceState) {
 
 * 问：eclipse怎么使用banner？
 
-    * 答：`在历史版本列表中下载你想要版本的aar包导入eclipse的lib就行了 `
+    * 答：`在历史版本列表中下载你想要版本的aar包提取最新资源/也可以自己吧工程转成eclipse的` <br>
+          eclipse的集成demo群文件里有共享
 
 * 问：怎么显示的一片空白？
     * 答：<br>
