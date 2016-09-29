@@ -5,60 +5,72 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Spinner;
 
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
+import com.youth.banner.Transformer;
+
+import java.util.Arrays;
 
 
-public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
-    private String[] des = {"默认模式", "显示圆形指示器", "显示数字指示器",
-            "显示数字指示器和标题","显示圆形指示器和标题（垂直显示）", "显示圆形指示器和标题（水平显示）",
-            "设置指示器位置", "自定义指示器样式","高级api自定义调用"};
+public class MainActivity extends AppCompatActivity {
     Banner banner;
+    String[] images,titles;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //最简单的用法，获取控件或者new一个控件，再把设置进去就行了
-        String[] images= getResources().getStringArray(R.array.url);
+        images= getResources().getStringArray(R.array.url);
+        titles= getResources().getStringArray(R.array.title);
+
         banner = (Banner) findViewById(R.id.banner);
-        banner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR);
-        banner.setImages(images);
 
-        ListView list = (ListView) findViewById(R.id.list);
-        list.setAdapter(new MainAdapter(this, des));
-        list.setOnItemClickListener(this);
+        //简单使用
+        banner.setImages(Arrays.asList(images)).setImageLoader(new GlideImageLoader()).start();
+
+        /*//设置banner样式
+        banner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR_TITLE);
+        //设置图片加载器
+        banner.setImageLoader(new GlideImageLoader());
+        //设置图片集合
+        banner.setImages(Arrays.asList(images));
+        //设置banner动画效果
+        banner.setBannerAnimation(Transformer.DepthPage);
+        //设置标题集合（当banner样式有显示title时）
+        banner.setBannerTitles(Arrays.asList(titles));
+        //设置自动轮播，默认为true
+        banner.isAutoPlay(true);
+        //设置轮播时间
+        banner.setDelayTime(1500);
+        //设置指示器位置（当banner模式中有指示器时）
+        banner.setIndicatorGravity(BannerConfig.CENTER);
+        //banner设置方法全部调用完毕时最后调用
+        banner.start();*/
+
     }
 
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        if (position == des.length - 1) {
-            startActivity(new Intent(this, BannerSeniorActivity.class)
-                    .putExtra("des", des[position]));
-        } else if (position == des.length - 2) {
-            startActivity(new Intent(this, BannerCustomActivity.class)
-                    .putExtra("des", des[position]));
-        } else {
-            startActivity(new Intent(this, BannerActivity.class)
-                    .putExtra("position", position)
-                    .putExtra("des", des[position]));
-        }
-    }
 
-    //如果你需要考虑更好的体验，可以这么操作(可避免在切换页面时白屏问题)
+    //如果你需要考虑更好的体验，可以这么操作
     @Override
     protected void onStart() {
         super.onStart();
         Log.i("--","onStart");
-        banner.isAutoPlay(true);
+        //开始轮播
+        banner.startAutoPlay();
     }
 
     @Override
     protected void onStop() {
         super.onStop();
         Log.i("--","onStop");
-        banner.isAutoPlay(false);
+        //结束轮播
+        banner.stopAutoPlay();
     }
+
+
 }

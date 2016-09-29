@@ -18,9 +18,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".BannerActivity" />
-        <activity android:name=".BannerSeniorActivity"/>
-        <activity android:name=".BannerCustomActivity"/>
     </application>
 
 </manifest>

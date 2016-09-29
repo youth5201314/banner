@@ -18,31 +18,20 @@
 ![效果示例](https://raw.githubusercontent.com/youth5201314/banner/master/image/Android技术交流群二维码.png)
 * 如果遇到问题和建议欢迎在给我发送邮件或者加入qq群，希望让这个工程越来越完善。
 
-##Gradle 
-```groovy
-dependencies{
-    compile 'com.youth.banner:banner:1.3.3'  //指定版本
-    compile 'com.youth.banner:banner:+' //最新版本
-}
-```
-或者引用本地lib
-```groovy
-compile project(':banner')
-```
 ## 常量
-|常量名称|描述
-|---|---|
-|BannerConfig.NOT_INDICATOR| 不显示指示器和标题
-|BannerConfig.CIRCLE_INDICATOR| 显示圆形指示器
-|BannerConfig.NUM_INDICATOR| 显示数字指示器
-|BannerConfig.NUM_INDICATOR_TITLE| 显示数字指示器和标题
-|BannerConfig.CIRCLE_INDICATOR_TITLE| 显示圆形指示器和标题（垂直显示）
-|BannerConfig.CIRCLE_INDICATOR_TITLE_INSIDE| 显示圆形指示器和标题（水平显示）
-|BannerConfig.LEFT| 指示器居左
-|BannerConfig.CENTER| 指示器居中
-|BannerConfig.RIGHT| 指示器居右
+|常量名称|描述|所属方法
+|---|---|---|
+|BannerConfig.NOT_INDICATOR| 不显示指示器和标题|setBannerStyle
+|BannerConfig.CIRCLE_INDICATOR| 显示圆形指示器|setBannerStyle
+|BannerConfig.NUM_INDICATOR| 显示数字指示器|setBannerStyle
+|BannerConfig.NUM_INDICATOR_TITLE| 显示数字指示器和标题|setBannerStyle
+|BannerConfig.CIRCLE_INDICATOR_TITLE| 显示圆形指示器和标题（垂直显示）setBannerStyle
+|BannerConfig.CIRCLE_INDICATOR_TITLE_INSIDE| 显示圆形指示器和标题（水平显示）|setBannerStyle
+|BannerConfig.LEFT| 指示器居左|setIndicatorGravity
+|BannerConfig.CENTER| 指示器居中|setIndicatorGravity
+|BannerConfig.RIGHT| 指示器居右|setIndicatorGravity
 
-## 动画常量类
+## 动画常量类（setBannerAnimation方法调用）
 |常量类名|
 |---|
 |Transformer.Default| 
@@ -65,29 +54,75 @@ compile project(':banner')
 
 
 ##方法
-|方法名|描述
-|---|---|
-|setBannerStyle(int bannerStyle)| 设置轮播样式（默认为Banner.NOT_INDICATOR）
-|setIndicatorGravity(int type)| 设置指示器位置（没有标题默认为右边,有标题时默认左边）
-|isAutoPlay(boolean isAutoPlay)| 设置是否自动轮播（默认自动）
-|setBannerTitle(String[] titles)| 设置轮播要显示的标题和图片对应（如果不传默认不显示标题）
-|setBannerTitleList(List<String> titles)| 设置轮播要显示的标题和图片对应（如果不传默认不显示标题）
-|setDelayTime(int time)| 设置轮播图片间隔时间（单位毫秒，默认为2000）
-|setImages(Object[]/List<?> imagesUrl)| 设置轮播图片(所有设置参数方法都放在此方法之前执行)
-|setImages(Object[]/List<?> imagesUrl,OnLoadImageListener listener)| 设置轮播图片，并且自定义图片加载方式
-|setOnBannerClickListener(this)|设置点击事件，下标是从1开始
-|setOnBannerImageListener(this)|设置图片加载事件，可以自定义图片加载方式
-|setOnPageChangeListener(this)|设置viewpager的滑动监听
-|setBannerAnimation(Class<? extends PageTransformer> transformer)|设置viewpager的默认动画,传值见动画表
-|setPageTransformer(boolean reverseDrawingOrder, ViewPager.PageTransformer transformer)|设置viewpager的自定义动画
+|方法名|描述|版本限制
+|---|---|---|
+|setBannerStyle(int bannerStyle)| 设置轮播样式（默认为CIRCLE_INDICATOR）|无
+|setIndicatorGravity(int type)| 设置指示器位置（没有标题默认为右边,有标题时默认左边）|无
+|isAutoPlay(boolean isAutoPlay)| 设置是否自动轮播（默认自动）|1.3.3结束
+|startAutoPlay()|开始轮播|1.4开始，此方法只作用于banner加载完毕-->需要在start()后执行
+|stopAutoPlay()|结束轮播|1.4开始，此方法只作用于banner加载完毕-->需要在start()后执行
+|start()|开始进行banner渲染|1.4开始
+|setBannerTitle(String[] titles)| 设置轮播要显示的标题和图片对应（如果不传默认不显示标题）|1.3.3结束
+|setBannerTitleList(List<String> titles)| 设置轮播要显示的标题和图片对应（如果不传默认不显示标题）|1.3.3结束
+|setBannerTitles(List<String> titles)| 设置轮播要显示的标题和图片对应（如果不传默认不显示标题）|1.4开始
+|setDelayTime(int time)| 设置轮播图片间隔时间（单位毫秒，默认为2000）|无
+|setImages(Object[]/List<?> imagesUrl)| 设置轮播图片(所有设置参数方法都放在此方法之前执行)|1.4后去掉数组传参
+|setImages(Object[]/List<?> imagesUrl,OnLoadImageListener listener)| 设置轮播图片，并且自定义图片加载方式|1.3.3结束
+|setOnBannerClickListener(this)|设置点击事件，下标是从1开始|无
+|setOnLoadImageListener(this)|设置图片加载事件，可以自定义图片加载方式|1.3.3结束
+|setImageLoader(Object implements ImageLoader)|设置图片加载器|1.4开始
+|setOnPageChangeListener(this)|设置viewpager的滑动监听|无
+|setBannerAnimation(Class<? extends PageTransformer> transformer)|设置viewpager的默认动画,传值见动画表|无
+|setPageTransformer(boolean reverseDrawingOrder, ViewPager.PageTransformer transformer)|设置viewpager的自定义动画|无
 
-### <a href="http://www.springblog.top/2016/08/24/ViewPager%E5%88%87%E6%8D%A2%E5%8A%A8%E7%94%BBPageTransformer%E4%BD%BF%E7%94%A8/" target="_blank"> [ 点击查看 ViewPager的PageTransformer用法 ]
+## Attributes属性（banner布局文件中调用）
+|Attributes|forma|describe
+|---|---|---|
+|delay_time| integer|轮播执行时间，默认2000
+|is_auto_play| boolean|是否自动轮播，默认true
+|title_background| color|reference|标题栏的背景色
+|title_textcolor| color|标题字体颜色
+|title_textsize| dimension|标题字体大小
+|title_height| dimension|标题栏高度
+|indicator_width| dimension|指示器圆形按钮的宽度
+|indicator_height| dimension|指示器圆形按钮的高度
+|indicator_margin| dimension|指示器之间的间距
+|indicator_drawable_selected| reference|指示器选中效果
+|indicator_drawable_unselected| reference|指示器未选中效果
+|image_scale_type| enum（fit_xy/center_crop）|和imageview的ScaleType作用一样
 
 
-##使用步骤 \* 更多用法请下载demo
+### <a href="http://youth5201314.github.io/2016/08/24/ViewPager%E5%88%87%E6%8D%A2%E5%8A%A8%E7%94%BBPageTransformer%E4%BD%BF%E7%94%A8/" target="_blank"> [ 点击查看 ViewPager的PageTransformer用法 ]
 
-#### 1.在布局文件中添加Banner，可以设置自定义属性
-* 简单使用
+
+##使用步骤 
+
+#### Step 1.依赖banner
+Gradle 
+```groovy
+dependencies{
+    compile 'com.youth.banner:banner:1.4'  //最新版本
+    or
+    compile 'com.youth.banner:banner:1.3.3' //旧版本
+}
+```
+或者引用本地lib
+```groovy
+compile project(':banner')
+```
+
+
+#### Step 2.添加权限到你的 AndroidManifest.xml
+```xml
+<!-- if you want to load images from the internet -->
+<uses-permission android:name="android.permission.INTERNET" /> 
+
+<!-- if you want to load images from a file OR from the internet -->
+<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+```
+
+#### Step 3.在布局文件中添加Banner，可以设置自定义属性
+！！！此步骤可以省略，直接在Activity或者Fragment中new Banner();
 ```xml
 <com.youth.banner.Banner
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -95,44 +130,65 @@ compile project(':banner')
     android:layout_width="match_parent"
     android:layout_height="高度自己设置" />
 ```
-* 深度自定义,xml扩展属性
-* !!!! 有些属性和方法有重复的地方，完全是为了考虑不同人的习惯
-```xml
-<com.youth.banner.Banner
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/banner"
-    android:layout_width="match_parent"
-    android:layout_height="高度自己设置"
-    app:default_image="默认加载图片"
-    app:delay_time="轮播间隔时间"
-    app:is_auto_play="是否自动轮播"
-    app:image_scale_type="fit_xy,和imageview的ScaleType作用一样，不过只提供了两个常用的"
-    app:indicator_margin="指示器之间的间距"
-    app:indicator_drawable_selected="指示器选中效果"
-    app:indicator_drawable_unselected="指示器未选中效果"
-    app:indicator_height="指示器圆形按钮的高度"
-    app:indicator_width="指示器圆形按钮的宽度"
-    app:title_background="标题栏的背景色"
-    app:title_height="标题栏高度"
-    app:title_textcolor="标题字体颜色"
-    app:title_textsize="标题字体大小"/>
+
+#### Step 4.重写图片加载器
+```java
+public class GlideImageLoader implements ImageLoader {
+    @Override
+    public void displayImage(Context context, Object path, ImageView imageView) {
+        Glide.with(context).load(path).into(imageView);
+    }
+}
 ```
 
-#### 2.在Activity或者Fragment中配置Banner 
+#### Step 5.在Activity或者Fragment中配置Banner 
 ```java
-private Banner banner;
-String[] images= new String[] {"url"};
-String[] titles=new String[]{"标题"};
+--------------------------简单使用-------------------------------
 @Override
 protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
-    banner = (Banner) findViewById(R.id.banner);
-    //一步搞定，设置图片就行了
+    Banner banner = (Banner) findViewById(R.id.banner);
+    //设置图片加载器
+    banner.setImageLoader(new GlideImageLoader());
+    //设置图片集合
     banner.setImages(images);
- 
+    //banner设置方法全部调用完毕时最后调用
+    banner.start();
 }
-
+--------------------------详细使用-------------------------------
+@Override
+protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_main);
+    Banner banner = (Banner) findViewById(R.id.banner);
+    //设置banner样式
+    banner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR_TITLE);
+    //设置图片加载器
+    banner.setImageLoader(new GlideImageLoader());
+    //设置图片集合
+    banner.setImages(images);
+    //设置banner动画效果
+    banner.setBannerAnimation(Transformer.DepthPage);
+    //设置标题集合（当banner样式有显示title时）
+    banner.setBannerTitles(Arrays.asList(titles));
+    //设置自动轮播，默认为true
+    banner.isAutoPlay(true);
+    //设置轮播时间
+    banner.setDelayTime(1500);
+    //设置指示器位置（当banner模式中有指示器时）
+    banner.setIndicatorGravity(BannerConfig.CENTER);
+    //banner设置方法全部调用完毕时最后调用
+    banner.start();
+}
+-----------------当然如果你想偷下懒也可以这么用--------------------
+@Override
+protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_main);
+    Banner banner = (Banner) findViewById(R.id.banner);
+    banner.setImages(images).setImageLoader(new GlideImageLoader()).start();
+}
 ```
 ## 混淆代码
 ```java
@@ -151,19 +207,21 @@ protected void onCreate(Bundle savedInstanceState) {
 
 <a href="https://dl.bintray.com/youth5201314/maven/com/youth/banner/banner/" target="_blank"> [历史版本资源地址]
 
+<a href="http://youth5201314.github.io/2016/04/13/Banner%E5%BC%80%E6%BA%90%E6%A1%86%E6%9E%B6-Android%E8%BD%AE%E6%92%AD%E6%8E%A7%E4%BB%B6/" target="_blank"> [1.3.3以前旧版本文档地址]
+
 ## 常见问题
 
 * 问：eclipse怎么使用banner？
 
-    * 答：`在历史版本列表中下载你想要版本的aar包提取最新资源/也可以自己吧工程转成eclipse的` <br>
-          eclipse的集成demo群文件里有共享
+    * 答：`在历史版本列表中下载你想要版本的aar包提取最新资源/也可以自己把工程转成eclipse的` <br>
+          eclipse的集成demo群文件里有共享！
 
 * 问：怎么显示的一片空白？
     * 答：<br>
         1、没有添加网络权限就抱怨有问题，然后就拒绝使用，我能说什么？<br>
         2、检查图片链接是否能打开。
 * 问：怎么加载其他图片资源（资源文件、文件、Uri、assets、raw、ContentProvider、sd卡资源）？
-    * 答：
+    * 答：列如！如果你使用的是glide，那么可以如下操作，其他图片图片加载框架可能有不同
         ```java 
         //资源文件
         Integer[] images={R.mipmap.a,R.mipmap.b,R.mipmap.c};
@@ -182,7 +240,7 @@ protected void onCreate(Bundle savedInstanceState) {
         //sd卡资源
         String[] images={"file://"+ Environment.getExternalStorageDirectory().getPath()+"/test.jpg"};
         
-        banner.setImages(images);//这里接收的图片类型只要是glide支持的都行,数组和集合都行
+        banner.setImages(images);//这里接收数组和集合都行
         ```
         
 ## Thanks
@@ -190,6 +248,19 @@ protected void onCreate(Bundle savedInstanceState) {
 - [ViewPagerTransforms](https://github.com/ToxicBakery/ViewPagerTransforms)
 
 ## 更新说明
+
+#### v1.4
+    全新升级，此次更新比较大，如果不习惯使用1.4的还是可以用1.3.3
+ * 去掉app:default_image="默认加载图片"，需要可以自己在图片加载器中设置
+ * 去掉glide图片加载相关代码全部用户自定义，外部通过实现（ImageLoader）去加载图片，尽力减少对第三方库的依赖
+ * 去掉OnLoadImageListener图片加载监听事件，增加ImageLoader接口，通过setImageLoader设置图片加载器
+ * 去掉isAutoPlay方法，改用startAutoPlay()|stopAutoPlay()这两个方法只能是渲染完（start()）后调用
+ * 调整代码结构和执行顺序，由start()进行最后渲染和逻辑判断，前面方法可以随意调用打乱顺序。
+ * 将设置图片和标题的方法改成setImages和setBannerTitles，传参方式改成集合，如果要用数组可以Arrays.asList()转成集合使用
+ * 调整默认样式为CIRCLE_INDICATOR
+ * 禁止单张轮播手动滑动问题
+ * demo改版，如果需要1.3.3的demo请在QQ群中下载
+ 
 
 #### v1.3.3
     优化轮播首尾过渡时间

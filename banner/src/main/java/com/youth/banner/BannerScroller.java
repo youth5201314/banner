@@ -4,18 +4,18 @@ import android.content.Context;
 import android.view.animation.Interpolator;
 import android.widget.Scroller;
 
-public class ViewPagerScroller extends Scroller {
+public class BannerScroller extends Scroller {
     private int mDuration = BannerConfig.DURATION;
 
-    public ViewPagerScroller(Context context) {
+    public BannerScroller(Context context) {
         super(context);
     }
 
-    public ViewPagerScroller(Context context, Interpolator interpolator) {
+    public BannerScroller(Context context, Interpolator interpolator) {
         super(context, interpolator);
     }
 
-    public ViewPagerScroller(Context context, Interpolator interpolator, boolean flywheel) {
+    public BannerScroller(Context context, Interpolator interpolator, boolean flywheel) {
         super(context, interpolator, flywheel);
     }
 

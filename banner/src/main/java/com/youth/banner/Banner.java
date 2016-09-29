@@ -3,6 +3,7 @@ package com.youth.banner;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.os.Handler;
+import android.os.Message;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
@@ -19,9 +20,9 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.youth.banner.listener.OnBannerClickListener;
-import com.youth.banner.listener.OnLoadImageListener;
+import com.youth.banner.loader.ImageLoader;
+import com.youth.banner.view.BannerViewPager;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -35,7 +36,7 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
     private int mIndicatorMargin = BannerConfig.PADDING_SIZE;
     private int mIndicatorWidth = BannerConfig.INDICATOR_SIZE;
     private int mIndicatorHeight = BannerConfig.INDICATOR_SIZE;
-    private int bannerStyle = BannerConfig.NOT_INDICATOR;
+    private int bannerStyle = BannerConfig.CIRCLE_INDICATOR;
     private int delayTime = BannerConfig.TIME;
     private boolean isAutoPlay = BannerConfig.IS_AUTO_PLAY;
     private int mIndicatorSelectedResId = R.drawable.gray_radius;
@@ -44,26 +45,25 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
     private int titleBackground;
     private int titleTextColor;
     private int titleTextSize;
-    private int defaultImage = -1;
     private int count = 0;
     private int currentItem;
     private int gravity = -1;
     private int lastPosition = 1;
     private int scaleType=0;
-    private String[] titles;
+    private List<String> titles;
+    private List<?> imageUrls;
     private List<ImageView> imageViews;
     private List<ImageView> indicatorImages;
     private Context context;
-    private ViewPager viewPager;
+    private BannerViewPager viewPager;
     private TextView bannerTitle, numIndicatorInside, numIndicator;
     private LinearLayout indicator, indicatorInside, titleView;
-    private Handler handler = new Handler();
-    private OnLoadImageListener imageListener;
+    private ImageLoader imageLoader;
     private BannerPagerAdapter adapter;
     private OnPageChangeListener mOnPageChangeListener;
-    private ViewPagerScroller mScroller;
+    private BannerScroller mScroller;
     private OnBannerClickListener listener;
-
+    private Handler handler = new Handler();
     public Banner(Context context) {
         this(context, null);
     }
@@ -75,8 +75,10 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
     public Banner(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         this.context = context;
-        imageViews = new ArrayList<ImageView>();
-        indicatorImages = new ArrayList<ImageView>();
+        titles = new ArrayList<>();
+        imageUrls = new ArrayList<>();
+        imageViews = new ArrayList<>();
+        indicatorImages = new ArrayList<>();
         initView(context, attrs);
     }
 
@@ -91,7 +93,6 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
         mIndicatorSelectedResId = typedArray.getResourceId(R.styleable.Banner_indicator_drawable_selected, R.drawable.gray_radius);
         mIndicatorUnselectedResId = typedArray.getResourceId(R.styleable.Banner_indicator_drawable_unselected, R.drawable.white_radius);
         scaleType=typedArray.getInt(R.styleable.Banner_image_scale_type,0);
-        defaultImage = typedArray.getResourceId(R.styleable.Banner_default_image, defaultImage);
         delayTime = typedArray.getInt(R.styleable.Banner_delay_time, BannerConfig.TIME);
         isAutoPlay = typedArray.getBoolean(R.styleable.Banner_is_auto_play, BannerConfig.IS_AUTO_PLAY);
         titleBackground = typedArray.getColor(R.styleable.Banner_title_background, BannerConfig.TITLE_BACKGROUND);
@@ -104,7 +105,7 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
     private void initView(Context context, AttributeSet attrs) {
         imageViews.clear();
         View view = LayoutInflater.from(context).inflate(R.layout.banner, this, true);
-        viewPager = (ViewPager) view.findViewById(R.id.viewpager);
+        viewPager = (BannerViewPager) view.findViewById(R.id.viewpager);
         titleView = (LinearLayout) view.findViewById(R.id.titleView);
         indicator = (LinearLayout) view.findViewById(R.id.indicator);
         indicatorInside = (LinearLayout) view.findViewById(R.id.indicatorInside);
@@ -114,20 +115,33 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
         handleTypedArray(context, attrs);
         initViewPagerScroll();
     }
+    private void initViewPagerScroll() {
+        try {
+            Field mField = ViewPager.class.getDeclaredField("mScroller");
+            mField.setAccessible(true);
+            mScroller = new BannerScroller(viewPager.getContext());
+            mField.set(viewPager, mScroller);
+        } catch (Exception e) {
+            Log.e(tag,e.getMessage());
+        }
+    }
 
-    public void isAutoPlay(boolean isAutoPlay) {
+    public Banner isAutoPlay(boolean isAutoPlay) {
         this.isAutoPlay = isAutoPlay;
-        if (isAutoPlay)
-            startAutoPlay();
-        else
-            stopAutoPlay();
+        return this;
     }
 
-    public void setDelayTime(int delayTime) {
+    public Banner setImageLoader(ImageLoader imageLoader) {
+        this.imageLoader = imageLoader;
+        return this;
+    }
+
+    public Banner setDelayTime(int delayTime) {
         this.delayTime = delayTime;
+        return this;
     }
 
-    public void setIndicatorGravity(int type) {
+    public Banner setIndicatorGravity(int type) {
         switch (type) {
             case BannerConfig.LEFT:
                 this.gravity = Gravity.LEFT | Gravity.CENTER_VERTICAL;
@@ -139,51 +153,66 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
                 this.gravity = Gravity.RIGHT | Gravity.CENTER_VERTICAL;
                 break;
         }
+        return this;
     }
-
-    public void setBannerTitleList(List<String> titles) {
-        setBannerTitle(titles.toArray(new String[titles.size()]));
-    }
-
-    public void setBannerAnimation(Class<? extends PageTransformer> transformer) {
+    public Banner setBannerAnimation(Class<? extends PageTransformer> transformer) {
         try {
             setPageTransformer(true, transformer.newInstance());
         } catch (Exception e) {
             Log.e(tag,"Please set the PageTransformer class");
         }
+        return this;
     }
 
-    public void setPageTransformer(boolean reverseDrawingOrder, PageTransformer transformer) {
+    public Banner setPageTransformer(boolean reverseDrawingOrder, PageTransformer transformer) {
         viewPager.setPageTransformer(reverseDrawingOrder, transformer);
+        return this;
     }
 
-    public void setBannerTitle(String[] titles) {
+    public Banner setBannerTitles(List<String> titles) {
         this.titles = titles;
-        if (bannerStyle == BannerConfig.CIRCLE_INDICATOR_TITLE ||
-                bannerStyle == BannerConfig.NUM_INDICATOR_TITLE ||
-                bannerStyle == BannerConfig.CIRCLE_INDICATOR_TITLE_INSIDE) {
-            if (titleBackground != -1) {
-                titleView.setBackgroundColor(titleBackground);
-            }
-            if (titleHeight != -1) {
-                titleView.setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, titleHeight));
-            }
-            if (titleTextColor != -1) {
-                bannerTitle.setTextColor(titleTextColor);
-            }
-            if (titleTextSize != -1) {
-                bannerTitle.setTextSize(titleTextSize);
-            }
-            if (titles != null && titles.length > 0) {
-                bannerTitle.setText(titles[0]);
-                bannerTitle.setVisibility(View.VISIBLE);
-                titleView.setVisibility(View.VISIBLE);
-            }
+        return this;
+    }
+
+    public Banner setBannerStyle(int bannerStyle) {
+        this.bannerStyle = bannerStyle;
+        return this;
+    }
+
+
+    public Banner setImages(List<?> imagesUrl) {
+        this.imageUrls=imagesUrl;
+        return this;
+    }
+    public Banner start(){
+        setBannerStyleUI();
+        setImageList(imageUrls);
+        if (isAutoPlay)
+            startAutoPlay();
+        return this;
+    }
+
+    private void setTitleStyleUI() {
+        if (titleBackground != -1) {
+            titleView.setBackgroundColor(titleBackground);
+        }
+        if (titleHeight != -1) {
+            titleView.setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, titleHeight));
+        }
+        if (titleTextColor != -1) {
+            bannerTitle.setTextColor(titleTextColor);
+        }
+        if (titleTextSize != -1) {
+            bannerTitle.setTextSize(titleTextSize);
+        }
+        if (titles != null && titles.size() > 0) {
+            bannerTitle.setText(titles.get(0));
+            bannerTitle.setVisibility(View.VISIBLE);
+            titleView.setVisibility(View.VISIBLE);
         }
     }
 
-    public void setBannerStyle(int bannerStyle) {
-        this.bannerStyle = bannerStyle;
+    private void setBannerStyleUI() {
         switch (bannerStyle) {
             case BannerConfig.CIRCLE_INDICATOR:
                 indicator.setVisibility(View.VISIBLE);
@@ -193,30 +222,17 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
                 break;
             case BannerConfig.NUM_INDICATOR_TITLE:
                 numIndicatorInside.setVisibility(View.VISIBLE);
+                setTitleStyleUI();
                 break;
             case BannerConfig.CIRCLE_INDICATOR_TITLE:
                 indicator.setVisibility(View.VISIBLE);
+                setTitleStyleUI();
                 break;
             case BannerConfig.CIRCLE_INDICATOR_TITLE_INSIDE:
                 indicatorInside.setVisibility(VISIBLE);
+                setTitleStyleUI();
                 break;
         }
-    }
-
-    public void setImages(Object[] imagesUrl) {
-        setImageArray(imagesUrl, null);
-    }
-
-    public void setImages(Object[] imagesUrl, OnLoadImageListener imageListener) {
-        setImageArray(imagesUrl, imageListener);
-    }
-
-    public void setImages(List<?> imagesUrl) {
-        setImageList(imagesUrl, null);
-    }
-
-    public void setImages(List<?> imagesUrl, OnLoadImageListener imageListener) {
-        setImageList(imagesUrl, imageListener);
     }
 
     private void initImages() {
@@ -232,41 +248,7 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
         }
     }
 
-    private void setImageArray(Object[] imagesUrl, OnLoadImageListener imageListener) {
-        if (imagesUrl == null || imagesUrl.length <= 0) {
-            Log.e(tag, "Please set the images data.");
-            return;
-        }
-        count = imagesUrl.length;
-        initImages();
-        for (int i = 0; i <= count + 1; i++) {
-            ImageView iv = new ImageView(context);
-            if (scaleType==0)
-                iv.setScaleType(ScaleType.FIT_XY);
-            else
-                iv.setScaleType(ScaleType.CENTER_CROP);
-            Object url = null;
-            if (i == 0) {
-                url = imagesUrl[count - 1];
-            } else if (i == count + 1) {
-                url = imagesUrl[0];
-            } else {
-                url = imagesUrl[i - 1];
-            }
-            imageViews.add(iv);
-            if (imageListener != null) {
-                imageListener.OnLoadImage(iv, url);
-            } else {
-                if (defaultImage != -1)
-                    Glide.with(context).load(url).crossFade().into(iv);
-                else
-                    Glide.with(context).load(url).crossFade().placeholder(defaultImage).into(iv);
-            }
-        }
-        setData();
-    }
-
-    private void setImageList(List<?> imagesUrl, OnLoadImageListener imageListener) {
+    private void setImageList(List<?> imagesUrl) {
         if (imagesUrl == null || imagesUrl.size() <= 0) {
             Log.e(tag, "Please set the images data.");
             return;
@@ -288,14 +270,10 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
                 url = imagesUrl.get(i - 1);
             }
             imageViews.add(iv);
-            if (imageListener != null) {
-                imageListener.OnLoadImage(iv, url);
-            } else {
-                if (defaultImage != -1)
-                    Glide.with(context).load(url).crossFade().into(iv);
-                else
-                    Glide.with(context).load(url).crossFade().placeholder(defaultImage).into(iv);
-            }
+            if (imageLoader!=null)
+                imageLoader.displayImage(context, url, iv);
+            else
+                Log.e(tag, "Please set images loader.");
         }
         setData();
     }
@@ -338,26 +316,11 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
         viewPager.addOnPageChangeListener(this);
         if (gravity != -1)
             indicator.setGravity(gravity);
-        if (isAutoPlay)
-            startAutoPlay();
+        if(count==1) viewPager.setScrollble(false);
     }
 
-    private void initViewPagerScroll() {
-        try {
-            Field mField = null;
-            mField = ViewPager.class.getDeclaredField("mScroller");
-            mField.setAccessible(true);
-            mScroller = new ViewPagerScroller(viewPager.getContext());
-            mField.set(viewPager, mScroller);
-        } catch (NoSuchFieldException e) {
-            e.printStackTrace();
-        } catch (IllegalArgumentException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
-    }
-    private void startAutoPlay() {
+
+    public void startAutoPlay() {
         handler.removeCallbacks(task);
         handler.postDelayed(task, delayTime);
     }
@@ -435,6 +398,9 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
 
     @Override
     public void onPageScrollStateChanged(int state) {
+        if (mOnPageChangeListener != null) {
+            mOnPageChangeListener.onPageScrollStateChanged(state);
+        }
         currentItem = viewPager.getCurrentItem();
         switch (state) {
             case 0:
@@ -444,9 +410,6 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
                     viewPager.setCurrentItem(1, false);
                 }
                 break;
-        }
-        if (mOnPageChangeListener != null) {
-            mOnPageChangeListener.onPageScrollStateChanged(state);
         }
     }
 
@@ -470,6 +433,7 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
             lastPosition = position;
         }
         if (position == 0) position = 1;
+        int titleSize=titles.size();
         switch (bannerStyle) {
             case BannerConfig.CIRCLE_INDICATOR:
                 break;
@@ -480,38 +444,41 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
             case BannerConfig.NUM_INDICATOR_TITLE:
                 if (position > count) position = count;
                 numIndicatorInside.setText(position + "/" + count);
-                if (titles != null && titles.length > 0) {
-                    if (position > titles.length) position = titles.length;
-                    bannerTitle.setText(titles[position - 1]);
+                if (titles != null && titleSize > 0) {
+                    if (position > titleSize) position = titleSize;
+                    bannerTitle.setText(titles.get(position - 1));
                 }
                 break;
             case BannerConfig.CIRCLE_INDICATOR_TITLE:
-                if (titles != null && titles.length > 0) {
-                    if (position > titles.length) position = titles.length;
-                    bannerTitle.setText(titles[position - 1]);
+                if (titles != null && titleSize> 0) {
+                    if (position > titleSize) position = titleSize;
+                    bannerTitle.setText(titles.get(position - 1));
                 }
                 break;
             case BannerConfig.CIRCLE_INDICATOR_TITLE_INSIDE:
-                if (titles != null && titles.length > 0) {
-                    if (position > titles.length) position = titles.length;
-                    bannerTitle.setText(titles[position - 1]);
+                if (titles != null && titleSize > 0) {
+                    if (position > titleSize) position = titleSize;
+                    bannerTitle.setText(titles.get(position - 1));
                 }
                 break;
         }
 
     }
 
-
     public void setOnBannerClickListener(OnBannerClickListener listener) {
         this.listener=listener;
-    }
-
-    public void setOnBannerImageListener(OnLoadImageListener imageListener) {
-        this.imageListener = imageListener;
     }
 
     public void setOnPageChangeListener(OnPageChangeListener onPageChangeListener) {
         mOnPageChangeListener = onPageChangeListener;
     }
-
+//    public void releaseBanner(){
+//        stopAutoPlay();
+//        new ArrayList(imageUrls).clear();
+//        new ArrayList(titles).clear();
+//        imageViews.clear();
+//        indicatorImages.clear();
+//        viewPager.removeAllViews();
+//        adapter=null;
+//    }
 }
