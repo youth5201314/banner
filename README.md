@@ -25,7 +25,7 @@
 |BannerConfig.CIRCLE_INDICATOR| 显示圆形指示器|setBannerStyle
 |BannerConfig.NUM_INDICATOR| 显示数字指示器|setBannerStyle
 |BannerConfig.NUM_INDICATOR_TITLE| 显示数字指示器和标题|setBannerStyle
-|BannerConfig.CIRCLE_INDICATOR_TITLE| 显示圆形指示器和标题（垂直显示）setBannerStyle
+|BannerConfig.CIRCLE_INDICATOR_TITLE| 显示圆形指示器和标题（垂直显示）|setBannerStyle
 |BannerConfig.CIRCLE_INDICATOR_TITLE_INSIDE| 显示圆形指示器和标题（水平显示）|setBannerStyle
 |BannerConfig.LEFT| 指示器居左|setIndicatorGravity
 |BannerConfig.CENTER| 指示器居中|setIndicatorGravity
