@@ -71,6 +71,4 @@ public class MainActivity extends AppCompatActivity {
         //结束轮播
         banner.stopAutoPlay();
     }
-
-
 }

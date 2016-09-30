@@ -8,6 +8,7 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -203,7 +204,7 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
             bannerTitle.setTextColor(titleTextColor);
         }
         if (titleTextSize != -1) {
-            bannerTitle.setTextSize(titleTextSize);
+            bannerTitle.setTextSize(TypedValue.COMPLEX_UNIT_PX,titleTextSize);
         }
         if (titles != null && titles.size() > 0) {
             bannerTitle.setText(titles.get(0));
