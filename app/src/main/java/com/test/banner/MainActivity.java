@@ -10,10 +10,12 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.Transformer;
+import com.youth.banner.listener.OnBannerClickListener;
 
 import java.util.Arrays;
 
@@ -25,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        images= getResources().getStringArray(R.array.url);
+        images= getResources().getStringArray(R.array.url2);
         titles= getResources().getStringArray(R.array.title);
 
         banner = (Banner) findViewById(R.id.banner);
@@ -51,7 +53,12 @@ public class MainActivity extends AppCompatActivity {
         banner.setIndicatorGravity(BannerConfig.CENTER);
         //banner设置方法全部调用完毕时最后调用
         banner.start();*/
-
+        banner.setOnBannerClickListener(new OnBannerClickListener() {
+            @Override
+            public void OnBannerClick(int position) {
+                Toast.makeText(getApplicationContext(),"点击："+position,Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
 
