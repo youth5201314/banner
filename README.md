@@ -1,7 +1,7 @@
 # Android图片轮播控件 *如果对你有帮助请star哦！*
 [![Apache 2.0 License](https://img.shields.io/badge/license-Apache%202.0-blue.svg?style=flat)](http://www.apache.org/licenses/LICENSE-2.0.html)
 
-![关于图片加载方式更新](https://raw.githubusercontent.com/youth5201314/banner/master/image/1.4.png)
+![1.4版本更新，修改了图片加载方式](https://raw.githubusercontent.com/youth5201314/banner/master/image/1.4.png)
 
 <br>
 现在的绝大数app都有banner界面，实现循环播放多个广告图片和手动滑动循环等功能。因为ViewPager并不支持循环翻页，
