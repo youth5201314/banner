@@ -7,7 +7,7 @@ import android.view.MotionEvent;
 
 
 public class BannerViewPager extends ViewPager {
-    private boolean scrollble = true;
+    private boolean scrollable = true;
 
     public BannerViewPager(Context context) {
         super(context);
@@ -20,18 +20,15 @@ public class BannerViewPager extends ViewPager {
 
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
-        if (!scrollble) {
-            return true;
-        }
-        return super.onTouchEvent(ev);
+        return this.scrollable && super.onTouchEvent(ev);
     }
 
-
-    public boolean isScrollble() {
-        return scrollble;
+    @Override
+    public boolean onInterceptTouchEvent(MotionEvent ev) {
+        return this.scrollable && super.onInterceptTouchEvent(ev);
     }
 
-    public void setScrollble(boolean scrollble) {
-        this.scrollble = scrollble;
+    public void setScrollable(boolean scrollable) {
+        this.scrollable = scrollable;
     }
 }

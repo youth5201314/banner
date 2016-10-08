@@ -317,7 +317,10 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
         viewPager.addOnPageChangeListener(this);
         if (gravity != -1)
             indicator.setGravity(gravity);
-        if(count==1) viewPager.setScrollble(false);
+        if(count<=1)
+            viewPager.setScrollable(false);
+        else
+            viewPager.setScrollable(true);
     }
 
 

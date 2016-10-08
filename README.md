@@ -103,7 +103,7 @@
 Gradle 
 ```groovy
 dependencies{
-    compile 'com.youth.banner:banner:1.4'  //最新版本
+    compile 'com.youth.banner:banner:1.4.1'  //最新版本
     or
     compile 'com.youth.banner:banner:1.3.3' //旧版本
 }
@@ -263,6 +263,12 @@ protected void onCreate(Bundle savedInstanceState) {
 - [ViewPagerTransforms](https://github.com/ToxicBakery/ViewPagerTransforms)
 
 ## 更新说明
+
+#### v1.4.1
+    bug修改<感谢深圳-放飞，台北-Tom>
+ * 第一次加载一张图片(不能滑动[正常])-->刷新-->第二次加载多张图片(不能滑动[bug])
+ * 滑动事件传递拦截优化
+ * demo里添加了下拉刷新和RecyclerView添加头部的两种方式
 
 #### v1.4
     全新升级，此次更新比较大，如果不习惯使用1.4的还是可以用1.3.3

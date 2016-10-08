@@ -1,36 +1,71 @@
 package com.test.banner;
 
-import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.ListView;
-import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.test.banner.common.BaseRecyclerAdapter;
 import com.youth.banner.Banner;
-import com.youth.banner.BannerConfig;
-import com.youth.banner.Transformer;
 import com.youth.banner.listener.OnBannerClickListener;
 
 import java.util.Arrays;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
+    static final int REFRESH_COMPLETE = 0X1112;
+    SwipeRefreshLayout mSwipeLayout;
+    RecyclerView recyclerView;
     Banner banner;
-    String[] images,titles;
+    String[] images, titles;
+    private Handler mHandler = new Handler() {
+        public void handleMessage(android.os.Message msg) {
+            switch (msg.what) {
+                case REFRESH_COMPLETE:
+                    images = getResources().getStringArray(R.array.url2);
+                    banner.setImages(Arrays.asList(images)).start();
+                    mSwipeLayout.setRefreshing(false);
+                    break;
+            }
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        images= getResources().getStringArray(R.array.url2);
-        titles= getResources().getStringArray(R.array.title);
+        images = getResources().getStringArray(R.array.url);
+        titles = getResources().getStringArray(R.array.title);
 
-        banner = (Banner) findViewById(R.id.banner);
+        mSwipeLayout = (SwipeRefreshLayout) findViewById(R.id.swipe);
+        mSwipeLayout.setOnRefreshListener(this);
+
+        recyclerView= (RecyclerView) findViewById(R.id.list);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        BaseRecyclerAdapter adapter = new BaseRecyclerAdapter<>(new SampleAdapter());
+
+        /**
+         * 将banner添加到recyclerView头部
+         */
+        View header= LayoutInflater.from(this).inflate(R.layout.header,null);
+        banner = (Banner) header.findViewById(R.id.banner);
+        //如果你不需要用xml的属性，那么也可以直接创建对象来实现
+//        banner=new Banner(this);
+        banner.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,200));
+        adapter.addHeader(banner);
+        recyclerView.setAdapter(adapter);
+
+        /**
+         * 如果在当前布局文件就直接使用
+         * banner = (Banner) findViewById(R.id.banner);
+         */
 
         //简单使用
         banner.setImages(Arrays.asList(images)).setImageLoader(new GlideImageLoader()).start();
@@ -56,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
         banner.setOnBannerClickListener(new OnBannerClickListener() {
             @Override
             public void OnBannerClick(int position) {
-                Toast.makeText(getApplicationContext(),"点击："+position,Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "点击：" + position, Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -66,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        Log.i("--","onStart");
+        Log.i("--", "onStart");
         //开始轮播
         banner.startAutoPlay();
     }
@@ -74,8 +109,13 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        Log.i("--","onStop");
+        Log.i("--", "onStop");
         //结束轮播
         banner.stopAutoPlay();
+    }
+
+    @Override
+    public void onRefresh() {
+        mHandler.sendEmptyMessageDelayed(REFRESH_COMPLETE, 2000);
     }
 }
