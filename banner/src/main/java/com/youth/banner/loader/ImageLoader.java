@@ -1,14 +1,15 @@
 package com.youth.banner.loader;
 
 import android.content.Context;
-import android.view.View;
-
-import java.io.Serializable;
+import android.widget.ImageView;
 
 
-public interface ImageLoader<T extends View> extends Serializable {
+public abstract class ImageLoader implements ImageLoaderInterface<ImageView> {
 
-    void displayImage(Context context, Object path, T imageView);
+    @Override
+    public ImageView createImageView(Context context) {
+        ImageView imageView = new ImageView(context);
+        return imageView;
+    }
 
-    T createImageView(Context context);
 }

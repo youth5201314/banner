@@ -17,7 +17,7 @@
 |指示器加标题模式<br>水平显示|![效果示例](https://raw.githubusercontent.com/youth5201314/banner/master/image/5.png)
 
 ### 联系方式  <a target="_blank" href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=KBkYGhAfGhEYEB5oWVkGS0dF" style="text-decoration:none;"><img src="http://rescdn.qqmail.com/zh_CN/htmledition/images/function/qm_open/ico_mailme_11.png"/></a>
-![效果示例](https://raw.githubusercontent.com/youth5201314/banner/master/image/Android技术交流群二维码.png)
+![效果示例](http://oceh51kku.bkt.clouddn.com/Android%E6%8A%80%E6%9C%AF%E4%BA%A4%E6%B5%81%E7%BE%A4%E4%BA%8C%E7%BB%B4%E7%A0%81.png)
 * 如果遇到问题和建议欢迎在给我发送邮件或者加入qq群，希望让这个工程越来越完善。
 
 ## 常量
@@ -64,6 +64,7 @@
 |startAutoPlay()|开始轮播|1.4开始，此方法只作用于banner加载完毕-->需要在start()后执行
 |stopAutoPlay()|结束轮播|1.4开始，此方法只作用于banner加载完毕-->需要在start()后执行
 |start()|开始进行banner渲染|1.4开始
+|setOffscreenPageLimit(int limit)|同viewpager的方法作用一样|1.4.2开始
 |setBannerTitle(String[] titles)| 设置轮播要显示的标题和图片对应（如果不传默认不显示标题）|1.3.3结束
 |setBannerTitleList(List<String> titles)| 设置轮播要显示的标题和图片对应（如果不传默认不显示标题）|1.3.3结束
 |setBannerTitles(List<String> titles)| 设置轮播要显示的标题和图片对应（如果不传默认不显示标题）|1.4开始
@@ -103,9 +104,9 @@
 Gradle 
 ```groovy
 dependencies{
-    compile 'com.youth.banner:banner:1.4.1'  //最新版本
+    compile 'com.youth.banner:banner:1.4.2'  //最新版本
     or
-    compile 'com.youth.banner:banner:1.3.3' //旧版本
+    compile 'com.youth.banner:banner:1.3.3' //旧版本，旧版本用法下面有跳转链接
 }
 ```
 或者引用本地lib
@@ -135,12 +136,11 @@ compile project(':banner')
 
 #### Step 4.重写图片加载器
 ```java
-public class GlideImageLoader implements ImageLoader {
+public class GlideImageLoader extends ImageLoader {
     @Override
     public void displayImage(Context context, Object path, ImageView imageView) {
         /**
           常用的图片加载库：
-          
           Universal Image Loader：一个强大的图片加载库，包含各种各样的配置，最老牌，使用也最广泛。      
           Picasso: Square出品，必属精品。和OkHttp搭配起来更配呦！          
           Volley ImageLoader：Google官方出品，可惜不能加载本地图片~          
@@ -148,10 +148,21 @@ public class GlideImageLoader implements ImageLoader {
           Glide：Google推荐的图片加载库，专注于流畅的滚动。
          */
          
+        //Glide 加载图片简单用法
         Glide.with(context).load(path).into(imageView);
-        or
+
+        //Picasso 加载图片简单用法
         Picasso.with(context).load(path).into(imageView)
-        ......
+        
+        //用fresco加载图片简单用法
+        Uri uri = Uri.parse((String) path);
+        imageView.setImageURI(uri);
+    }
+    //提供createImageView 方法，如果不用可以不重写这个方法，方便fresco自定义ImageView
+    @Override
+    public ImageView createImageView(Context context) {
+        SimpleDraweeView simpleDraweeView=new SimpleDraweeView(context);
+        return simpleDraweeView;
     }
 }
 ```
@@ -263,6 +274,15 @@ protected void onCreate(Bundle savedInstanceState) {
 - [ViewPagerTransforms](https://github.com/ToxicBakery/ViewPagerTransforms)
 
 ## 更新说明
+
+#### v1.4.2
+    banner优化更新<感谢 694551594，FeverCombo3,MIkeeJY >
+ * ！！！注意！！ImageLoader已从接口改变成抽象类，请调整下代码哦！
+ * ImageLoader中增加ImageView控件创建方法createImageView()，可以满足fresco加载图片时扩展ImageView需求 
+ * 修改关于banner刷新时需要第二轮才会更新图片问题(同title更新图片不更新问题)，具体看demo
+ * 开放viewpager的setOffscreenPageLimit(int limit)方法
+ * 优化banner在开始0s~20s之间会出现的内存泄漏问题
+ * 优化最后一张到第一张之间滑动卡顿现象
 
 #### v1.4.1
     bug修改<感谢深圳-放飞，台北-Tom>

@@ -1,5 +1,6 @@
 package com.test.banner;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -14,6 +15,8 @@ import android.widget.Toast;
 
 import com.test.banner.common.BaseRecyclerAdapter;
 import com.youth.banner.Banner;
+import com.youth.banner.BannerConfig;
+import com.youth.banner.Transformer;
 import com.youth.banner.listener.OnBannerClickListener;
 
 import java.util.Arrays;
@@ -29,7 +32,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         public void handleMessage(android.os.Message msg) {
             switch (msg.what) {
                 case REFRESH_COMPLETE:
-                    images = getResources().getStringArray(R.array.url2);
+                    images = getResources().getStringArray(R.array.url4);
                     banner.setImages(Arrays.asList(images)).start();
                     mSwipeLayout.setRefreshing(false);
                     break;
@@ -68,22 +71,22 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
          */
 
         //简单使用
-        banner.setImages(Arrays.asList(images)).setImageLoader(new GlideImageLoader()).start();
-
-        /*//设置banner样式
-        banner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR_TITLE);
+        banner.setImages(Arrays.asList(images)).setImageLoader(new CustomImageLoader()).start();
+/*
+        //设置banner样式
+        banner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR_TITLE_INSIDE);
         //设置图片加载器
-        banner.setImageLoader(new GlideImageLoader());
+        banner.setImageLoader(new CustomImageLoader());
         //设置图片集合
         banner.setImages(Arrays.asList(images));
         //设置banner动画效果
-        banner.setBannerAnimation(Transformer.DepthPage);
+        banner.setBannerAnimation(Transformer.CubeOut);
         //设置标题集合（当banner样式有显示title时）
         banner.setBannerTitles(Arrays.asList(titles));
         //设置自动轮播，默认为true
         banner.isAutoPlay(true);
         //设置轮播时间
-        banner.setDelayTime(1500);
+        banner.setDelayTime(3000);
         //设置指示器位置（当banner模式中有指示器时）
         banner.setIndicatorGravity(BannerConfig.CENTER);
         //banner设置方法全部调用完毕时最后调用
@@ -92,6 +95,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             @Override
             public void OnBannerClick(int position) {
                 Toast.makeText(getApplicationContext(), "点击：" + position, Toast.LENGTH_SHORT).show();
+                Log.e("--",position+"");
             }
         });
     }

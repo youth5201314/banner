@@ -9,13 +9,17 @@
         <item>http://img.zcool.cn/community/01fd2756e142716ac72531cbf8bbbf.jpg</item>
         <item>http://img.zcool.cn/community/0192a557a352ef0000012e7ed104e4.jpg</item>
     </array>
+    <array name="url1">
+        <item>http://img.zcool.cn/community/01700557a7f42f0000018c1bd6eb23.jpg</item>
+    </array>
     <array name="url2">
+        <item>http://img.zcool.cn/community/01d28457d621800000018c1bb7877e.jpg</item>
+        <item>http://img.zcool.cn/community/01ae5656e1427f6ac72531cb72bac5.jpg</item>
+    </array>
+    <array name="url4">
         <item>http://img.zcool.cn/community/01b72057a7e0790000018c1bf4fce0.png</item>
         <item>http://img.zcool.cn/community/01fca557a7f5f90000012e7e9feea8.jpg</item>
         <item>http://img.zcool.cn/community/01996b57a7f6020000018c1bedef97.jpg</item>
-        <item>http://img.zcool.cn/community/01700557a7f42f0000018c1bd6eb23.jpg</item>
-    </array>
-    <array name="url3">
         <item>http://img.zcool.cn/community/01700557a7f42f0000018c1bd6eb23.jpg</item>
     </array>
     <array name="title">

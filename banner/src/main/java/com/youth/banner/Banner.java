@@ -21,7 +21,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.youth.banner.listener.OnBannerClickListener;
-import com.youth.banner.loader.ImageLoader;
+import com.youth.banner.loader.ImageLoaderInterface;
 import com.youth.banner.view.BannerViewPager;
 
 import java.lang.reflect.Field;
@@ -58,12 +58,13 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
     private BannerViewPager viewPager;
     private TextView bannerTitle, numIndicatorInside, numIndicator;
     private LinearLayout indicator, indicatorInside, titleView;
-    private ImageLoader imageLoader;
+    private ImageLoaderInterface imageLoader;
     private BannerPagerAdapter adapter;
     private OnPageChangeListener mOnPageChangeListener;
     private BannerScroller mScroller;
     private OnBannerClickListener listener;
-    private Handler handler = new Handler();
+    private WeakHandler handler = new WeakHandler();
+
     public Banner(Context context) {
         this(context, null);
     }
@@ -131,7 +132,7 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
         return this;
     }
 
-    public Banner setImageLoader(ImageLoader imageLoader) {
+    public Banner setImageLoader(ImageLoaderInterface imageLoader) {
         this.imageLoader = imageLoader;
         return this;
     }
@@ -163,7 +164,30 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
         }
         return this;
     }
-
+    /**
+     * Set the number of pages that should be retained to either side of the
+     * current page in the view hierarchy in an idle state. Pages beyond this
+     * limit will be recreated from the adapter when needed.
+     *
+     * @param limit How many pages will be kept offscreen in an idle state.
+     * @return Banner
+     */
+    public Banner setOffscreenPageLimit(int limit){
+        if (viewPager!=null){
+            viewPager.setOffscreenPageLimit(limit);
+        }
+        return this;
+    }
+    /**
+     * Set a {@link PageTransformer} that will be called for each attached page whenever
+     * the scroll position is changed. This allows the application to apply custom property
+     * transformations to each page, overriding the default sliding look and feel.
+     *
+     * @param reverseDrawingOrder true if the supplied PageTransformer requires page views
+     *                            to be drawn from last to first instead of first to last.
+     * @param transformer PageTransformer that will modify each page's animation properties
+     * @return Banner
+     */
     public Banner setPageTransformer(boolean reverseDrawingOrder, PageTransformer transformer) {
         viewPager.setPageTransformer(reverseDrawingOrder, transformer);
         return this;
@@ -316,10 +340,8 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
         currentItem = 1;
         if (adapter == null) {
             adapter = new BannerPagerAdapter();
-            viewPager.setAdapter(adapter);
-        } else {
-            adapter.notifyDataSetChanged();
         }
+        viewPager.setAdapter(adapter);
         viewPager.setFocusable(true);
         viewPager.setCurrentItem(1);
         viewPager.addOnPageChangeListener(this);
@@ -415,12 +437,21 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
         }
         currentItem = viewPager.getCurrentItem();
         switch (state) {
-            case 0:
+            case 0://No operation
                 if (currentItem == 0) {
                     viewPager.setCurrentItem(count, false);
                 } else if (currentItem == count + 1) {
                     viewPager.setCurrentItem(1, false);
                 }
+                break;
+            case 1://start Sliding
+                if (currentItem == count + 1) {
+                    viewPager.setCurrentItem(1, false);
+                }else if(currentItem == 0){
+                    viewPager.setCurrentItem(count, false);
+                }
+                break;
+            case 2://end Sliding
                 break;
         }
     }
@@ -484,13 +515,4 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
     public void setOnPageChangeListener(OnPageChangeListener onPageChangeListener) {
         mOnPageChangeListener = onPageChangeListener;
     }
-//    public void releaseBanner(){
-//        stopAutoPlay();
-//        new ArrayList(imageUrls).clear();
-//        new ArrayList(titles).clear();
-//        imageViews.clear();
-//        indicatorImages.clear();
-//        viewPager.removeAllViews();
-//        adapter=null;
-//    }
 }
