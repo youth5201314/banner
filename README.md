@@ -60,7 +60,7 @@
 |---|---|---|
 |setBannerStyle(int bannerStyle)| 设置轮播样式（默认为CIRCLE_INDICATOR）|无
 |setIndicatorGravity(int type)| 设置指示器位置（没有标题默认为右边,有标题时默认左边）|无
-|isAutoPlay(boolean isAutoPlay)| 设置是否自动轮播（默认自动）|1.3.3结束
+|isAutoPlay(boolean isAutoPlay)| 设置是否自动轮播（默认自动）|无
 |startAutoPlay()|开始轮播|1.4开始，此方法只作用于banner加载完毕-->需要在start()后执行
 |stopAutoPlay()|结束轮播|1.4开始，此方法只作用于banner加载完毕-->需要在start()后执行
 |start()|开始进行banner渲染|1.4开始

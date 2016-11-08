@@ -1,6 +1,5 @@
 package com.test.banner;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -15,8 +14,6 @@ import android.widget.Toast;
 
 import com.test.banner.common.BaseRecyclerAdapter;
 import com.youth.banner.Banner;
-import com.youth.banner.BannerConfig;
-import com.youth.banner.Transformer;
 import com.youth.banner.listener.OnBannerClickListener;
 
 import java.util.Arrays;
@@ -71,12 +68,12 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
          */
 
         //简单使用
-        banner.setImages(Arrays.asList(images)).setImageLoader(new CustomImageLoader()).start();
+        banner.setImages(Arrays.asList(images)).setImageLoader(new FrescoImageLoader()).start();
 /*
         //设置banner样式
         banner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR_TITLE_INSIDE);
         //设置图片加载器
-        banner.setImageLoader(new CustomImageLoader());
+        banner.setImageLoader(new FrescoImageLoader());
         //设置图片集合
         banner.setImages(Arrays.asList(images));
         //设置banner动画效果
