@@ -1,19 +1,24 @@
 package com.test.banner;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.test.banner.common.BaseRecyclerAdapter;
 import com.youth.banner.Banner;
+import com.youth.banner.BannerConfig;
+import com.youth.banner.Transformer;
 import com.youth.banner.listener.OnBannerClickListener;
 
 import java.util.Arrays;
@@ -55,25 +60,23 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
          * 将banner添加到recyclerView头部
          */
         View header= LayoutInflater.from(this).inflate(R.layout.header,null);
+
         banner = (Banner) header.findViewById(R.id.banner);
         //如果你不需要用xml的属性，那么也可以直接创建对象来实现
 //        banner=new Banner(this);
-        banner.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,200));
+
+        //设置轮播图宽度和高度，建议最好按照图片的比例设置，效果更好
+        banner.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,getScreenH(this)/3));
         adapter.addHeader(banner);
         recyclerView.setAdapter(adapter);
 
-        /**
-         * 如果在当前布局文件就直接使用
-         * banner = (Banner) findViewById(R.id.banner);
-         */
-
         //简单使用
-        banner.setImages(Arrays.asList(images)).setImageLoader(new FrescoImageLoader()).start();
-/*
+//        banner.setImages(Arrays.asList(images)).setImageLoader(new FrescoImageLoader()).start();
+
         //设置banner样式
         banner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR_TITLE_INSIDE);
         //设置图片加载器
-        banner.setImageLoader(new FrescoImageLoader());
+        banner.setImageLoader(new GlideImageLoader());
         //设置图片集合
         banner.setImages(Arrays.asList(images));
         //设置banner动画效果
@@ -87,7 +90,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         //设置指示器位置（当banner模式中有指示器时）
         banner.setIndicatorGravity(BannerConfig.CENTER);
         //banner设置方法全部调用完毕时最后调用
-        banner.start();*/
+        banner.start();
         banner.setOnBannerClickListener(new OnBannerClickListener() {
             @Override
             public void OnBannerClick(int position) {
@@ -118,5 +121,9 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     @Override
     public void onRefresh() {
         mHandler.sendEmptyMessageDelayed(REFRESH_COMPLETE, 2000);
+    }
+    public int getScreenH(Context aty) {
+        DisplayMetrics dm = aty.getResources().getDisplayMetrics();
+        return dm.heightPixels;
     }
 }

@@ -38,6 +38,7 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
     private int mIndicatorHeight = BannerConfig.INDICATOR_SIZE;
     private int bannerStyle = BannerConfig.CIRCLE_INDICATOR;
     private int delayTime = BannerConfig.TIME;
+    private int scrollTime = BannerConfig.DURATION;
     private boolean isAutoPlay = BannerConfig.IS_AUTO_PLAY;
     private int mIndicatorSelectedResId = R.drawable.gray_radius;
     private int mIndicatorUnselectedResId = R.drawable.white_radius;
@@ -95,6 +96,7 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
         mIndicatorUnselectedResId = typedArray.getResourceId(R.styleable.Banner_indicator_drawable_unselected, R.drawable.white_radius);
         scaleType=typedArray.getInt(R.styleable.Banner_image_scale_type,0);
         delayTime = typedArray.getInt(R.styleable.Banner_delay_time, BannerConfig.TIME);
+        scrollTime = typedArray.getInt(R.styleable.Banner_scroll_time, BannerConfig.DURATION);
         isAutoPlay = typedArray.getBoolean(R.styleable.Banner_is_auto_play, BannerConfig.IS_AUTO_PLAY);
         titleBackground = typedArray.getColor(R.styleable.Banner_title_background, BannerConfig.TITLE_BACKGROUND);
         titleHeight = typedArray.getDimensionPixelSize(R.styleable.Banner_title_height, BannerConfig.TITLE_HEIGHT);
@@ -121,6 +123,7 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
             Field mField = ViewPager.class.getDeclaredField("mScroller");
             mField.setAccessible(true);
             mScroller = new BannerScroller(viewPager.getContext());
+            mScroller.setDuration(scrollTime);
             mField.set(viewPager, mScroller);
         } catch (Exception e) {
             Log.e(tag,e.getMessage());
@@ -206,6 +209,7 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
 
     public Banner setImages(List<?> imagesUrl) {
         this.imageUrls=imagesUrl;
+        count = imagesUrl.size();
         return this;
     }
     public Banner start(){
@@ -239,21 +243,26 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
     private void setBannerStyleUI() {
         switch (bannerStyle) {
             case BannerConfig.CIRCLE_INDICATOR:
-                indicator.setVisibility(View.VISIBLE);
+                if (count>1)
+                    indicator.setVisibility(View.VISIBLE);
                 break;
             case BannerConfig.NUM_INDICATOR:
-                numIndicator.setVisibility(View.VISIBLE);
+                if (count>1)
+                    numIndicator.setVisibility(View.VISIBLE);
                 break;
             case BannerConfig.NUM_INDICATOR_TITLE:
-                numIndicatorInside.setVisibility(View.VISIBLE);
+                if (count>1)
+                    numIndicatorInside.setVisibility(View.VISIBLE);
                 setTitleStyleUI();
                 break;
             case BannerConfig.CIRCLE_INDICATOR_TITLE:
-                indicator.setVisibility(View.VISIBLE);
+                if (count>1)
+                    indicator.setVisibility(View.VISIBLE);
                 setTitleStyleUI();
                 break;
             case BannerConfig.CIRCLE_INDICATOR_TITLE_INSIDE:
-                indicatorInside.setVisibility(VISIBLE);
+                if (count>1)
+                    indicatorInside.setVisibility(VISIBLE);
                 setTitleStyleUI();
                 break;
         }
@@ -277,7 +286,6 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
             Log.e(tag, "Please set the images data.");
             return;
         }
-        count = imagesUrl.size();
         initImages();
         for (int i = 0; i <= count + 1; i++) {
             View imageView = null;
@@ -287,13 +295,7 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
             if (imageView == null) {
                 imageView = new ImageView(context);
             }
-            if (imageView instanceof ImageView) {
-                if (scaleType==0) {
-                    ((ImageView) imageView).setScaleType(ScaleType.FIT_XY);
-                } else {
-                    ((ImageView) imageView).setScaleType(ScaleType.CENTER_CROP);
-                }
-            }
+            setScaleType(imageView);
             Object url = null;
             if (i == 0) {
                 url = imagesUrl.get(count - 1);
@@ -309,6 +311,39 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
                 Log.e(tag, "Please set images loader.");
         }
         setData();
+    }
+
+    private void setScaleType(View imageView) {
+        if (imageView instanceof ImageView) {
+            ImageView view=((ImageView) imageView);
+            switch (scaleType){
+                case 0:
+                    view.setScaleType(ScaleType.CENTER);
+                    break;
+                case 1:
+                    view.setScaleType(ScaleType.CENTER_CROP);
+                    break;
+                case 2:
+                    view.setScaleType(ScaleType.CENTER_INSIDE);
+                    break;
+                case 3:
+                    view.setScaleType(ScaleType.FIT_CENTER);
+                    break;
+                case 4:
+                    view.setScaleType(ScaleType.FIT_END );
+                    break;
+                case 5:
+                    view.setScaleType(ScaleType.FIT_START);
+                    break;
+                case 6:
+                    view.setScaleType(ScaleType.FIT_XY);
+                    break;
+                case 7:
+                    view.setScaleType(ScaleType.MATRIX );
+                    break;
+            }
+
+        }
     }
 
     private void createIndicator() {
@@ -425,7 +460,8 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
 
         @Override
         public void destroyItem(ViewGroup container, int position, Object object) {
-            container.removeView(imageViews.get(position));
+            if (imageViews.size()>position)
+                container.removeView(imageViews.get(position));
         }
 
     }

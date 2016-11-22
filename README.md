@@ -81,7 +81,8 @@
 ## Attributes属性（banner布局文件中调用）
 |Attributes|forma|describe
 |---|---|---|
-|delay_time| integer|轮播执行时间，默认2000
+|delay_time| integer|轮播间隔时间，默认2000
+|scroll_time| integer|轮播滑动执行时间，默认800
 |is_auto_play| boolean|是否自动轮播，默认true
 |title_background| color|reference|标题栏的背景色
 |title_textcolor| color|标题字体颜色
@@ -92,7 +93,7 @@
 |indicator_margin| dimension|指示器之间的间距
 |indicator_drawable_selected| reference|指示器选中效果
 |indicator_drawable_unselected| reference|指示器未选中效果
-|image_scale_type| enum（fit_xy/center_crop）|和imageview的ScaleType作用一样
+|image_scale_type| enum |和imageview的ScaleType作用一样
 
 
 ### <a href="http://youth5201314.github.io/2016/08/24/ViewPager%E5%88%87%E6%8D%A2%E5%8A%A8%E7%94%BBPageTransformer%E4%BD%BF%E7%94%A8/" target="_blank"> [ 点击查看 ViewPager的PageTransformer用法 ]
@@ -104,7 +105,7 @@
 Gradle 
 ```groovy
 dependencies{
-    compile 'com.youth.banner:banner:1.4.2'  //最新版本
+    compile 'com.youth.banner:banner:1.4.4'  //最新版本
     or
     compile 'com.youth.banner:banner:1.3.3' //旧版本，旧版本用法下面有跳转链接
 }
@@ -274,7 +275,12 @@ protected void onCreate(Bundle savedInstanceState) {
 - [ViewPagerTransforms](https://github.com/ToxicBakery/ViewPagerTransforms)
 
 ## 更新说明
-
+#### v1.4.3-1.4.4
+    banner bug修改
+ * 轮播图变少时刷新崩溃问题
+ * 增加控制图片显示属性 image_scale_type 的属性值（center，center_crop，center_inside，fit_center，fit_end，fit_start，fit_xy，matrix），和 ImageView 的效果一样
+ * 当只有一张图片时不显示圆形指示器和数字指示器   
+ 
 #### v1.4.2
     banner优化更新<感谢 694551594，FeverCombo3,MIkeeJY >
  * ！！！注意！！ImageLoader已从接口改变成抽象类，请调整下代码哦！
