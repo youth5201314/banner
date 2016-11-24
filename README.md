@@ -270,6 +270,11 @@ protected void onCreate(Bundle savedInstanceState) {
         banner.setImages(images);//这里接收数组和集合都行
         ```
         
+* 问：设置banner指示器颜色怎么变成方的了？
+
+    * 答：首先我先要说很多软件的指示器也是矩形的，然后banner的指示器可以设置color、资源图片、drawable文件夹自定义xml，
+    所以形状你自己可以根据需求定义哦！
+            
 ## Thanks
 
 - [ViewPagerTransforms](https://github.com/ToxicBakery/ViewPagerTransforms)

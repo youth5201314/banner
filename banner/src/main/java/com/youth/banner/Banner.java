@@ -50,7 +50,7 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
     private int currentItem;
     private int gravity = -1;
     private int lastPosition = 1;
-    private int scaleType=0;
+    private int scaleType=7;
     private List<String> titles;
     private List<?> imageUrls;
     private List<View> imageViews;
@@ -94,7 +94,7 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
         mIndicatorMargin = typedArray.getDimensionPixelSize(R.styleable.Banner_indicator_margin, BannerConfig.PADDING_SIZE);
         mIndicatorSelectedResId = typedArray.getResourceId(R.styleable.Banner_indicator_drawable_selected, R.drawable.gray_radius);
         mIndicatorUnselectedResId = typedArray.getResourceId(R.styleable.Banner_indicator_drawable_unselected, R.drawable.white_radius);
-        scaleType=typedArray.getInt(R.styleable.Banner_image_scale_type,0);
+        scaleType=typedArray.getInt(R.styleable.Banner_image_scale_type,7);
         delayTime = typedArray.getInt(R.styleable.Banner_delay_time, BannerConfig.TIME);
         scrollTime = typedArray.getInt(R.styleable.Banner_scroll_time, BannerConfig.DURATION);
         isAutoPlay = typedArray.getBoolean(R.styleable.Banner_is_auto_play, BannerConfig.IS_AUTO_PLAY);

@@ -24,7 +24,7 @@ import com.youth.banner.listener.OnBannerClickListener;
 import java.util.Arrays;
 
 
-public class MainActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
+public class MainActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener, OnBannerClickListener {
     static final int REFRESH_COMPLETE = 0X1112;
     SwipeRefreshLayout mSwipeLayout;
     RecyclerView recyclerView;
@@ -89,23 +89,23 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         banner.setDelayTime(3000);
         //设置指示器位置（当banner模式中有指示器时）
         banner.setIndicatorGravity(BannerConfig.CENTER);
+        //设置点击事件
+        banner.setOnBannerClickListener(this);
         //banner设置方法全部调用完毕时最后调用
         banner.start();
-        banner.setOnBannerClickListener(new OnBannerClickListener() {
-            @Override
-            public void OnBannerClick(int position) {
-                Toast.makeText(getApplicationContext(), "点击：" + position, Toast.LENGTH_SHORT).show();
-                Log.e("--",position+"");
-            }
-        });
+
     }
 
+    @Override
+    public void OnBannerClick(int position) {
+        Toast.makeText(getApplicationContext(), "点击：" + position, Toast.LENGTH_SHORT).show();
+        Log.e("--",position+"");
+    }
 
     //如果你需要考虑更好的体验，可以这么操作
     @Override
     protected void onStart() {
         super.onStart();
-        Log.i("--", "onStart");
         //开始轮播
         banner.startAutoPlay();
     }
@@ -113,7 +113,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     @Override
     protected void onStop() {
         super.onStop();
-        Log.i("--", "onStop");
         //结束轮播
         banner.stopAutoPlay();
     }
@@ -126,4 +125,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         DisplayMetrics dm = aty.getResources().getDisplayMetrics();
         return dm.heightPixels;
     }
+
+
 }
