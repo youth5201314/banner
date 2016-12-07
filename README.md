@@ -61,6 +61,9 @@
 |setBannerStyle(int bannerStyle)| 设置轮播样式（默认为CIRCLE_INDICATOR）|无
 |setIndicatorGravity(int type)| 设置指示器位置（没有标题默认为右边,有标题时默认左边）|无
 |isAutoPlay(boolean isAutoPlay)| 设置是否自动轮播（默认自动）|无
+|setViewPagerIsScroll(boolean isScroll)| 设置是否允许手动滑动轮播图（默认true）|1.4.5开始
+|update(List<?> imageUrls,List<String> titles)| 更新图片和标题 |1.4.5开始
+|update(List<?> imageUrls)| 更新图片 |1.4.5开始
 |startAutoPlay()|开始轮播|1.4开始，此方法只作用于banner加载完毕-->需要在start()后执行
 |stopAutoPlay()|结束轮播|1.4开始，此方法只作用于banner加载完毕-->需要在start()后执行
 |start()|开始进行banner渲染|1.4开始
@@ -105,7 +108,7 @@
 Gradle 
 ```groovy
 dependencies{
-    compile 'com.youth.banner:banner:1.4.4'  //最新版本
+    compile 'com.youth.banner:banner:1.4.5'  //最新版本
     or
     compile 'com.youth.banner:banner:1.3.3' //旧版本，旧版本用法下面有跳转链接
 }
@@ -280,6 +283,13 @@ protected void onCreate(Bundle savedInstanceState) {
 - [ViewPagerTransforms](https://github.com/ToxicBakery/ViewPagerTransforms)
 
 ## 更新说明
+
+#### v1.4.5
+    banner 优化更新
+ * 增加setViewPagerIsScroll(boolean isScroll)方法控制是否允许手动滑动轮播图，默认为true
+ * 增加update()方法，方便更新图片
+ * 解决最后一张图片切换到第一张，会出现卡顿(特别是不设置动画时有点明显)
+ 
 #### v1.4.3-1.4.4
     banner bug修改
  * 轮播图变少时刷新崩溃问题

@@ -12,7 +12,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.test.banner.common.BaseRecyclerAdapter;
@@ -21,7 +20,9 @@ import com.youth.banner.BannerConfig;
 import com.youth.banner.Transformer;
 import com.youth.banner.listener.OnBannerClickListener;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener, OnBannerClickListener {
@@ -35,7 +36,9 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             switch (msg.what) {
                 case REFRESH_COMPLETE:
                     images = getResources().getStringArray(R.array.url4);
-                    banner.setImages(Arrays.asList(images)).start();
+                    List list = Arrays.asList(images);
+                    List arrayList = new ArrayList(list);
+                    banner.update(arrayList);
                     mSwipeLayout.setRefreshing(false);
                     break;
             }
@@ -48,6 +51,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         setContentView(R.layout.activity_main);
         images = getResources().getStringArray(R.array.url);
         titles = getResources().getStringArray(R.array.title);
+        List list = Arrays.asList(images);
+        List arrayList = new ArrayList(list);
 
         mSwipeLayout = (SwipeRefreshLayout) findViewById(R.id.swipe);
         mSwipeLayout.setOnRefreshListener(this);
@@ -71,16 +76,16 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         recyclerView.setAdapter(adapter);
 
         //简单使用
-//        banner.setImages(Arrays.asList(images)).setImageLoader(new FrescoImageLoader()).start();
+//        banner.setImages(arrayList).setImageLoader(new FrescoImageLoader()).start();
 
         //设置banner样式
         banner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR_TITLE_INSIDE);
         //设置图片加载器
         banner.setImageLoader(new GlideImageLoader());
         //设置图片集合
-        banner.setImages(Arrays.asList(images));
+        banner.setImages(arrayList);
         //设置banner动画效果
-        banner.setBannerAnimation(Transformer.CubeOut);
+        banner.setBannerAnimation(Transformer.ZoomOut);
         //设置标题集合（当banner样式有显示title时）
         banner.setBannerTitles(Arrays.asList(titles));
         //设置自动轮播，默认为true
