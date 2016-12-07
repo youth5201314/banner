@@ -220,6 +220,25 @@ protected void onCreate(Bundle savedInstanceState) {
     banner.setImages(images).setImageLoader(new GlideImageLoader()).start();
 }
 ```
+
+#### Step 6.（可选）增加体验
+```java
+//如果你需要考虑更好的体验，可以这么操作
+@Override
+protected void onStart() {
+    super.onStart();
+    //开始轮播
+    banner.startAutoPlay();
+}
+
+@Override
+protected void onStop() {
+    super.onStop();
+    //结束轮播
+    banner.stopAutoPlay();
+}
+```
+
 ## 混淆代码
 ```java
 # glide 的混淆代码
