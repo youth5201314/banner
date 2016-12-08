@@ -226,6 +226,10 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
         return this;
     }
 
+    public List getImages() {
+        return imageUrls;
+    }
+
     public void update(List<?> imageUrls, List<String> titles) {
         this.titles = titles;
         this.imageUrls.clear();
@@ -482,7 +486,7 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
                 view.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        listener.OnBannerClick(position);
+                        listener.OnBannerClick(position, imageUrls.get(position));
                     }
                 });
             }
