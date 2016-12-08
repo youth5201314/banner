@@ -1,7 +1,7 @@
 apply plugin: 'com.android.library'
 apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'com.jfrog.bintray'
-version = "1.2.8"
+version = "1.4.5"
 
 android {
     compileSdkVersion 23
@@ -10,8 +10,8 @@ android {
     defaultConfig {
         minSdkVersion 11
         targetSdkVersion 23
-        versionCode 22
-        versionName "1.2.8"
+        versionCode 36
+        versionName version
     }
     buildTypes {
         release {
@@ -19,14 +19,14 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    lintOptions {
+        abortOnError false
+    }
 }
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    testCompile 'junit:junit:4.12'
-    compile 'com.android.support:appcompat-v7:23.1.1'
-    compile 'com.github.bumptech.glide:glide:3.6.1'
-    compile 'com.nineoldandroids:library:2.4.0'
+    provided 'com.android.support:support-v4:23+'
 }
 
 
@@ -81,7 +81,7 @@ task javadocJar(type: Jar, dependsOn: javadoc) {
 }
 
 artifacts {
-    archives javadocJar
+//    archives javadocJar
     archives sourcesJar
 }
 

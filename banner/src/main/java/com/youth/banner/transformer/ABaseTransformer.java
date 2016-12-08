@@ -97,16 +97,16 @@ public abstract class ABaseTransformer implements PageTransformer {
 
 		if (hideOffscreenPages()) {
 			page.setAlpha(position <= -1f || position >= 1f ? 0f : 1f);
-			page.setEnabled(false);
+//			page.setEnabled(false);
 		} else {
-			page.setEnabled(true);
+//			page.setEnabled(true);
 			page.setAlpha(1f);
 		}
 	}
 
 	/**
 	 * Called each {@link #transformPage(View, float)} after {@link #onTransform(View, float)}.
-	 * 
+	 *
 	 * @param page
 	 *            Apply the transformation to this page
 	 * @param position
@@ -118,7 +118,7 @@ public abstract class ABaseTransformer implements PageTransformer {
 
 	/**
 	 * Same as {@link Math#min(double, double)} without double casting, zero closest to infinity handling, or NaN support.
-	 * 
+	 *
 	 * @param val
 	 * @param min
 	 * @return
