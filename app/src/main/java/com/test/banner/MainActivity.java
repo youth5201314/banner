@@ -102,7 +102,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     }
 
     @Override
-    public void OnBannerClick(int position) {
+    public void OnBannerClick(int position, Object data) {
         Toast.makeText(getApplicationContext(), "点击：" + position, Toast.LENGTH_SHORT).show();
         Log.e("--",position+"");
     }
