@@ -1,4 +1,4 @@
-package com.test.banner;
+package com.test.banner.loader;
 
 import android.content.Context;
 import android.net.Uri;

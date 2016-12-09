@@ -3,6 +3,7 @@
     package="com.test.banner">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
 
     <application
         android:name=".App"
@@ -19,7 +20,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
+        <activity android:name=".demo.BannerAnimationActivity" />
+        <activity android:name=".demo.BannerStyleActivity" />
+        <activity android:name=".demo.IndicatorPositionActivity" />
+        <activity android:name=".demo.CustomBannerActivity"></activity>
     </application>
 
 </manifest>

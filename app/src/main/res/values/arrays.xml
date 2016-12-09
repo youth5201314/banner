@@ -31,6 +31,13 @@
         <item>以诚感人者，人亦诚而应。</item>
         <item>习惯改变命运，细节铸就终身。</item>
     </array>
+    <array name="demo_list">
+        <item>banner动画预览</item>
+        <item>banner内置样式预览</item>
+        <item>banner指示器位置设置预览</item>
+        <item>banner一些自定义样式方法预览</item>
+        <item>！！banner更多用法请看文档，这里就不一一列举了！</item>
+    </array>
     <array name="anim">
         <item>Default</item>
         <item>Accordion</item>
@@ -50,18 +57,17 @@
         <item>ZoomOut</item>
         <item>ZoomOutSlide</item>
     </array>
-    <array name="style">
+    <string-array name="style">
         <item>NOT_INDICATOR</item>
         <item>CIRCLE_INDICATOR</item>
         <item>NUM_INDICATOR</item>
         <item>NUM_INDICATOR_TITLE</item>
         <item>CIRCLE_INDICATOR_TITLE</item>
         <item>CIRCLE_INDICATOR_TITLE_INSIDE</item>
-
-    </array>
-    <array name="indicator">
+    </string-array>
+    <string-array name="indicator">
         <item>LEFT</item>
         <item>CENTER</item>
         <item>RIGHT</item>
-    </array>
+    </string-array>
 </resources>
