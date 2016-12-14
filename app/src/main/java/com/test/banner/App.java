@@ -31,7 +31,8 @@ public class App extends Application {
         String[] tips = getResources().getStringArray(R.array.title);
         List list = Arrays.asList(urls);
         images = new ArrayList(list);
-        titles= Arrays.asList(tips);
+        List list1 = Arrays.asList(tips);
+        titles= new ArrayList(list1);
     }
     public int getScreenH(Context aty) {
         DisplayMetrics dm = aty.getResources().getDisplayMetrics();

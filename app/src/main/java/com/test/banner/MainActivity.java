@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.test.banner.demo.BannerAnimationActivity;
 import com.test.banner.demo.BannerStyleActivity;
@@ -19,13 +20,14 @@ import com.test.banner.demo.CustomBannerActivity;
 import com.test.banner.demo.IndicatorPositionActivity;
 import com.test.banner.loader.GlideImageLoader;
 import com.youth.banner.Banner;
+import com.youth.banner.listener.OnBannerClickListener;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 
-public class MainActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener, AdapterView.OnItemClickListener {
+public class MainActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener, AdapterView.OnItemClickListener, OnBannerClickListener {
     static final int REFRESH_COMPLETE = 0X1112;
     SwipeRefreshLayout mSwipeLayout;
     ListView listView;
@@ -63,11 +65,16 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         //简单使用
         banner.setImages(App.images)
                 .setImageLoader(new GlideImageLoader())
+                .setOnBannerClickListener(this)
                 .start();
 
 
     }
 
+    @Override
+    public void OnBannerClick(int position) {
+        Toast.makeText(getApplicationContext(),"你点击了："+position,Toast.LENGTH_SHORT).show();
+    }
 
 
     //如果你需要考虑更好的体验，可以这么操作
@@ -108,4 +115,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 break;
         }
     }
+
+
 }

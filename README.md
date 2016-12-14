@@ -203,7 +203,7 @@ protected void onCreate(Bundle savedInstanceState) {
     //设置banner动画效果
     banner.setBannerAnimation(Transformer.DepthPage);
     //设置标题集合（当banner样式有显示title时）
-    banner.setBannerTitles(Arrays.asList(titles));
+    banner.setBannerTitles(titles);
     //设置自动轮播，默认为true
     banner.isAutoPlay(true);
     //设置轮播时间
