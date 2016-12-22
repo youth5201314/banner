@@ -15,6 +15,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.test.banner.demo.BannerAnimationActivity;
+import com.test.banner.demo.BannerLocalActivity;
 import com.test.banner.demo.BannerStyleActivity;
 import com.test.banner.demo.CustomBannerActivity;
 import com.test.banner.demo.IndicatorPositionActivity;
@@ -37,7 +38,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         public void handleMessage(android.os.Message msg) {
             switch (msg.what) {
                 case REFRESH_COMPLETE:
-                    String[] urls = getResources().getStringArray(R.array.url);
+                    String[] urls = getResources().getStringArray(R.array.url4);
                     List list = Arrays.asList(urls);
                     List arrayList = new ArrayList(list);
                     banner.update(arrayList);
@@ -112,6 +113,9 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 break;
             case 4:
                 startActivity(new Intent(this, CustomBannerActivity.class));
+                break;
+            case 5:
+                startActivity(new Intent(this, BannerLocalActivity.class));
                 break;
         }
     }

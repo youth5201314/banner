@@ -16,9 +16,11 @@ public class App extends Application {
     public static List<?> images=new ArrayList<>();
     public static List<String> titles=new ArrayList<>();
     public static int H;
+    public static App app;
     @Override
     public void onCreate() {
         super.onCreate();
+        app=this;
         H=getScreenH(this);
         Fresco.initialize(this);
         Recovery.getInstance()
@@ -27,7 +29,7 @@ public class App extends Application {
                 .recoverStack(true)
                 .mainPage(MainActivity.class)
                 .init(this);
-        String[] urls = getResources().getStringArray(R.array.url4);
+        String[] urls = getResources().getStringArray(R.array.url);
         String[] tips = getResources().getStringArray(R.array.title);
         List list = Arrays.asList(urls);
         images = new ArrayList(list);

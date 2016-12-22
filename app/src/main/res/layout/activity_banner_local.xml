@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <com.youth.banner.Banner xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/banner"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        app:indicator_drawable_selected="@drawable/selected_radius"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="10dp"
+        android:text="
+        第三方加载器一般都支持（资源文件、文件、Uri、assets、raw、ContentProvider、sd卡资源）
+
+        这里只是以glide举例加载本地（资源文件）图片，
+        加载本地图片的具体方法请参考你使用的图片加载器，
+        图片加载的链接格式是你在setImages时设置的格式，
+        原样返回的，所以格式问题请仔细检查！"/>
+</LinearLayout>

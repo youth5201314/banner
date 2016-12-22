@@ -42,7 +42,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class BannerAnimationActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
+public class BannerAnimationActivity extends AppCompatActivity implements AdapterView.OnItemClickListener, OnBannerClickListener {
     Banner banner;
     List<Class<? extends ViewPager.PageTransformer>> transformers=new ArrayList<>();
     public void initData(){
@@ -78,6 +78,7 @@ public class BannerAnimationActivity extends AppCompatActivity implements Adapte
 
         banner.setImages(App.images)
                 .setImageLoader(new GlideImageLoader())
+                .setOnBannerClickListener(this)
                 .start();
 
     }
@@ -85,5 +86,11 @@ public class BannerAnimationActivity extends AppCompatActivity implements Adapte
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         banner.setBannerAnimation(transformers.get(position));
+    }
+
+    @Override
+    public void OnBannerClick(int position) {
+        Log.e("--",position+"");
+        Toast.makeText(getApplicationContext(),"你点击了："+position,Toast.LENGTH_SHORT).show();
     }
 }

@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <array name="url">
-        <item>http://img.zcool.cn/community/01d28457d621800000018c1bb7877e.jpg</item>
-        <item>http://img.zcool.cn/community/01ae5656e1427f6ac72531cb72bac5.jpg</item>
-        <item>http://img.zcool.cn/community/0166c756e1427432f875520f7cc838.jpg</item>
-        <item>http://img.zcool.cn/community/018fdb56e1428632f875520f7b67cb.jpg</item>
-        <item>http://img.zcool.cn/community/01c8dc56e1428e6ac72531cbaa5f2c.jpg</item>
-        <item>http://img.zcool.cn/community/01fd2756e142716ac72531cbf8bbbf.jpg</item>
-        <item>http://img.zcool.cn/community/0192a557a352ef0000012e7ed104e4.jpg</item>
+        <item>http://ww4.sinaimg.cn/large/006uZZy8jw1faic1xjab4j30ci08cjrv.jpg</item>
+        <item>http://ww4.sinaimg.cn/large/006uZZy8jw1faic21363tj30ci08ct96.jpg</item>
+        <item>http://ww4.sinaimg.cn/large/006uZZy8jw1faic259ohaj30ci08c74r.jpg</item>
+        <item>http://ww4.sinaimg.cn/large/006uZZy8jw1faic2b16zuj30ci08cwf4.jpg</item>
+        <item>http://ww4.sinaimg.cn/large/006uZZy8jw1faic2e7vsaj30ci08cglz.jpg</item>
     </array>
+
     <array name="url1">
         <item>http://img.zcool.cn/community/01700557a7f42f0000018c1bd6eb23.jpg</item>
     </array>
@@ -28,14 +27,13 @@
         <item>生命不是要超越别人，而是要超越自己。</item>
         <item>己所不欲，勿施于人。——孔子</item>
         <item>嗨购5折不要停</item>
-        <item>以诚感人者，人亦诚而应。</item>
-        <item>习惯改变命运，细节铸就终身。</item>
     </array>
     <array name="demo_list">
         <item>banner动画预览</item>
         <item>banner内置样式预览</item>
         <item>banner指示器位置设置预览</item>
         <item>banner一些自定义样式方法预览</item>
+        <item>banner加载本地图片</item>
         <item>！！banner更多用法请看文档，这里就不一一列举了！</item>
     </array>
     <array name="anim">

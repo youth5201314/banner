@@ -23,7 +23,8 @@
         <activity android:name=".demo.BannerAnimationActivity" />
         <activity android:name=".demo.BannerStyleActivity" />
         <activity android:name=".demo.IndicatorPositionActivity" />
-        <activity android:name=".demo.CustomBannerActivity"></activity>
+        <activity android:name=".demo.CustomBannerActivity" />
+        <activity android:name=".demo.BannerLocalActivity"></activity>
     </application>
 
 </manifest>

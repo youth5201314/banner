@@ -291,7 +291,7 @@ protected void onStop() {
         //sd卡资源
         String[] images={"file://"+ Environment.getExternalStorageDirectory().getPath()+"/test.jpg"};
         
-        banner.setImages(images);//这里接收数组和集合都行
+        banner.setImages(images);//这里接收集合,上面写成集合太占地方，这个大家举一反三就行了啊
         ```
         
 * 问：设置banner指示器颜色怎么变成方的了？
