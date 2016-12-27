@@ -108,7 +108,7 @@
 Gradle 
 ```groovy
 dependencies{
-    compile 'com.youth.banner:banner:1.4.5'  //最新版本
+    compile 'com.youth.banner:banner:1.4.6'  //最新版本
     or
     compile 'com.youth.banner:banner:1.3.3' //旧版本，旧版本用法下面有跳转链接
 }
@@ -304,6 +304,12 @@ protected void onStop() {
 - [ViewPagerTransforms](https://github.com/ToxicBakery/ViewPagerTransforms)
 
 ## 更新说明
+
+#### v1.4.6
+    banner 优化更新
+ * 修改demo，更容易理解
+ * 修复第一张过渡第二张图片翻倍问题
+ * 图片默认全屏展示
 
 #### v1.4.5
     banner 优化更新

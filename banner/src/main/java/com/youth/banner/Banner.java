@@ -437,18 +437,14 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
     }
 
     private final Runnable task = new Runnable() {
-
         @Override
         public void run() {
             if (count > 1 && isAutoPlay) {
-                currentItem = currentItem % (count + 1) + 1;
+                currentItem = currentItem % (count+1)+1 ;
 //                Log.i(tag, "curr:"+currentItem+" count:"+count);
                 if (currentItem == 1) {
                     viewPager.setCurrentItem(currentItem, false);
-                    handler.postDelayed(task, delayTime);
-                } else if (currentItem == count + 1) {
-                    viewPager.setCurrentItem(currentItem+1);
-                    handler.postDelayed(task, delayTime);
+                    handler.post(task);
                 } else {
                     viewPager.setCurrentItem(currentItem);
                     handler.postDelayed(task, delayTime);
