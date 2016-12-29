@@ -241,7 +241,8 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
         this.count = this.imageUrls.size();
         start();
     }
-    public void updateBannerStyle(int bannerStyle){
+
+    public void updateBannerStyle(int bannerStyle) {
         indicator.setVisibility(GONE);
         numIndicator.setVisibility(GONE);
         numIndicatorInside.setVisibility(GONE);
@@ -251,6 +252,7 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
         this.bannerStyle = bannerStyle;
         start();
     }
+
     public Banner start() {
         setBannerStyleUI();
         setImageList(imageUrls);
@@ -260,6 +262,9 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
     }
 
     private void setTitleStyleUI() {
+        if (titles.size() != imageUrls.size()) {
+            throw new RuntimeException("[Banner] --> The number of titles and images is different");
+        }
         if (titleBackground != -1) {
             titleView.setBackgroundColor(titleBackground);
         }
@@ -440,7 +445,7 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
         @Override
         public void run() {
             if (count > 1 && isAutoPlay) {
-                currentItem = currentItem % (count+1)+1 ;
+                currentItem = currentItem % (count + 1) + 1;
 //                Log.i(tag, "curr:"+currentItem+" count:"+count);
                 if (currentItem == 1) {
                     viewPager.setCurrentItem(currentItem, false);
@@ -548,34 +553,23 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
             indicatorImages.get((position - 1 + count) % count).setImageResource(mIndicatorSelectedResId);
             lastPosition = position;
         }
-        if (position == 0) position = 1;
-        int titleSize = titles.size();
+        if (position == 0) position = count;
+        if (position > count) position = 1;
         switch (bannerStyle) {
             case BannerConfig.CIRCLE_INDICATOR:
                 break;
             case BannerConfig.NUM_INDICATOR:
-                if (position > count) position = count;
                 numIndicator.setText(position + "/" + count);
                 break;
             case BannerConfig.NUM_INDICATOR_TITLE:
-                if (position > count) position = count;
                 numIndicatorInside.setText(position + "/" + count);
-                if (titles != null && titleSize > 0) {
-                    if (position > titleSize) position = titleSize;
-                    bannerTitle.setText(titles.get(position - 1));
-                }
+                bannerTitle.setText(titles.get(position - 1));
                 break;
             case BannerConfig.CIRCLE_INDICATOR_TITLE:
-                if (titles != null && titleSize > 0) {
-                    if (position > titleSize) position = titleSize;
-                    bannerTitle.setText(titles.get(position - 1));
-                }
+                bannerTitle.setText(titles.get(position - 1));
                 break;
             case BannerConfig.CIRCLE_INDICATOR_TITLE_INSIDE:
-                if (titles != null && titleSize > 0) {
-                    if (position > titleSize) position = titleSize;
-                    bannerTitle.setText(titles.get(position - 1));
-                }
+                bannerTitle.setText(titles.get(position - 1));
                 break;
         }
 
@@ -589,6 +583,7 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
     public void setOnPageChangeListener(OnPageChangeListener onPageChangeListener) {
         mOnPageChangeListener = onPageChangeListener;
     }
+
     public void releaseBanner() {
 //        handler.removeCallbacksAndMessages(null);
 //        imageUrls.clear();

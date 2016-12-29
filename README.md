@@ -108,7 +108,7 @@
 Gradle 
 ```groovy
 dependencies{
-    compile 'com.youth.banner:banner:1.4.6'  //最新版本
+    compile 'com.youth.banner:banner:1.4.7'  //最新版本
     or
     compile 'com.youth.banner:banner:1.3.3' //旧版本，旧版本用法下面有跳转链接
 }
@@ -304,6 +304,10 @@ protected void onStop() {
 - [ViewPagerTransforms](https://github.com/ToxicBakery/ViewPagerTransforms)
 
 ## 更新说明
+
+#### v1.4.7
+    banner 优化更新
+ * 修复从第一个到最后一个，和从最后一个到第一个，数字和标题切换有点延迟的问题
 
 #### v1.4.6
     banner 优化更新
