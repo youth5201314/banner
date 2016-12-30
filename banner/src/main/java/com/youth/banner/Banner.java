@@ -446,7 +446,7 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
         public void run() {
             if (count > 1 && isAutoPlay) {
                 currentItem = currentItem % (count + 1) + 1;
-//                Log.i(tag, "curr:"+currentItem+" count:"+count);
+//                Log.i(tag, "curr:" + currentItem + " count:" + count);
                 if (currentItem == 1) {
                     viewPager.setCurrentItem(currentItem, false);
                     handler.post(task);
@@ -473,6 +473,19 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
         return super.dispatchTouchEvent(ev);
     }
 
+    /**
+     * 返回真实的位置
+     *
+     * @param position
+     * @return 下标从0开始
+     */
+    public int toRealPosition(int position) {
+        int realPosition = (position - 1) % count;
+        if (realPosition < 0)
+            realPosition += count;
+        return realPosition;
+    }
+
     class BannerPagerAdapter extends PagerAdapter {
 
         @Override
@@ -481,8 +494,8 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
         }
 
         @Override
-        public boolean isViewFromObject(View arg0, Object arg1) {
-            return arg0 == arg1;
+        public boolean isViewFromObject(View view, Object object) {
+            return view == object;
         }
 
         @Override
@@ -493,7 +506,13 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
                 view.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        listener.OnBannerClick(position);
+                        /**
+                         * 这里不再直接返回position，而是返回图片真实位置，避免越界出现
+                         *
+                         * 由于以前是偷懒直接返回的position，造成从下标1开始，所以这里现在也不好直接改成从0开始，
+                         * 不然以前的使用者都会出问题，所以这里故意+1，希望理解，下次大版本迭代在从0开始，小版本就不改动了
+                         */
+                        listener.OnBannerClick(toRealPosition(position)+1);
                     }
                 });
             }
@@ -502,8 +521,7 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
 
         @Override
         public void destroyItem(ViewGroup container, int position, Object object) {
-            if (imageViews.size() > position)
-                container.removeView(imageViews.get(position));
+            container.removeView((View)object);
         }
 
     }
