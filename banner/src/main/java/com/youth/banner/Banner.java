@@ -36,6 +36,7 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
     private int mIndicatorMargin = BannerConfig.PADDING_SIZE;
     private int mIndicatorWidth;
     private int mIndicatorHeight;
+    private int mCircleIndicatorMarginBottom;
     private int indicatorSize;
     private int bannerStyle = BannerConfig.CIRCLE_INDICATOR;
     private int delayTime = BannerConfig.TIME;
@@ -97,6 +98,7 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
         mIndicatorWidth = typedArray.getDimensionPixelSize(R.styleable.Banner_indicator_width, indicatorSize);
         mIndicatorHeight = typedArray.getDimensionPixelSize(R.styleable.Banner_indicator_height, indicatorSize);
         mIndicatorMargin = typedArray.getDimensionPixelSize(R.styleable.Banner_indicator_margin, BannerConfig.PADDING_SIZE);
+        mCircleIndicatorMarginBottom = typedArray.getDimensionPixelSize(R.styleable.Banner_circle_indicator_margin_bottom, BannerConfig.PADDING_SIZE);
         mIndicatorSelectedResId = typedArray.getResourceId(R.styleable.Banner_indicator_drawable_selected, R.drawable.gray_radius);
         mIndicatorUnselectedResId = typedArray.getResourceId(R.styleable.Banner_indicator_drawable_unselected, R.drawable.white_radius);
         scaleType = typedArray.getInt(R.styleable.Banner_image_scale_type, scaleType);
@@ -164,6 +166,18 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
                 break;
         }
         return this;
+    }
+
+    public void setCircleIndicatorMarginBottom(int marginBottom){
+        mCircleIndicatorMarginBottom = marginBottom;
+        if (bannerStyle == BannerConfig.CIRCLE_INDICATOR && mCircleIndicatorMarginBottom > 0) {
+            RelativeLayout.LayoutParams params2 = (RelativeLayout.LayoutParams) indicator.getLayoutParams();
+            params2.bottomMargin = mCircleIndicatorMarginBottom;
+        }
+    }
+
+    public int getCircleIndicatorMarginBottom(){
+        return mCircleIndicatorMarginBottom;
     }
 
     public Banner setBannerAnimation(Class<? extends PageTransformer> transformer) {
@@ -409,6 +423,11 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
                 indicator.addView(imageView, params);
             else if (bannerStyle == BannerConfig.CIRCLE_INDICATOR_TITLE_INSIDE)
                 indicatorInside.addView(imageView, params);
+
+            if (bannerStyle == BannerConfig.CIRCLE_INDICATOR && mCircleIndicatorMarginBottom > 0) {
+                RelativeLayout.LayoutParams params2 = (RelativeLayout.LayoutParams) indicator.getLayoutParams();
+                params2.bottomMargin = mCircleIndicatorMarginBottom;
+            }
         }
     }
 
