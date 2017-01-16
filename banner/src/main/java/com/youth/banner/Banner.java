@@ -98,7 +98,7 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
         mIndicatorWidth = typedArray.getDimensionPixelSize(R.styleable.Banner_indicator_width, indicatorSize);
         mIndicatorHeight = typedArray.getDimensionPixelSize(R.styleable.Banner_indicator_height, indicatorSize);
         mIndicatorMargin = typedArray.getDimensionPixelSize(R.styleable.Banner_indicator_margin, BannerConfig.PADDING_SIZE);
-        mCircleIndicatorMarginBottom = typedArray.getDimensionPixelSize(R.styleable.Banner_circle_indicator_margin_bottom, BannerConfig.PADDING_SIZE);
+        mCircleIndicatorMarginBottom = typedArray.getDimensionPixelSize(R.styleable.Banner_circle_indicator_margin_bottom, BannerConfig.CIRCLE_INDICATOR_MARGIN_BOTTOM);
         mIndicatorSelectedResId = typedArray.getResourceId(R.styleable.Banner_indicator_drawable_selected, R.drawable.gray_radius);
         mIndicatorUnselectedResId = typedArray.getResourceId(R.styleable.Banner_indicator_drawable_unselected, R.drawable.white_radius);
         scaleType = typedArray.getInt(R.styleable.Banner_image_scale_type, scaleType);
