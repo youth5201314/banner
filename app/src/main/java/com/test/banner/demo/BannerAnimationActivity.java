@@ -20,6 +20,7 @@ import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.Transformer;
 import com.youth.banner.listener.OnBannerClickListener;
+import com.youth.banner.listener.OnBannerListener;
 import com.youth.banner.transformer.AccordionTransformer;
 import com.youth.banner.transformer.BackgroundToForegroundTransformer;
 import com.youth.banner.transformer.CubeInTransformer;
@@ -42,7 +43,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class BannerAnimationActivity extends AppCompatActivity implements AdapterView.OnItemClickListener, OnBannerClickListener {
+public class BannerAnimationActivity extends AppCompatActivity implements AdapterView.OnItemClickListener, OnBannerListener {
     Banner banner;
     List<Class<? extends ViewPager.PageTransformer>> transformers=new ArrayList<>();
     public void initData(){
@@ -78,7 +79,7 @@ public class BannerAnimationActivity extends AppCompatActivity implements Adapte
 
         banner.setImages(App.images)
                 .setImageLoader(new GlideImageLoader())
-                .setOnBannerClickListener(this)
+                .setOnBannerListener(this)
                 .start();
 
     }
@@ -90,7 +91,6 @@ public class BannerAnimationActivity extends AppCompatActivity implements Adapte
 
     @Override
     public void OnBannerClick(int position) {
-        Log.e("--",position+"");
         Toast.makeText(getApplicationContext(),"你点击了："+position,Toast.LENGTH_SHORT).show();
     }
 }

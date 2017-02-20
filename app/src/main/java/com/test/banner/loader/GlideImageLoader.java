@@ -2,6 +2,7 @@ package com.test.banner.loader;
 
 import android.content.Context;
 import android.net.Uri;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -19,4 +20,6 @@ public class GlideImageLoader extends ImageLoader {
                 .crossFade()
                 .into(imageView);
     }
+
+
 }

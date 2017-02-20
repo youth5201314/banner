@@ -1,8 +1,6 @@
 # Android图片轮播控件 *如果对你有帮助请star哦！*
 [![Apache 2.0 License](https://img.shields.io/badge/license-Apache%202.0-blue.svg?style=flat)](http://www.apache.org/licenses/LICENSE-2.0.html)
 
-![1.4版本更新，修改了图片加载方式](https://raw.githubusercontent.com/youth5201314/banner/master/image/version1.4.png)
-
 <br>
 现在的绝大数app都有banner界面，实现循环播放多个广告图片和手动滑动循环等功能。因为ViewPager并不支持循环翻页，
 所以要实现循环还得需要自己去动手，我就把项目中的控件剔了出来，希望大家觉得有用。目前框架可以进行不同样式、不同动画设置，
@@ -74,7 +72,8 @@
 |setDelayTime(int time)| 设置轮播图片间隔时间（单位毫秒，默认为2000）|无
 |setImages(Object[]/List<?> imagesUrl)| 设置轮播图片(所有设置参数方法都放在此方法之前执行)|1.4后去掉数组传参
 |setImages(Object[]/List<?> imagesUrl,OnLoadImageListener listener)| 设置轮播图片，并且自定义图片加载方式|1.3.3结束
-|setOnBannerClickListener(this)|设置点击事件，下标是从1开始|无
+|setOnBannerClickListener(this)|设置点击事件，下标是从1开始|无（1.4.9以后废弃了）
+|setOnBannerListener(this)|设置点击事件，下标是从0开始|1.4.9以后
 |setOnLoadImageListener(this)|设置图片加载事件，可以自定义图片加载方式|1.3.3结束
 |setImageLoader(Object implements ImageLoader)|设置图片加载器|1.4开始
 |setOnPageChangeListener(this)|设置viewpager的滑动监听|无
@@ -108,9 +107,7 @@
 Gradle 
 ```groovy
 dependencies{
-    compile 'com.youth.banner:banner:1.4.8'  //最新版本
-    or
-    compile 'com.youth.banner:banner:1.3.3' //旧版本，旧版本用法下面有跳转链接
+    compile 'com.youth.banner:banner:1.4.9'  //最新版本
 }
 ```
 或者引用本地lib
@@ -258,7 +255,7 @@ protected void onStop() {
 
 <a href="https://dl.bintray.com/youth5201314/maven/com/youth/banner/banner/" target="_blank"> [历史版本资源地址]
 
-<a href="http://youth5201314.github.io/2016/04/13/Banner%E5%BC%80%E6%BA%90%E6%A1%86%E6%9E%B6-Android%E8%BD%AE%E6%92%AD%E6%8E%A7%E4%BB%B6/" target="_blank"> [1.3.3以前旧版本文档地址]
+<a href="http://youth5201314.github.io/2016/04/13/Banner%E5%BC%80%E6%BA%90%E6%A1%86%E6%9E%B6-Android%E8%BD%AE%E6%92%AD%E6%8E%A7%E4%BB%B6/" target="_blank"> [1.3.3以前旧版本使用文档地址]
 
 ## 常见问题
 
@@ -304,6 +301,12 @@ protected void onStop() {
 - [ViewPagerTransforms](https://github.com/ToxicBakery/ViewPagerTransforms)
 
 ## 更新说明
+
+#### v1.4.9
+    banner 优化更新
+ * 废弃以前的点击事件(当然还是可以使用以前的方法)，增加新的setOnBannerListener点击事件，下标从0开始
+ * 解决update刷新轮播图后，会造成多次调用OnPageChangeListener的情况
+ * 改变布局文件变量名，减少和工程冲突
 
 #### v1.4.8
     banner 优化更新

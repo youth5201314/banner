@@ -22,15 +22,17 @@ import com.test.banner.demo.CustomBannerActivity;
 import com.test.banner.demo.IndicatorPositionActivity;
 import com.test.banner.loader.GlideImageLoader;
 import com.youth.banner.Banner;
+import com.youth.banner.BannerConfig;
 import com.youth.banner.Transformer;
 import com.youth.banner.listener.OnBannerClickListener;
+import com.youth.banner.listener.OnBannerListener;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 
-public class MainActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener, AdapterView.OnItemClickListener, OnBannerClickListener {
+public class MainActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener, AdapterView.OnItemClickListener, OnBannerListener {
     static final int REFRESH_COMPLETE = 0X1112;
     SwipeRefreshLayout mSwipeLayout;
     ListView listView;
@@ -60,6 +62,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         banner = (Banner) header.findViewById(R.id.banner);
         banner.setLayoutParams(new AbsListView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,App.H/4));
         listView.addHeaderView(banner);
+
         String[] data=getResources().getStringArray(R.array.demo_list);
         listView.setAdapter(new SampleAdapter(this,data));
         listView.setOnItemClickListener(this);
@@ -67,7 +70,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         //简单使用
         banner.setImages(App.images)
                 .setImageLoader(new GlideImageLoader())
-                .setOnBannerClickListener(this)
+                .setOnBannerListener(this)
                 .start();
 
     }

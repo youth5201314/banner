@@ -21,6 +21,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.youth.banner.listener.OnBannerClickListener;
+import com.youth.banner.listener.OnBannerListener;
 import com.youth.banner.loader.ImageLoaderInterface;
 import com.youth.banner.view.BannerViewPager;
 
@@ -65,8 +66,10 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
     private BannerPagerAdapter adapter;
     private OnPageChangeListener mOnPageChangeListener;
     private BannerScroller mScroller;
-    private OnBannerClickListener listener;
+    private OnBannerClickListener bannerListener;
+    private OnBannerListener listener;
     private DisplayMetrics dm;
+
     private WeakHandler handler = new WeakHandler();
 
     public Banner(Context context) {
@@ -113,9 +116,9 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
     private void initView(Context context, AttributeSet attrs) {
         imageViews.clear();
         View view = LayoutInflater.from(context).inflate(R.layout.banner, this, true);
-        viewPager = (BannerViewPager) view.findViewById(R.id.viewpager);
+        viewPager = (BannerViewPager) view.findViewById(R.id.bannerViewPager);
         titleView = (LinearLayout) view.findViewById(R.id.titleView);
-        indicator = (LinearLayout) view.findViewById(R.id.indicator);
+        indicator = (LinearLayout) view.findViewById(R.id.circleIndicator);
         indicatorInside = (LinearLayout) view.findViewById(R.id.indicatorInside);
         bannerTitle = (TextView) view.findViewById(R.id.bannerTitle);
         numIndicator = (TextView) view.findViewById(R.id.numIndicator);
@@ -135,6 +138,7 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
             Log.e(tag, e.getMessage());
         }
     }
+
 
     public Banner isAutoPlay(boolean isAutoPlay) {
         this.isAutoPlay = isAutoPlay;
@@ -256,8 +260,7 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
     public Banner start() {
         setBannerStyleUI();
         setImageList(imageUrls);
-        if (isAutoPlay)
-            startAutoPlay();
+        setData();
         return this;
     }
 
@@ -352,7 +355,6 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
             else
                 Log.e(tag, "Please set images loader.");
         }
-        setData();
     }
 
     private void setScaleType(View imageView) {
@@ -417,11 +419,11 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
         currentItem = 1;
         if (adapter == null) {
             adapter = new BannerPagerAdapter();
+            viewPager.addOnPageChangeListener(this);
         }
         viewPager.setAdapter(adapter);
         viewPager.setFocusable(true);
         viewPager.setCurrentItem(1);
-        viewPager.addOnPageChangeListener(this);
         if (gravity != -1)
             indicator.setGravity(gravity);
         if (isScroll && count > 1) {
@@ -429,6 +431,8 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
         } else {
             viewPager.setScrollable(false);
         }
+        if (isAutoPlay)
+            startAutoPlay();
     }
 
 
@@ -502,17 +506,21 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
         public Object instantiateItem(ViewGroup container, final int position) {
             container.addView(imageViews.get(position));
             View view = imageViews.get(position);
+            if (bannerListener != null) {
+                view.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Log.e(tag, "你正在使用旧版点击事件接口，下标是从1开始，" +
+                                "为了体验请更换为setOnBannerListener，下标从0开始计算");
+                        bannerListener.OnBannerClick(position);
+                    }
+                });
+            }
             if (listener != null) {
                 view.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        /**
-                         * 这里不再直接返回position，而是返回图片真实位置，避免越界出现
-                         *
-                         * 由于以前是偷懒直接返回的position，造成从下标1开始，所以这里现在也不好直接改成从0开始，
-                         * 不然以前的使用者都会出问题，所以这里故意+1，希望理解，下次大版本迭代在从0开始，小版本就不改动了
-                         */
-                        listener.OnBannerClick(toRealPosition(position)+1);
+                        listener.OnBannerClick(toRealPosition(position));
                     }
                 });
             }
@@ -521,7 +529,7 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
 
         @Override
         public void destroyItem(ViewGroup container, int position, Object object) {
-            container.removeView((View)object);
+            container.removeView((View) object);
         }
 
     }
@@ -561,6 +569,7 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
 
     @Override
     public void onPageSelected(int position) {
+        Log.e(tag,"----"+position);
         if (mOnPageChangeListener != null) {
             mOnPageChangeListener.onPageSelected(position);
         }
@@ -593,7 +602,19 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
 
     }
 
+    @Deprecated
     public Banner setOnBannerClickListener(OnBannerClickListener listener) {
+        this.bannerListener = listener;
+        return this;
+    }
+
+    /**
+     * 废弃了旧版接口，新版的接口下标是从1开始，同时解决下标越界问题
+     *
+     * @param listener
+     * @return
+     */
+    public Banner setOnBannerListener(OnBannerListener listener) {
         this.listener = listener;
         return this;
     }
@@ -603,12 +624,6 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
     }
 
     public void releaseBanner() {
-//        handler.removeCallbacksAndMessages(null);
-//        imageUrls.clear();
-//        imageViews.clear();
-//        titles.clear();
-//        indicatorImages.clear();
-//        viewPager.clearAnimation();
-//        viewPager=null;
+        handler.removeCallbacksAndMessages(null);
     }
 }
