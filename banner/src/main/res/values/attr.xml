@@ -11,6 +11,7 @@
         <attr name="indicator_width" format="dimension" />
         <attr name="indicator_height" format="dimension" />
         <attr name="indicator_margin" format="dimension" />
+        <attr name="circle_indicator_margin_bottom" format="dimension" />
         <attr name="indicator_drawable_selected" format="reference" />
         <attr name="indicator_drawable_unselected" format="reference" />
         <attr name="image_scale_type" format="enum">

@@ -103,6 +103,7 @@
 |indicator_margin| dimension|指示器之间的间距
 |indicator_drawable_selected| reference|指示器选中效果
 |indicator_drawable_unselected| reference|指示器未选中效果
+|circle_indicator_margin_bottom| dimension|CIRCLE_INDICATOR时有效，指示器与banner底部间距
 |image_scale_type| enum |和imageview的ScaleType作用一样
 
 
