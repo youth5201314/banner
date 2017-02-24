@@ -569,7 +569,6 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
 
     @Override
     public void onPageSelected(int position) {
-        Log.e(tag,"----"+position);
         if (mOnPageChangeListener != null) {
             mOnPageChangeListener.onPageSelected(position);
         }
