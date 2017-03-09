@@ -24,7 +24,10 @@
         <activity android:name=".demo.BannerStyleActivity" />
         <activity android:name=".demo.IndicatorPositionActivity" />
         <activity android:name=".demo.CustomBannerActivity" />
-        <activity android:name=".demo.BannerLocalActivity"></activity>
+        <activity android:name=".demo.BannerLocalActivity" />
+        <activity
+            android:screenOrientation="portrait"
+            android:name=".demo.CustomViewPagerActivity"/>
     </application>
 
 </manifest>

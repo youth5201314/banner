@@ -34,6 +34,7 @@
         <item>banner指示器位置设置预览</item>
         <item>banner一些自定义样式方法预览</item>
         <item>banner加载本地图片</item>
+        <item>自定义ViewPager</item>
         <item>！！banner更多用法请看文档，这里就不一一列举了！</item>
     </array>
     <array name="anim">

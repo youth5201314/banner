@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="bannerContainer" type="id"/>
+    <item name="bannerViewPager" type="id"/>
+    <item name="circleIndicator" type="id"/>
+    <item name="numIndicator" type="id"/>
+    <item name="titleView" type="id"/>
+    <item name="bannerTitle" type="id"/>
+    <item name="numIndicatorInside" type="id"/>
+    <item name="indicatorInside" type="id"/>
+</resources>
