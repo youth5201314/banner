@@ -20,7 +20,7 @@ public class BannerStyleActivity extends AppCompatActivity implements  AdapterVi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_banner_style);
         banner = (Banner) findViewById(R.id.banner);
-        spinnerStyle= (Spinner) findViewById(R.id.spinnerStyle);
+        spinnerStyle = (Spinner) findViewById(R.id.spinnerStyle);
         spinnerStyle.setOnItemSelectedListener(this);
 
         //默认是CIRCLE_INDICATOR

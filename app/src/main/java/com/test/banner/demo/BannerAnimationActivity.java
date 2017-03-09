@@ -1,13 +1,9 @@
 package com.test.banner.demo;
 
+import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -17,9 +13,6 @@ import com.test.banner.R;
 import com.test.banner.SampleAdapter;
 import com.test.banner.loader.GlideImageLoader;
 import com.youth.banner.Banner;
-import com.youth.banner.BannerConfig;
-import com.youth.banner.Transformer;
-import com.youth.banner.listener.OnBannerClickListener;
 import com.youth.banner.listener.OnBannerListener;
 import com.youth.banner.transformer.AccordionTransformer;
 import com.youth.banner.transformer.BackgroundToForegroundTransformer;
@@ -40,7 +33,6 @@ import com.youth.banner.transformer.ZoomOutSlideTransformer;
 import com.youth.banner.transformer.ZoomOutTranformer;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class BannerAnimationActivity extends AppCompatActivity implements AdapterView.OnItemClickListener, OnBannerListener {
@@ -72,9 +64,9 @@ public class BannerAnimationActivity extends AppCompatActivity implements Adapte
         setContentView(R.layout.activity_banner_animation);
         initData();
         banner = (Banner) findViewById(R.id.banner);
-        ListView listView= (ListView) findViewById(R.id.list);
-        String[] data=getResources().getStringArray(R.array.anim);
-        listView.setAdapter(new SampleAdapter(this,data));
+        ListView listView = (ListView) findViewById(R.id.list);
+        String[] data = getResources().getStringArray(R.array.anim);
+        listView.setAdapter(new SampleAdapter(this, data));
         listView.setOnItemClickListener(this);
 
         banner.setImages(App.images)

@@ -45,6 +45,7 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
     private boolean isScroll = BannerConfig.IS_SCROLL;
     private int mIndicatorSelectedResId = R.drawable.gray_radius;
     private int mIndicatorUnselectedResId = R.drawable.white_radius;
+    private int mLayoutResId = R.layout.banner;
     private int titleHeight;
     private int titleBackground;
     private int titleTextColor;
@@ -92,6 +93,20 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
         initView(context, attrs);
     }
 
+    private void initView(Context context, AttributeSet attrs) {
+        imageViews.clear();
+        handleTypedArray(context, attrs);
+        View view = LayoutInflater.from(context).inflate(mLayoutResId, this, true);
+        viewPager = (BannerViewPager) view.findViewById(R.id.bannerViewPager);
+        titleView = (LinearLayout) view.findViewById(R.id.titleView);
+        indicator = (LinearLayout) view.findViewById(R.id.circleIndicator);
+        indicatorInside = (LinearLayout) view.findViewById(R.id.indicatorInside);
+        bannerTitle = (TextView) view.findViewById(R.id.bannerTitle);
+        numIndicator = (TextView) view.findViewById(R.id.numIndicator);
+        numIndicatorInside = (TextView) view.findViewById(R.id.numIndicatorInside);
+        initViewPagerScroll();
+    }
+
     private void handleTypedArray(Context context, AttributeSet attrs) {
         if (attrs == null) {
             return;
@@ -110,21 +125,8 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
         titleHeight = typedArray.getDimensionPixelSize(R.styleable.Banner_title_height, BannerConfig.TITLE_HEIGHT);
         titleTextColor = typedArray.getColor(R.styleable.Banner_title_textcolor, BannerConfig.TITLE_TEXT_COLOR);
         titleTextSize = typedArray.getDimensionPixelSize(R.styleable.Banner_title_textsize, BannerConfig.TITLE_TEXT_SIZE);
+        mLayoutResId = typedArray.getResourceId(R.styleable.Banner_layout_id, mLayoutResId);
         typedArray.recycle();
-    }
-
-    private void initView(Context context, AttributeSet attrs) {
-        imageViews.clear();
-        View view = LayoutInflater.from(context).inflate(R.layout.banner, this, true);
-        viewPager = (BannerViewPager) view.findViewById(R.id.bannerViewPager);
-        titleView = (LinearLayout) view.findViewById(R.id.titleView);
-        indicator = (LinearLayout) view.findViewById(R.id.circleIndicator);
-        indicatorInside = (LinearLayout) view.findViewById(R.id.indicatorInside);
-        bannerTitle = (TextView) view.findViewById(R.id.bannerTitle);
-        numIndicator = (TextView) view.findViewById(R.id.numIndicator);
-        numIndicatorInside = (TextView) view.findViewById(R.id.numIndicatorInside);
-        handleTypedArray(context, attrs);
-        initViewPagerScroll();
     }
 
     private void initViewPagerScroll() {

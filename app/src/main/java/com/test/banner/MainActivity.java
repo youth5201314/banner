@@ -3,10 +3,8 @@ package com.test.banner;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,12 +17,10 @@ import com.test.banner.demo.BannerAnimationActivity;
 import com.test.banner.demo.BannerLocalActivity;
 import com.test.banner.demo.BannerStyleActivity;
 import com.test.banner.demo.CustomBannerActivity;
+import com.test.banner.demo.CustomViewPagerActivity;
 import com.test.banner.demo.IndicatorPositionActivity;
 import com.test.banner.loader.GlideImageLoader;
 import com.youth.banner.Banner;
-import com.youth.banner.BannerConfig;
-import com.youth.banner.Transformer;
-import com.youth.banner.listener.OnBannerClickListener;
 import com.youth.banner.listener.OnBannerListener;
 
 import java.util.ArrayList;
@@ -57,13 +53,13 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         setContentView(R.layout.activity_main);
         mSwipeLayout = (SwipeRefreshLayout) findViewById(R.id.swipe);
         mSwipeLayout.setOnRefreshListener(this);
-        listView= (ListView) findViewById(R.id.list);
-        View header= LayoutInflater.from(this).inflate(R.layout.header,null);
+        listView = (ListView) findViewById(R.id.list);
+        View header = LayoutInflater.from(this).inflate(R.layout.header, null);
         banner = (Banner) header.findViewById(R.id.banner);
-        banner.setLayoutParams(new AbsListView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,App.H/4));
+        banner.setLayoutParams(new AbsListView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, App.H / 4));
         listView.addHeaderView(banner);
 
-        String[] data=getResources().getStringArray(R.array.demo_list);
+        String[] data = getResources().getStringArray(R.array.demo_list);
         listView.setAdapter(new SampleAdapter(this,data));
         listView.setOnItemClickListener(this);
 
@@ -119,6 +115,9 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 break;
             case 5:
                 startActivity(new Intent(this, BannerLocalActivity.class));
+                break;
+            case 6:
+                startActivity(new Intent(this, CustomViewPagerActivity.class));
                 break;
         }
     }
