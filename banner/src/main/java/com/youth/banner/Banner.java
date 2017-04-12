@@ -157,6 +157,14 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
         return this;
     }
 
+    public List<View> getImageViews() {
+        return imageViews;
+    }
+
+    public View getImageViews(int position) {
+        return imageViews.get(position);
+    }
+
     public Banner setIndicatorGravity(int type) {
         switch (type) {
             case BannerConfig.LEFT:
