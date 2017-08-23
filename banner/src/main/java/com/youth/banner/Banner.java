@@ -492,6 +492,12 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
         return realPosition;
     }
 
+    private View mCurrentImgView;
+
+    public View getmCurrentImgView() {
+        return mCurrentImgView;
+    }
+
     class BannerPagerAdapter extends PagerAdapter {
 
         @Override
@@ -534,6 +540,10 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
             container.removeView((View) object);
         }
 
+        @Override
+        public void setPrimaryItem(ViewGroup container, int position, Object object) {
+            mCurrentImgView = (View) object;
+        }
     }
 
     @Override
