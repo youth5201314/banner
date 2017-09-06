@@ -1,16 +1,16 @@
 apply plugin: 'com.android.library'
 apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'com.jfrog.bintray'
-version = "1.4.9"
+version = "1.4.10"
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion "23.0.3"
+    compileSdkVersion 25
+    buildToolsVersion "25.0.1"
 
     defaultConfig {
         minSdkVersion 11
-        targetSdkVersion 23
-        versionCode 40
+        targetSdkVersion 25
+        versionCode 41
         versionName version
     }
     buildTypes {
@@ -26,7 +26,7 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    provided 'com.android.support:support-v4:23+'
+    provided 'com.android.support:support-v4:+'
 }
 
 

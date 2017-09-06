@@ -28,6 +28,7 @@
 ### 联系方式  <a target="_blank" href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=KBkYGhAfGhEYEB5oWVkGS0dF" style="text-decoration:none;"><img src="http://rescdn.qqmail.com/zh_CN/htmledition/images/function/qm_open/ico_mailme_11.png"/></a>
 ![效果示例](http://oceh51kku.bkt.clouddn.com/Android%E6%8A%80%E6%9C%AF%E4%BA%A4%E6%B5%81%E7%BE%A4%E4%BA%8C%E7%BB%B4%E7%A0%81.png)
 * 如果遇到问题和建议欢迎在给我发送邮件或者加入qq群，希望让这个工程越来越完善。
+* 群满可以加群2：594813900
 
 ## 常量
 |常量名称|描述|所属方法
@@ -43,6 +44,8 @@
 |BannerConfig.RIGHT| 指示器居右|setIndicatorGravity
 
 ## 动画常量类（setBannerAnimation方法调用）
+[ViewPagerTransforms](https://github.com/ToxicBakery/ViewPagerTransforms) `动画时集成的第三方库，可能有兼容问题导致position位置不准确，你可以选择参考动画然后自定义动画`
+
 |常量类名|
 |---|
 |Transformer.Default| 
@@ -107,6 +110,8 @@
 |indicator_drawable_selected| reference|指示器选中效果
 |indicator_drawable_unselected| reference|指示器未选中效果
 |image_scale_type| enum |和imageview的ScaleType作用一样
+|banner_default_image| reference | 当banner数据为空是显示的默认图片
+|banner_layout| reference |自定义banner布局文件，但是必须保证id的名称一样（你可以将banner的布局文件复制出来进行修改）
 
 
 ### <a href="http://youth5201314.github.io/2016/08/24/ViewPager%E5%88%87%E6%8D%A2%E5%8A%A8%E7%94%BBPageTransformer%E4%BD%BF%E7%94%A8/" target="_blank"> [ 点击查看 ViewPager的PageTransformer用法 ]
@@ -118,7 +123,7 @@
 Gradle 
 ```groovy
 dependencies{
-    compile 'com.youth.banner:banner:1.4.9'  //最新版本
+    compile 'com.youth.banner:banner:1.4.10'  //最新版本
 }
 ```
 或者引用本地lib
@@ -277,7 +282,7 @@ protected void onStop() {
 
 * 问：怎么显示的一片空白？
     * 答：<br>
-        1、没有添加网络权限就抱怨有问题，然后就拒绝使用，我能说什么？<br>
+        1、没有添加网络权限<br>
         2、检查图片链接是否能打开。
 * 问：怎么加载其他图片资源（资源文件、文件、Uri、assets、raw、ContentProvider、sd卡资源）？
     * 答：列如！如果你使用的是glide，那么可以如下操作，其他图片图片加载框架可能有不同
@@ -306,12 +311,27 @@ protected void onStop() {
 
     * 答：首先我先要说很多软件的指示器也是矩形的，然后banner的指示器可以设置color、资源图片、drawable文件夹自定义xml，
     所以形状你自己可以根据需求定义哦！
-            
+
+* 问：为什么banner的点击事件没有反应，需要下一次轮播才行？
+
+     * 答：请将点击事件放在start方法之前执行，详情可以看demo。
+
 ## Thanks
 
 - [ViewPagerTransforms](https://github.com/ToxicBakery/ViewPagerTransforms)
 
 ## 更新说明
+
+#### v1.4.10
+    很久没有维护banner了，有工作原因比较忙，也有经常遇见一些素质低的人，感觉整个世界都欠他们的，特别影响心情。就放弃更新维护了，
+    但是这半年每天邮箱都会收到各种建议反馈，也有很多人私信我，所以在此修复一些当前版本bug，关于有朋友要求让轮播类型可以自定义，不局限于imageview的需求，
+    这个过段时间再发布一个全新的banner版本，会更加灵活，就不在原来的上面弄了，到时候分两个版本走！
+
+ * 解决轮播手动滑动跳转问题：从第一张-->最后一张-->直接跳转到第二张
+ * 解决update刷新轮播图崩溃问题
+ * 将onPageScrolled和onPageSelected方法返回的position转成真实的position
+ * 增加属性banner_default_image，设置当banner数据为空是显示的默认图片
+ * 增加属性banner_layout，可以自定义布局文件，但是必须保证id的名称一样
 
 #### v1.4.9
     banner 优化更新

@@ -2,6 +2,7 @@ package com.youth.banner;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.os.Build;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
@@ -38,6 +39,7 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
     private int mIndicatorWidth;
     private int mIndicatorHeight;
     private int indicatorSize;
+    private int bannerBackgroundImage;
     private int bannerStyle = BannerConfig.CIRCLE_INDICATOR;
     private int delayTime = BannerConfig.TIME;
     private int scrollTime = BannerConfig.DURATION;
@@ -63,6 +65,7 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
     private BannerViewPager viewPager;
     private TextView bannerTitle, numIndicatorInside, numIndicator;
     private LinearLayout indicator, indicatorInside, titleView;
+    private ImageView bannerDefaultImage;
     private ImageLoaderInterface imageLoader;
     private BannerPagerAdapter adapter;
     private OnPageChangeListener mOnPageChangeListener;
@@ -97,6 +100,7 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
         imageViews.clear();
         handleTypedArray(context, attrs);
         View view = LayoutInflater.from(context).inflate(mLayoutResId, this, true);
+        bannerDefaultImage = (ImageView) view.findViewById(R.id.bannerDefaultImage);
         viewPager = (BannerViewPager) view.findViewById(R.id.bannerViewPager);
         titleView = (LinearLayout) view.findViewById(R.id.titleView);
         indicator = (LinearLayout) view.findViewById(R.id.circleIndicator);
@@ -104,6 +108,7 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
         bannerTitle = (TextView) view.findViewById(R.id.bannerTitle);
         numIndicator = (TextView) view.findViewById(R.id.numIndicator);
         numIndicatorInside = (TextView) view.findViewById(R.id.numIndicatorInside);
+        bannerDefaultImage.setImageResource(bannerBackgroundImage);
         initViewPagerScroll();
     }
 
@@ -125,7 +130,8 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
         titleHeight = typedArray.getDimensionPixelSize(R.styleable.Banner_title_height, BannerConfig.TITLE_HEIGHT);
         titleTextColor = typedArray.getColor(R.styleable.Banner_title_textcolor, BannerConfig.TITLE_TEXT_COLOR);
         titleTextSize = typedArray.getDimensionPixelSize(R.styleable.Banner_title_textsize, BannerConfig.TITLE_TEXT_SIZE);
-        mLayoutResId = typedArray.getResourceId(R.styleable.Banner_layout_id, mLayoutResId);
+        mLayoutResId = typedArray.getResourceId(R.styleable.Banner_banner_layout, mLayoutResId);
+        bannerBackgroundImage = typedArray.getResourceId(R.styleable.Banner_banner_default_image, R.drawable.no_banner);
         typedArray.recycle();
     }
 
@@ -233,16 +239,15 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
     }
 
     public void update(List<?> imageUrls, List<String> titles) {
-        this.imageUrls.clear();
         this.titles.clear();
-        this.imageUrls.addAll(imageUrls);
         this.titles.addAll(titles);
-        this.count = this.imageUrls.size();
-        start();
+        update(imageUrls);
     }
 
     public void update(List<?> imageUrls) {
         this.imageUrls.clear();
+        this.imageViews.clear();
+        this.indicatorImages.clear();
         this.imageUrls.addAll(imageUrls);
         this.count = this.imageUrls.size();
         start();
@@ -290,9 +295,7 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
     }
 
     private void setBannerStyleUI() {
-        int visibility;
-        if (count > 1) visibility = View.VISIBLE;
-        else visibility = View.GONE;
+        int visibility =count > 1 ? View.VISIBLE :View.GONE;
         switch (bannerStyle) {
             case BannerConfig.CIRCLE_INDICATOR:
                 indicator.setVisibility(visibility);
@@ -330,9 +333,11 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
 
     private void setImageList(List<?> imagesUrl) {
         if (imagesUrl == null || imagesUrl.size() <= 0) {
-            Log.e(tag, "Please set the images data.");
+            bannerDefaultImage.setVisibility(VISIBLE);
+            Log.e(tag, "The image data set is empty.");
             return;
         }
+        bannerDefaultImage.setVisibility(GONE);
         initImages();
         for (int i = 0; i <= count + 1; i++) {
             View imageView = null;
@@ -541,7 +546,7 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
         if (mOnPageChangeListener != null) {
             mOnPageChangeListener.onPageScrollStateChanged(state);
         }
-        currentItem = viewPager.getCurrentItem();
+//        Log.i(tag,"currentItem: "+currentItem);
         switch (state) {
             case 0://No operation
                 if (currentItem == 0) {
@@ -565,14 +570,15 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
         if (mOnPageChangeListener != null) {
-            mOnPageChangeListener.onPageScrolled(position, positionOffset, positionOffsetPixels);
+            mOnPageChangeListener.onPageScrolled(toRealPosition(position), positionOffset, positionOffsetPixels);
         }
     }
 
     @Override
     public void onPageSelected(int position) {
+        currentItem=position;
         if (mOnPageChangeListener != null) {
-            mOnPageChangeListener.onPageSelected(position);
+            mOnPageChangeListener.onPageSelected(toRealPosition(position));
         }
         if (bannerStyle == BannerConfig.CIRCLE_INDICATOR ||
                 bannerStyle == BannerConfig.CIRCLE_INDICATOR_TITLE ||

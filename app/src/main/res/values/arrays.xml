@@ -21,6 +21,18 @@
         <item>http://img.zcool.cn/community/01996b57a7f6020000018c1bedef97.jpg</item>
         <item>http://img.zcool.cn/community/01700557a7f42f0000018c1bd6eb23.jpg</item>
     </array>
+    <!-- http://588ku.com/image/daitengmandelitizi.html -->
+    <array name="test_num_url">
+        <item>http://bpic.588ku.com/element_origin_min_pic/00/00/05/115732f19cc0079.jpg</item>
+        <item>http://bpic.588ku.com/element_origin_min_pic/00/00/05/115732f1ac12d1d.jpg</item>
+        <item>http://bpic.588ku.com/element_origin_min_pic/00/00/05/115732f1bad97d1.jpg</item>
+        <item>http://bpic.588ku.com/element_origin_min_pic/00/00/05/115732f1c83c228.jpg</item>
+        <item>http://bpic.588ku.com/element_origin_min_pic/00/00/05/115732f1d53e3dd.jpg</item>
+        <item>http://bpic.588ku.com/element_origin_min_pic/00/00/05/115732f1e37fea9.jpg</item>
+        <item>http://bpic.588ku.com/element_origin_min_pic/00/00/05/115732f1ef4d709.jpg</item>
+        <item>http://bpic.588ku.com/element_origin_min_pic/00/00/05/115732f20b3ea10.jpg</item>
+        <item>http://bpic.588ku.com/element_origin_min_pic/00/00/05/115732f21927f8d.jpg</item>
+    </array>
     <array name="title">
         <item>51巅峰钜惠</item>
         <item>十大星级品牌联盟，全场2折起</item>
@@ -34,7 +46,7 @@
         <item>banner指示器位置设置预览</item>
         <item>banner一些自定义样式方法预览</item>
         <item>banner加载本地图片</item>
-        <item>自定义ViewPager</item>
+        <item>banner自定义布局文件（这里通过修改ViewPager举一反三吧）</item>
         <item>！！banner更多用法请看文档，这里就不一一列举了！</item>
     </array>
     <array name="anim">

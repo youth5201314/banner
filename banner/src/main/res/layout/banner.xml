@@ -5,7 +5,6 @@
     android:layout_height="match_parent"
     android:clipChildren="false">
 
-
     <com.youth.banner.view.BannerViewPager
         android:id="@id/bannerViewPager"
         android:layout_width="match_parent"
@@ -87,4 +86,10 @@
             </FrameLayout>
         </LinearLayout>
     </RelativeLayout>
+    <ImageView
+        android:id="@+id/bannerDefaultImage"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:visibility="gone"/>
 </RelativeLayout>

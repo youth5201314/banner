@@ -5,7 +5,14 @@
     android:layout_height="match_parent">
     <com.youth.banner.Banner
         android:id="@+id/banner"
-        app:layout_id="@layout/banner_custom_viewpager"
+        app:banner_layout="@layout/banner_custom_viewpager"
         android:layout_width="match_parent"
         android:layout_height="200dp"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:textColor="@color/colorPrimary"
+        android:layout_below="@id/banner"
+        android:text="这是一个修改banner布局文件的例子，你可以按照这个套路修改里面的内容，比如修改指示器位置啊，文字的大小啊，他们之间的间距啊，或者修改他们的摆放位置等待"/>
 </RelativeLayout>

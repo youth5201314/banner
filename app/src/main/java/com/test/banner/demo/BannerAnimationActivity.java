@@ -43,7 +43,7 @@ public class BannerAnimationActivity extends AppCompatActivity implements Adapte
         transformers.add(AccordionTransformer.class);
         transformers.add(BackgroundToForegroundTransformer.class);
         transformers.add(ForegroundToBackgroundTransformer.class);
-        transformers.add(CubeInTransformer.class);
+        transformers.add(CubeInTransformer.class);//兼容问题，慎用
         transformers.add(CubeOutTransformer.class);
         transformers.add(DepthPageTransformer.class);
         transformers.add(FlipHorizontalTransformer.class);

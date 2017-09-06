@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FindBugsFilter>
+    <!-- http://stackoverflow.com/questions/7568579/eclipsefindbugs-exclude-filter-files-doesnt-work -->
+    <Match>
+        <Or>
+            <Class name="~.*\.R\$.*"/>
+            <Class name="~.*\.Manifest\$.*"/>
+        </Or>
+    </Match>
+</FindBugsFilter>

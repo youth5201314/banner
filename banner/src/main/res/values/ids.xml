@@ -8,4 +8,5 @@
     <item name="bannerTitle" type="id"/>
     <item name="numIndicatorInside" type="id"/>
     <item name="indicatorInside" type="id"/>
+    <item name="bannerDefaultImage" type="id"/>
 </resources>
