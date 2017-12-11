@@ -78,7 +78,7 @@
 |update(List<?> imageUrls)| 更新图片 |1.4.5开始
 |startAutoPlay()|开始轮播|1.4开始，此方法只作用于banner加载完毕-->需要在start()后执行
 |stopAutoPlay()|结束轮播|1.4开始，此方法只作用于banner加载完毕-->需要在start()后执行
-|start()|开始进行banner渲染（必须放到最后执行）|1.4开始
+|start()|开始进行banner渲染|1.4开始
 |setOffscreenPageLimit(int limit)|同viewpager的方法作用一样|1.4.2开始
 |setBannerTitle(String[] titles)| 设置轮播要显示的标题和图片对应（如果不传默认不显示标题）|1.3.3结束
 |setBannerTitleList(List<String> titles)| 设置轮播要显示的标题和图片对应（如果不传默认不显示标题）|1.3.3结束
@@ -120,7 +120,7 @@
 ## 使用步骤
 
 #### Step 1.依赖banner
-Gradle
+Gradle 
 ```groovy
 dependencies{
     compile 'com.youth.banner:banner:1.4.10'  //最新版本
@@ -135,7 +135,7 @@ compile project(':banner')
 #### Step 2.添加权限到你的 AndroidManifest.xml
 ```xml
 <!-- if you want to load images from the internet -->
-<uses-permission android:name="android.permission.INTERNET" />
+<uses-permission android:name="android.permission.INTERNET" /> 
 
 <!-- if you want to load images from a file OR from the internet -->
 <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -164,18 +164,18 @@ public class GlideImageLoader extends ImageLoader {
           切记不要胡乱强转！
          */
         eg：
-
+        
         //Glide 加载图片简单用法
         Glide.with(context).load(path).into(imageView);
 
         //Picasso 加载图片简单用法
         Picasso.with(context).load(path).into(imageView);
-
+        
         //用fresco加载图片简单用法，记得要写下面的createImageView方法
         Uri uri = Uri.parse((String) path);
         imageView.setImageURI(uri);
     }
-
+    
     //提供createImageView 方法，如果不用可以不重写这个方法，主要是方便自定义ImageView的创建
     @Override
     public ImageView createImageView(Context context) {
@@ -186,10 +186,7 @@ public class GlideImageLoader extends ImageLoader {
 }
 ```
 
-#### Step 5.在Activity或者Fragment中配置Banner
-
-- 注意！start()方法必须放到最后执行，点击事件请放到start()前，每次都提交问题问为什么点击没有反应？需要轮播一圈才能点击？点击第一个怎么返回1？麻烦仔细阅读文档。
-
+#### Step 5.在Activity或者Fragment中配置Banner 
 ```java
 --------------------------简单使用-------------------------------
 @Override
@@ -289,7 +286,7 @@ protected void onStop() {
         2、检查图片链接是否能打开。
 * 问：怎么加载其他图片资源（资源文件、文件、Uri、assets、raw、ContentProvider、sd卡资源）？
     * 答：列如！如果你使用的是glide，那么可以如下操作，其他图片图片加载框架可能有不同
-        ```java
+        ```java 
         //资源文件
         Integer[] images={R.mipmap.a,R.mipmap.b,R.mipmap.c};
         //Uri
@@ -306,17 +303,18 @@ protected void onStop() {
         String[] images={"file:///android_asset/f003.gif"};
         //sd卡资源
         String[] images={"file://"+ Environment.getExternalStorageDirectory().getPath()+"/test.jpg"};
-
+        
         banner.setImages(images);//这里接收集合,上面写成集合太占地方，这个大家举一反三就行了啊
         ```
-
+        
 * 问：设置banner指示器颜色怎么变成方的了？
 
-    * 答：首先我先要说很多软件的指示器也是矩形的，然后banner的指示器可以设置color、资源图片、drawable文件夹自定义shape ，所以形状你自己可以根据需求定义哦！
+    * 答：首先我先要说很多软件的指示器也是矩形的，然后banner的指示器可以设置color、资源图片、drawable文件夹自定义xml，
+    所以形状你自己可以根据需求定义哦！
 
-* 问：为什么banner的点击事件没有反应，需要下一次轮播才行？点击第一个图片怎么返回1？
+* 问：为什么banner的点击事件没有反应，需要下一次轮播才行？
 
-     * 答：请将点击事件放在start方法之前执行，start必须放到最后执行，详情可以看demo。
+     * 答：请将点击事件放在start方法之前执行，详情可以看demo。
 
 ## Thanks
 
