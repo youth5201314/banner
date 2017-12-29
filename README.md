@@ -336,6 +336,8 @@ protected void onStop() {
  * 将onPageScrolled和onPageSelected方法返回的position转成真实的position
  * 增加属性banner_default_image，设置当banner数据为空是显示的默认图片
  * 增加属性banner_layout，可以自定义布局文件，但是必须保证id的名称一样
+ * 修改ViewPager偶发性的越界问题
+ * SwipeRefreshLayout嵌套ViewPager的滑动冲突问题参考demo的SuperSwipeRefreshLayout类
 
 #### v1.4.9
     banner 优化更新

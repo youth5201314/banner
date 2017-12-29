@@ -30,7 +30,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener, AdapterView.OnItemClickListener, OnBannerListener {
     static final int REFRESH_COMPLETE = 0X1112;
-    SwipeRefreshLayout mSwipeLayout;
+    SuperSwipeRefreshLayout mSwipeLayout;
     ListView listView;
     Banner banner;
 
@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mSwipeLayout = (SwipeRefreshLayout) findViewById(R.id.swipe);
+        mSwipeLayout = (SuperSwipeRefreshLayout) findViewById(R.id.swipe);
         mSwipeLayout.setOnRefreshListener(this);
         listView = (ListView) findViewById(R.id.list);
         View header = LayoutInflater.from(this).inflate(R.layout.header, null);
@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         listView.setOnItemClickListener(this);
 
         //简单使用
-        banner.setImages(new ArrayList<>())
+        banner.setImages(App.images)
                 .setImageLoader(new GlideImageLoader())
                 .setOnBannerListener(this)
                 .start();
