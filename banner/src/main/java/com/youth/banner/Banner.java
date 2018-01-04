@@ -2,7 +2,6 @@ package com.youth.banner;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.os.Build;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
@@ -38,6 +37,8 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
     private int mIndicatorMargin = BannerConfig.PADDING_SIZE;
     private int mIndicatorWidth;
     private int mIndicatorHeight;
+    private int mIndicatorSelectedWidth;
+    private int mIndicatorSelectedHeight;
     private int indicatorSize;
     private int bannerBackgroundImage;
     private int bannerStyle = BannerConfig.CIRCLE_INDICATOR;
@@ -119,6 +120,8 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.Banner);
         mIndicatorWidth = typedArray.getDimensionPixelSize(R.styleable.Banner_indicator_width, indicatorSize);
         mIndicatorHeight = typedArray.getDimensionPixelSize(R.styleable.Banner_indicator_height, indicatorSize);
+        mIndicatorSelectedWidth = typedArray.getDimensionPixelSize(R.styleable.Banner_indicator_selected_width, indicatorSize);
+        mIndicatorSelectedHeight = typedArray.getDimensionPixelSize(R.styleable.Banner_indicator_selected_height, indicatorSize);
         mIndicatorMargin = typedArray.getDimensionPixelSize(R.styleable.Banner_indicator_margin, BannerConfig.PADDING_SIZE);
         mIndicatorSelectedResId = typedArray.getResourceId(R.styleable.Banner_indicator_drawable_selected, R.drawable.gray_radius);
         mIndicatorUnselectedResId = typedArray.getResourceId(R.styleable.Banner_indicator_drawable_unselected, R.drawable.white_radius);
@@ -295,7 +298,7 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
     }
 
     private void setBannerStyleUI() {
-        int visibility =count > 1 ? View.VISIBLE :View.GONE;
+        int visibility = count > 1 ? View.VISIBLE : View.GONE;
         switch (bannerStyle) {
             case BannerConfig.CIRCLE_INDICATOR:
                 indicator.setVisibility(visibility);
@@ -404,14 +407,16 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
         for (int i = 0; i < count; i++) {
             ImageView imageView = new ImageView(context);
             imageView.setScaleType(ScaleType.CENTER_CROP);
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(mIndicatorWidth, mIndicatorHeight);
-            params.leftMargin = mIndicatorMargin;
-            params.rightMargin = mIndicatorMargin;
+            LinearLayout.LayoutParams params;
             if (i == 0) {
+                params = new LinearLayout.LayoutParams(mIndicatorSelectedWidth, mIndicatorSelectedHeight);
                 imageView.setImageResource(mIndicatorSelectedResId);
             } else {
+                params = new LinearLayout.LayoutParams(mIndicatorWidth, mIndicatorHeight);
                 imageView.setImageResource(mIndicatorUnselectedResId);
             }
+            params.leftMargin = mIndicatorMargin;
+            params.rightMargin = mIndicatorMargin;
             indicatorImages.add(imageView);
             if (bannerStyle == BannerConfig.CIRCLE_INDICATOR ||
                     bannerStyle == BannerConfig.CIRCLE_INDICATOR_TITLE)
@@ -576,15 +581,27 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
 
     @Override
     public void onPageSelected(int position) {
-        currentItem=position;
+        currentItem = position;
         if (mOnPageChangeListener != null) {
             mOnPageChangeListener.onPageSelected(toRealPosition(position));
         }
         if (bannerStyle == BannerConfig.CIRCLE_INDICATOR ||
                 bannerStyle == BannerConfig.CIRCLE_INDICATOR_TITLE ||
                 bannerStyle == BannerConfig.CIRCLE_INDICATOR_TITLE_INSIDE) {
+
+            LinearLayout.LayoutParams
+                    Selectedparams = new LinearLayout.LayoutParams(mIndicatorSelectedWidth, mIndicatorSelectedHeight);
+
+            Selectedparams.leftMargin = mIndicatorMargin;
+            Selectedparams.rightMargin = mIndicatorMargin;
+            LinearLayout.LayoutParams
+                    Unselectedparams = new LinearLayout.LayoutParams(mIndicatorWidth, mIndicatorHeight);
+            Unselectedparams.leftMargin = mIndicatorMargin;
+            Unselectedparams.rightMargin = mIndicatorMargin;
             indicatorImages.get((lastPosition - 1 + count) % count).setImageResource(mIndicatorUnselectedResId);
+            indicatorImages.get((lastPosition - 1 + count) % count).setLayoutParams(Unselectedparams);
             indicatorImages.get((position - 1 + count) % count).setImageResource(mIndicatorSelectedResId);
+            indicatorImages.get((position - 1 + count) % count).setLayoutParams(Selectedparams);
             lastPosition = position;
         }
         if (position == 0) position = count;
