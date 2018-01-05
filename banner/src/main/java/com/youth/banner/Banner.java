@@ -295,7 +295,7 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
     }
 
     private void setBannerStyleUI() {
-        int visibility =count > 1 ? View.VISIBLE :View.GONE;
+        int visibility = count > 1 ? View.VISIBLE : View.GONE;
         switch (bannerStyle) {
             case BannerConfig.CIRCLE_INDICATOR:
                 indicator.setVisibility(visibility);
@@ -340,14 +340,6 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
         bannerDefaultImage.setVisibility(GONE);
         initImages();
         for (int i = 0; i <= count + 1; i++) {
-            View imageView = null;
-            if (imageLoader != null) {
-                imageView = imageLoader.createImageView(context);
-            }
-            if (imageView == null) {
-                imageView = new ImageView(context);
-            }
-            setScaleType(imageView);
             Object url = null;
             if (i == 0) {
                 url = imagesUrl.get(count - 1);
@@ -356,6 +348,15 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
             } else {
                 url = imagesUrl.get(i - 1);
             }
+            View imageView = null;
+            if (imageLoader != null) {
+                imageView = imageLoader.createImageView(context, url);
+            }
+            if (imageView == null) {
+                imageView = new ImageView(context);
+            }
+            setScaleType(imageView);
+
             imageViews.add(imageView);
             if (imageLoader != null)
                 imageLoader.displayImage(context, url, imageView);
@@ -576,7 +577,7 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
 
     @Override
     public void onPageSelected(int position) {
-        currentItem=position;
+        currentItem = position;
         if (mOnPageChangeListener != null) {
             mOnPageChangeListener.onPageSelected(toRealPosition(position));
         }
