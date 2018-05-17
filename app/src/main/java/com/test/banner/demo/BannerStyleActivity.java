@@ -1,7 +1,7 @@
 package com.test.banner.demo;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Spinner;
@@ -10,11 +10,13 @@ import com.test.banner.App;
 import com.test.banner.R;
 import com.test.banner.loader.GlideImageLoader;
 import com.youth.banner.Banner;
-import com.youth.banner.BannerConfig;
+import com.youth.banner.config.Constants;
+import com.youth.banner.config.IndicatorConfig;
 
-public class BannerStyleActivity extends AppCompatActivity implements  AdapterView.OnItemSelectedListener {
+public class BannerStyleActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     Banner banner;
     Spinner spinnerStyle;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,34 +26,35 @@ public class BannerStyleActivity extends AppCompatActivity implements  AdapterVi
         spinnerStyle.setOnItemSelectedListener(this);
 
         //默认是CIRCLE_INDICATOR
-        banner.setImages(App.images)
-                .setBannerTitles(App.titles)
+        banner.setImagesWithTitles(App.images, App.titles)
                 .setImageLoader(new GlideImageLoader())
                 .start();
     }
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        switch (position){
+        IndicatorConfig.Builder builder = new IndicatorConfig.Builder();
+        switch (position) {
             case 0:
-                banner.updateBannerStyle(BannerConfig.NOT_INDICATOR);
+                builder.style(Constants.NOT_INDICATOR);
                 break;
             case 1:
-                banner.updateBannerStyle(BannerConfig.CIRCLE_INDICATOR);
+                builder.style(Constants.CIRCLE_INDICATOR);
                 break;
             case 2:
-                banner.updateBannerStyle(BannerConfig.NUM_INDICATOR);
+                builder.style(Constants.NUM_INDICATOR);
                 break;
             case 3:
-                banner.updateBannerStyle(BannerConfig.NUM_INDICATOR_TITLE);
+                builder.style(Constants.NUM_INDICATOR_TITLE);
                 break;
             case 4:
-                banner.updateBannerStyle(BannerConfig.CIRCLE_INDICATOR_TITLE);
+                builder.style(Constants.CIRCLE_INDICATOR_TITLE);
                 break;
             case 5:
-                banner.updateBannerStyle(BannerConfig.CIRCLE_INDICATOR_TITLE_INSIDE);
+                builder.style(Constants.CIRCLE_INDICATOR_TITLE_INSIDE);
                 break;
         }
+        banner.setIndicatorConfig(builder.build());
     }
 
     @Override

@@ -1,11 +1,11 @@
 package com.test.banner;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
@@ -21,6 +21,8 @@ import com.test.banner.demo.CustomViewPagerActivity;
 import com.test.banner.demo.IndicatorPositionActivity;
 import com.test.banner.loader.GlideImageLoader;
 import com.youth.banner.Banner;
+import com.youth.banner.config.BannerConfig;
+import com.youth.banner.config.IndicatorConfig;
 import com.youth.banner.listener.OnBannerListener;
 
 import java.util.ArrayList;
@@ -32,6 +34,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     static final int REFRESH_COMPLETE = 0X1112;
     SuperSwipeRefreshLayout mSwipeLayout;
     ListView listView;
+    //    Banner banner;
     Banner banner;
 
     private Handler mHandler = new Handler() {
@@ -47,6 +50,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             }
         }
     };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,26 +58,52 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         mSwipeLayout = (SuperSwipeRefreshLayout) findViewById(R.id.swipe);
         mSwipeLayout.setOnRefreshListener(this);
         listView = (ListView) findViewById(R.id.list);
-        View header = LayoutInflater.from(this).inflate(R.layout.header, null);
-        banner = (Banner) header.findViewById(R.id.banner);
-        banner.setLayoutParams(new AbsListView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, App.H / 4));
-        listView.addHeaderView(banner);
 
         String[] data = getResources().getStringArray(R.array.demo_list);
-        listView.setAdapter(new SampleAdapter(this,data));
+        listView.setAdapter(new SampleAdapter(this, data));
         listView.setOnItemClickListener(this);
+
+        banner = createBanner();
+        listView.addHeaderView(banner);
+    }
+
+    /**
+     * 创建轮播控件
+     * @return
+     */
+    private Banner createBanner() {
+        Banner banner = new Banner(this);
+        //设置指示器的样式
+        IndicatorConfig indicatorConfig = new IndicatorConfig.Builder()
+                .width(15)
+                .height(15)
+                .selectedColor(Color.RED)
+                .unselectedColor(Color.GRAY)
+                .build();
+        banner.setIndicatorConfig(indicatorConfig);
+
+        //设置轮播的属性
+        BannerConfig bannerConfig = new BannerConfig.Builder()
+                .setDelayTime(2000)
+                .setScrollTime(800)
+                .setAutoPlay(true)
+                .setScroll(true)
+                .build();
+        banner.setBannerConfig(bannerConfig);
+
+        banner.setLayoutParams(new AbsListView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, App.H / 4));
 
         //简单使用
         banner.setImages(App.images)
                 .setImageLoader(new GlideImageLoader())
                 .setOnBannerListener(this)
                 .start();
-
+        return banner;
     }
 
     @Override
     public void OnBannerClick(int position) {
-        Toast.makeText(getApplicationContext(),"你点击了："+position,Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), "你点击了：" + position, Toast.LENGTH_SHORT).show();
     }
 
 
@@ -100,7 +130,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        switch (position){
+        switch (position) {
             case 1:
                 startActivity(new Intent(this, BannerAnimationActivity.class));
                 break;

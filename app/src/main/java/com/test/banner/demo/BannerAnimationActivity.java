@@ -13,6 +13,7 @@ import com.test.banner.R;
 import com.test.banner.SampleAdapter;
 import com.test.banner.loader.GlideImageLoader;
 import com.youth.banner.Banner;
+import com.youth.banner.config.BannerConfig;
 import com.youth.banner.listener.OnBannerListener;
 import com.youth.banner.transformer.AccordionTransformer;
 import com.youth.banner.transformer.BackgroundToForegroundTransformer;
@@ -38,6 +39,9 @@ import java.util.List;
 public class BannerAnimationActivity extends AppCompatActivity implements AdapterView.OnItemClickListener, OnBannerListener {
     Banner banner;
     List<Class<? extends ViewPager.PageTransformer>> transformers=new ArrayList<>();
+
+    private BannerConfig.Builder builder = new BannerConfig.Builder();
+
     public void initData(){
         transformers.add(DefaultTransformer.class);
         transformers.add(AccordionTransformer.class);
@@ -78,7 +82,8 @@ public class BannerAnimationActivity extends AppCompatActivity implements Adapte
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        banner.setBannerAnimation(transformers.get(position));
+        builder.setTransformer(transformers.get(position));
+        banner.setBannerConfig(builder.build());
     }
 
     @Override
