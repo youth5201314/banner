@@ -47,6 +47,7 @@
         <item>banner一些自定义样式方法预览</item>
         <item>banner加载本地图片</item>
         <item>banner自定义布局文件（这里通过修改ViewPager举一反三吧）</item>
+        <item>自定义ItemView</item>
         <item>！！banner更多用法请看文档，这里就不一一列举了！</item>
     </array>
     <array name="anim">

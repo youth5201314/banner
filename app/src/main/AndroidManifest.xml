@@ -28,6 +28,7 @@
         <activity
             android:screenOrientation="portrait"
             android:name=".demo.CustomViewPagerActivity"/>
+        <activity android:name=".demo.CustomItemViewActivity" />
     </application>
 
 </manifest>

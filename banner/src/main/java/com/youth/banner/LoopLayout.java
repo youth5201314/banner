@@ -157,11 +157,6 @@ public abstract class LoopLayout extends FrameLayout implements ViewPager.OnPage
         }
     }
 
-    public LoopLayout setItemCount(int count) {
-        this.count = count;
-        return this;
-    }
-
     public void update(int count, List<String> titles) {
         this.titles.clear();
         this.titles.addAll(titles);
@@ -186,11 +181,10 @@ public abstract class LoopLayout extends FrameLayout implements ViewPager.OnPage
         start();
     }
 
-    public LoopLayout start() {
+    private void start() {
         setBannerStyleUI();
         setImageList();
         setData();
-        return this;
     }
 
     private void setTitleStyleUI() {
@@ -487,6 +481,11 @@ public abstract class LoopLayout extends FrameLayout implements ViewPager.OnPage
             this.loopLayout = loopLayout;
         }
 
+        public Builder setItemCount(int count) {
+            loopLayout.count = count;
+            return this;
+        }
+
         public Builder isAutoPlay(boolean isAutoPlay) {
             loopLayout.isAutoPlay = isAutoPlay;
             return this;
@@ -567,15 +566,14 @@ public abstract class LoopLayout extends FrameLayout implements ViewPager.OnPage
         public void start() {
             loopLayout.start();
         }
-    }
 
-
-    /**
-     * 废弃了旧版接口，新版的接口下标是从1开始，同时解决下标越界问题
-     */
-    public LoopLayout setOnBannerListener(OnBannerListener listener) {
-        this.listener = listener;
-        return this;
+        /**
+         * 废弃了旧版接口，新版的接口下标是从1开始，同时解决下标越界问题
+         */
+        public Builder setOnBannerListener(OnBannerListener listener) {
+            loopLayout.listener = listener;
+            return this;
+        }
     }
 
     public void setOnPageChangeListener(ViewPager.OnPageChangeListener onPageChangeListener) {

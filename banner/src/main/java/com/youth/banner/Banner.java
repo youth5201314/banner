@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.youth.banner.listener.OnBannerClickListener;
+import com.youth.banner.listener.OnBannerListener;
 import com.youth.banner.loader.ImageLoaderInterface;
 
 import java.util.List;
@@ -125,11 +126,11 @@ public class Banner extends LoopLayout {
 
     /**
      * From now on ,we don't need to know your data source but only the count ,items can be init by overwriting {@link #getItemView(int)}.
-     * So Use {@link #setItemCount(int)} instead.
+     * So Use {@link com.youth.banner.LoopLayout.Builder#setItemCount(int)} instead.
      */
     public Banner setImages(List<?> imageUrls) {
         this.imagesUrls = imageUrls;
-        setItemCount(imageUrls == null ? 0 : imageUrls.size());
+        builder.setItemCount(imageUrls == null ? 0 : imageUrls.size());
         return this;
     }
 
@@ -147,6 +148,11 @@ public class Banner extends LoopLayout {
     public void update(List<?> imageUrls) {
         this.imagesUrls = imageUrls;
         update(imageUrls == null ? 0 : imageUrls.size());
+    }
+
+    public Banner start() {
+        builder.start();
+        return this;
     }
 
     @Override
@@ -217,6 +223,11 @@ public class Banner extends LoopLayout {
     @Deprecated
     public Banner setOnBannerClickListener(OnBannerClickListener listener) {
         this.bannerListener = listener;
+        return this;
+    }
+
+    public Banner setOnBannerListener(OnBannerListener listener) {
+        builder.setOnBannerListener(listener);
         return this;
     }
 
