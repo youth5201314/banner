@@ -70,7 +70,7 @@ public abstract class LoopLayout extends FrameLayout implements ViewPager.OnPage
     private ViewPager.OnPageChangeListener mOnPageChangeListener;
     private OnBannerListener listener;
 
-    private WeakHandler handler = new WeakHandler();
+    private final WeakHandler handler = new WeakHandler();
 
     public LoopLayout(@NonNull Context context) {
         this(context, null);
@@ -247,9 +247,9 @@ public abstract class LoopLayout extends FrameLayout implements ViewPager.OnPage
                 bannerStyle == BannerConfig.CIRCLE_INDICATOR_TITLE_INSIDE) {
             createIndicator();
         } else if (bannerStyle == BannerConfig.NUM_INDICATOR_TITLE) {
-            numIndicatorInside.setText("1/" + count);
+            numIndicatorInside.setText(String.format(getContext().getString(R.string.count_percent), count));
         } else if (bannerStyle == BannerConfig.NUM_INDICATOR) {
-            numIndicator.setText("1/" + count);
+            numIndicator.setText(String.format(getContext().getString(R.string.count_percent), count));
         }
     }
 
@@ -376,11 +376,12 @@ public abstract class LoopLayout extends FrameLayout implements ViewPager.OnPage
         }
 
         @Override
-        public boolean isViewFromObject(View view, Object object) {
+        public boolean isViewFromObject(@NonNull View view, @NonNull Object object) {
             return view == object;
         }
 
         @Override
+        @NonNull
         public Object instantiateItem(@NonNull ViewGroup container, int position) {
             container.addView(imageViews.get(position));
             View view = imageViews.get(position);
@@ -389,7 +390,7 @@ public abstract class LoopLayout extends FrameLayout implements ViewPager.OnPage
         }
 
         @Override
-        public void destroyItem(ViewGroup container, int position, Object object) {
+        public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
             container.removeView((View) object);
         }
 
@@ -459,10 +460,10 @@ public abstract class LoopLayout extends FrameLayout implements ViewPager.OnPage
             case BannerConfig.CIRCLE_INDICATOR:
                 break;
             case BannerConfig.NUM_INDICATOR:
-                numIndicator.setText(position + "/" + count);
+                numIndicator.setText(String.format(getContext().getString(R.string.count_percent), count));
                 break;
             case BannerConfig.NUM_INDICATOR_TITLE:
-                numIndicatorInside.setText(position + "/" + count);
+                numIndicatorInside.setText(String.format(getContext().getString(R.string.count_percent), count));
                 bannerTitle.setText(titles.get(position - 1));
                 break;
             case BannerConfig.CIRCLE_INDICATOR_TITLE:
@@ -480,7 +481,7 @@ public abstract class LoopLayout extends FrameLayout implements ViewPager.OnPage
      * A strange builder to be compatible with old code.
      */
     public static class Builder {
-        private LoopLayout loopLayout;
+        private final LoopLayout loopLayout;
 
         public Builder(LoopLayout loopLayout) {
             this.loopLayout = loopLayout;
