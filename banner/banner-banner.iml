@@ -84,38 +84,48 @@
       <sourceFolder url="file://$MODULE_DIR$/src/test/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/src/test/rs" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/src/test/shaders" isTestSource="true" />
-      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/annotations" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/attr" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/blame" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/bundles" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/check-manifest" />
-      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/classes" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/incremental" />
-      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/incremental-safeguard" />
-      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/intermediate-jars" />
-      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/javaPrecompile" />
-      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/jniLibs" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/lint" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/manifests" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/res" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/rs" />
-      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/shaders" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/symbols" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/tmp" />
-      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/transforms" />
-      <excludeFolder url="file://$MODULE_DIR$/build/libs" />
       <excludeFolder url="file://$MODULE_DIR$/build/outputs" />
-      <excludeFolder url="file://$MODULE_DIR$/build/poms" />
-      <excludeFolder url="file://$MODULE_DIR$/build/tmp" />
     </content>
     <orderEntry type="jdk" jdkName="Android API 25 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="com.android.support:support-v4-26.0.0-alpha1" level="project" />
-    <orderEntry type="library" name="com.android.support:support-annotations:26.0.0-alpha1@jar" level="project" />
-    <orderEntry type="library" name="com.android.support:support-compat-26.0.0-alpha1" level="project" />
-    <orderEntry type="library" name="com.android.support:support-core-utils-26.0.0-alpha1" level="project" />
-    <orderEntry type="library" name="com.android.support:support-fragment-26.0.0-alpha1" level="project" />
-    <orderEntry type="library" name="com.android.support:support-media-compat-26.0.0-alpha1" level="project" />
-    <orderEntry type="library" name="com.android.support:support-core-ui-26.0.0-alpha1" level="project" />
+    <orderEntry type="library" name="android.arch.core:runtime-1.1.1" level="project" />
+    <orderEntry type="library" name="com.android.support:support-core-ui-28.0.0-alpha3" level="project" />
+    <orderEntry type="library" name="com.android.support:drawerlayout-28.0.0-alpha3" level="project" />
+    <orderEntry type="library" name="com.android.support:interpolator-28.0.0-alpha3" level="project" />
+    <orderEntry type="library" name="com.android.support:viewpager-28.0.0-alpha3" level="project" />
+    <orderEntry type="library" name="com.android.support:customview-28.0.0-alpha3" level="project" />
+    <orderEntry type="library" name="com.android.support:cursoradapter-28.0.0-alpha3" level="project" />
+    <orderEntry type="library" name="android.arch.core:common:1.1.1@jar" level="project" />
+    <orderEntry type="library" name="com.android.support:support-fragment-28.0.0-alpha3" level="project" />
+    <orderEntry type="library" name="android.arch.lifecycle:runtime-1.1.1" level="project" />
+    <orderEntry type="library" name="com.android.support:collections:28.0.0-alpha3@jar" level="project" />
+    <orderEntry type="library" name="com.android.support:support-annotations:28.0.0-alpha3@jar" level="project" />
+    <orderEntry type="library" name="com.android.support:localbroadcastmanager-28.0.0-alpha3" level="project" />
+    <orderEntry type="library" name="com.android.support:print-28.0.0-alpha3" level="project" />
+    <orderEntry type="library" name="com.android.support:asynclayoutinflater-28.0.0-alpha3" level="project" />
+    <orderEntry type="library" name="com.android.support:support-media-compat-28.0.0-alpha3" level="project" />
+    <orderEntry type="library" name="android.arch.lifecycle:viewmodel-1.1.1" level="project" />
+    <orderEntry type="library" name="com.android.support:versionedparcelable-28.0.0-alpha3" level="project" />
+    <orderEntry type="library" name="com.android.support:support-v4-28.0.0-alpha3" level="project" />
+    <orderEntry type="library" name="android.arch.lifecycle:livedata-core-1.1.1" level="project" />
+    <orderEntry type="library" name="com.android.support:documentfile-28.0.0-alpha3" level="project" />
+    <orderEntry type="library" name="com.android.support:loader-28.0.0-alpha3" level="project" />
+    <orderEntry type="library" name="android.arch.lifecycle:common:1.1.1@jar" level="project" />
+    <orderEntry type="library" name="com.android.support:support-core-utils-28.0.0-alpha3" level="project" />
+    <orderEntry type="library" name="com.android.support:support-compat-28.0.0-alpha3" level="project" />
+    <orderEntry type="library" name="com.android.support:swiperefreshlayout-28.0.0-alpha3" level="project" />
+    <orderEntry type="library" name="com.android.support:slidingpanelayout-28.0.0-alpha3" level="project" />
+    <orderEntry type="library" name="com.android.support:coordinatorlayout-28.0.0-alpha3" level="project" />
   </component>
 </module>
