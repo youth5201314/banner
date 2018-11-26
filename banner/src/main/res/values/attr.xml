@@ -4,6 +4,7 @@
         <attr name="delay_time" format="integer" />
         <attr name="scroll_time" format="integer" />
         <attr name="is_auto_play" format="boolean" />
+        <attr name="is_loop" format="boolean" />
         <attr name="title_background" format="color|reference" />
         <attr name="title_textcolor" format="color" />
         <attr name="title_textsize" format="dimension" />

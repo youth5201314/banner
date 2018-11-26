@@ -2,7 +2,6 @@ package com.youth.banner;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.os.Build;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
@@ -44,6 +43,7 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
     private int delayTime = BannerConfig.TIME;
     private int scrollTime = BannerConfig.DURATION;
     private boolean isAutoPlay = BannerConfig.IS_AUTO_PLAY;
+    private boolean isLoop = BannerConfig.IS_LOOP;
     private boolean isScroll = BannerConfig.IS_SCROLL;
     private int mIndicatorSelectedResId = R.drawable.gray_radius;
     private int mIndicatorUnselectedResId = R.drawable.white_radius;
@@ -126,6 +126,7 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
         delayTime = typedArray.getInt(R.styleable.Banner_delay_time, BannerConfig.TIME);
         scrollTime = typedArray.getInt(R.styleable.Banner_scroll_time, BannerConfig.DURATION);
         isAutoPlay = typedArray.getBoolean(R.styleable.Banner_is_auto_play, BannerConfig.IS_AUTO_PLAY);
+        isLoop = typedArray.getBoolean(R.styleable.Banner_is_loop, BannerConfig.IS_LOOP);
         titleBackground = typedArray.getColor(R.styleable.Banner_title_background, BannerConfig.TITLE_BACKGROUND);
         titleHeight = typedArray.getDimensionPixelSize(R.styleable.Banner_title_height, BannerConfig.TITLE_HEIGHT);
         titleTextColor = typedArray.getColor(R.styleable.Banner_title_textcolor, BannerConfig.TITLE_TEXT_COLOR);
@@ -295,7 +296,7 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
     }
 
     private void setBannerStyleUI() {
-        int visibility =count > 1 ? View.VISIBLE :View.GONE;
+        int visibility = count > 1 ? View.VISIBLE : View.GONE;
         switch (bannerStyle) {
             case BannerConfig.CIRCLE_INDICATOR:
                 indicator.setVisibility(visibility);
@@ -349,12 +350,20 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
             }
             setScaleType(imageView);
             Object url = null;
-            if (i == 0) {
-                url = imagesUrl.get(count - 1);
-            } else if (i == count + 1) {
-                url = imagesUrl.get(0);
+            if (!isLoop) {
+                if (i >= count) {
+                    imageView = null;
+                    break;
+                }
+                url = imagesUrl.get(i);
             } else {
-                url = imagesUrl.get(i - 1);
+                if (i == 0) {
+                    url = imagesUrl.get(count - 1);
+                } else if (i == count + 1) {
+                    url = imagesUrl.get(0);
+                } else {
+                    url = imagesUrl.get(i - 1);
+                }
             }
             imageViews.add(imageView);
             if (imageLoader != null)
@@ -423,14 +432,19 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
 
 
     private void setData() {
-        currentItem = 1;
+        if (isLoop) {
+            currentItem = 1;
+        } else {
+            currentItem = 0;
+        }
+        lastPosition = currentItem;
         if (adapter == null) {
             adapter = new BannerPagerAdapter();
             viewPager.addOnPageChangeListener(this);
         }
         viewPager.setAdapter(adapter);
         viewPager.setFocusable(true);
-        viewPager.setCurrentItem(1);
+        viewPager.setCurrentItem(currentItem);
         if (gravity != -1)
             indicator.setGravity(gravity);
         if (isScroll && count > 1) {
@@ -466,6 +480,14 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
                     handler.postDelayed(task, delayTime);
                 }
             }
+            // 由于不循环播放与自动播放配合起来有些奇怪，故此处不做改动
+            // 若有相关需求，可参照以下代码
+//            if (count > 1 && isAutoPlay) {
+//                if (currentItem + 1 < count) {
+//                    viewPager.setCurrentItem(++currentItem);
+//                    handler.postDelayed(task, delayTime);
+//                }
+//            }
         }
     };
 
@@ -491,6 +513,9 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
      * @return 下标从0开始
      */
     public int toRealPosition(int position) {
+        if (!isLoop) {
+            return position;
+        }
         int realPosition = (position - 1) % count;
         if (realPosition < 0)
             realPosition += count;
@@ -547,23 +572,25 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
             mOnPageChangeListener.onPageScrollStateChanged(state);
         }
 //        Log.i(tag,"currentItem: "+currentItem);
-        switch (state) {
-            case 0://No operation
-                if (currentItem == 0) {
-                    viewPager.setCurrentItem(count, false);
-                } else if (currentItem == count + 1) {
-                    viewPager.setCurrentItem(1, false);
-                }
-                break;
-            case 1://start Sliding
-                if (currentItem == count + 1) {
-                    viewPager.setCurrentItem(1, false);
-                } else if (currentItem == 0) {
-                    viewPager.setCurrentItem(count, false);
-                }
-                break;
-            case 2://end Sliding
-                break;
+        if (isLoop) {
+            switch (state) {
+                case 0://No operation
+                    if (currentItem == 0) {
+                        viewPager.setCurrentItem(count, false);
+                    } else if (currentItem == count + 1) {
+                        viewPager.setCurrentItem(1, false);
+                    }
+                    break;
+                case 1://start Sliding
+                    if (currentItem == count + 1) {
+                        viewPager.setCurrentItem(1, false);
+                    } else if (currentItem == 0) {
+                        viewPager.setCurrentItem(count, false);
+                    }
+                    break;
+                case 2://end Sliding
+                    break;
+            }
         }
     }
 
@@ -576,19 +603,28 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
 
     @Override
     public void onPageSelected(int position) {
-        currentItem=position;
+        currentItem = position;
         if (mOnPageChangeListener != null) {
             mOnPageChangeListener.onPageSelected(toRealPosition(position));
         }
         if (bannerStyle == BannerConfig.CIRCLE_INDICATOR ||
                 bannerStyle == BannerConfig.CIRCLE_INDICATOR_TITLE ||
                 bannerStyle == BannerConfig.CIRCLE_INDICATOR_TITLE_INSIDE) {
-            indicatorImages.get((lastPosition - 1 + count) % count).setImageResource(mIndicatorUnselectedResId);
-            indicatorImages.get((position - 1 + count) % count).setImageResource(mIndicatorSelectedResId);
+            if (!isLoop) {
+                indicatorImages.get(lastPosition).setImageResource(mIndicatorUnselectedResId);
+                indicatorImages.get(position).setImageResource(mIndicatorSelectedResId);
+            } else {
+                indicatorImages.get((lastPosition - 1 + count) % count).setImageResource(mIndicatorUnselectedResId);
+                indicatorImages.get((position - 1 + count) % count).setImageResource(mIndicatorSelectedResId);
+            }
             lastPosition = position;
         }
-        if (position == 0) position = count;
-        if (position > count) position = 1;
+        if (isLoop) {
+            if (position == 0) position = count;
+            if (position > count) position = 1;
+        } else {
+            position++;
+        }
         switch (bannerStyle) {
             case BannerConfig.CIRCLE_INDICATOR:
                 break;
