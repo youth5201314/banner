@@ -30,11 +30,14 @@ import com.youth.banner.view.BannerViewPager;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
 /**
- * You can extends this class and custom your own item view.{@link LoopLayout} supports View.If your banner's item is ImageViews,you can still user{@link Banner}like before.
+ * If your banner's item is ImageViews,you can still user{@link Banner}like before.
+ * 轮播，支持View
  */
-public abstract class LoopLayout extends FrameLayout implements ViewPager.OnPageChangeListener {
+public class LoopLayout extends FrameLayout implements ViewPager.OnPageChangeListener {
     public final String tag = getClass().getSimpleName();
     private int mIndicatorMargin = BannerConfig.PADDING_SIZE;
     private int mIndicatorWidth;
@@ -58,7 +61,7 @@ public abstract class LoopLayout extends FrameLayout implements ViewPager.OnPage
     private int gravity = -1;
     private int lastPosition = 1;
     private List<String> titles;
-    private List<View> imageViews;
+    private List<View> views;
     private List<ImageView> indicatorImages;
     protected Context context;
     private BannerViewPager viewPager;
@@ -69,6 +72,8 @@ public abstract class LoopLayout extends FrameLayout implements ViewPager.OnPage
     private BannerPagerAdapter adapter;
     private ViewPager.OnPageChangeListener mOnPageChangeListener;
     private OnBannerListener listener;
+    private LoopAdapter loopAdapter;
+    private Observer observer;
 
     private final WeakHandler handler = new WeakHandler();
 
@@ -91,11 +96,46 @@ public abstract class LoopLayout extends FrameLayout implements ViewPager.OnPage
         init(context, attrs);
     }
 
+    public void setAdapter(LoopAdapter adapter) {
+        if (adapter == null) {
+            throw new IllegalStateException("Adapter cannot be null.");
+        }
+        //If setAdapter before,clear data and Observer.
+        if (loopAdapter != null) {
+            this.views.clear();
+            this.indicatorImages.clear();
+            stopAutoPlay();
+            loopAdapter.deleteObservers();
+        }
+        loopAdapter = adapter;
+        observer = new LoopObserver();
+        adapter.registerObserver(observer);
+        refreshData();
+    }
+
+    private class LoopObserver implements Observer {
+
+        @Override
+        public void update(Observable o, Object arg) {
+            refreshData();
+            LoopLayout.this.startLoop();
+        }
+    }
+
+    private void refreshData() {
+        count = loopAdapter.getCount();
+        this.titles.clear();
+        List<String> titles = loopAdapter.getTitles();
+        if (titles != null && titles.size() > 0) {
+            this.titles.addAll(titles);
+        }
+    }
+
     @CallSuper
     protected void init(@NonNull Context context, @Nullable AttributeSet attrs) {
         this.context = context;
         titles = new ArrayList<>();
-        imageViews = new ArrayList<>();
+        views = new ArrayList<>();
         indicatorImages = new ArrayList<>();
         DisplayMetrics dm = context.getResources().getDisplayMetrics();
         indicatorSize = dm.widthPixels / 80;
@@ -103,7 +143,7 @@ public abstract class LoopLayout extends FrameLayout implements ViewPager.OnPage
     }
 
     private void initView(Context context, AttributeSet attrs) {
-        imageViews.clear();
+        views.clear();
         handleTypedArray(context, attrs);
         View view = LayoutInflater.from(context).inflate(mLayoutResId, this, true);
         bannerDefaultImage = (ImageView) view.findViewById(R.id.bannerDefaultImage);
@@ -129,20 +169,20 @@ public abstract class LoopLayout extends FrameLayout implements ViewPager.OnPage
 
     @CallSuper
     protected void initStyleable(TypedArray typedArray) {
-        mIndicatorWidth = typedArray.getDimensionPixelSize(R.styleable.Banner_indicator_width, indicatorSize);
-        mIndicatorHeight = typedArray.getDimensionPixelSize(R.styleable.Banner_indicator_height, indicatorSize);
-        mIndicatorMargin = typedArray.getDimensionPixelSize(R.styleable.Banner_indicator_margin, BannerConfig.PADDING_SIZE);
-        mIndicatorSelectedResId = typedArray.getResourceId(R.styleable.Banner_indicator_drawable_selected, R.drawable.gray_radius);
-        mIndicatorUnselectedResId = typedArray.getResourceId(R.styleable.Banner_indicator_drawable_unselected, R.drawable.white_radius);
-        delayTime = typedArray.getInt(R.styleable.Banner_delay_time, BannerConfig.TIME);
-        scrollTime = typedArray.getInt(R.styleable.Banner_scroll_time, BannerConfig.DURATION);
-        isAutoPlay = typedArray.getBoolean(R.styleable.Banner_is_auto_play, BannerConfig.IS_AUTO_PLAY);
-        titleBackground = typedArray.getColor(R.styleable.Banner_title_background, BannerConfig.TITLE_BACKGROUND);
-        titleHeight = typedArray.getDimensionPixelSize(R.styleable.Banner_title_height, BannerConfig.TITLE_HEIGHT);
-        titleTextColor = typedArray.getColor(R.styleable.Banner_title_textcolor, BannerConfig.TITLE_TEXT_COLOR);
-        titleTextSize = typedArray.getDimensionPixelSize(R.styleable.Banner_title_textsize, BannerConfig.TITLE_TEXT_SIZE);
-        mLayoutResId = typedArray.getResourceId(R.styleable.Banner_banner_layout, mLayoutResId);
-        bannerBackgroundImage = typedArray.getResourceId(R.styleable.Banner_banner_default_image, R.drawable.no_banner);
+        mIndicatorWidth = typedArray.getDimensionPixelSize(R.styleable.LoopLayout_indicator_width, indicatorSize);
+        mIndicatorHeight = typedArray.getDimensionPixelSize(R.styleable.LoopLayout_indicator_height, indicatorSize);
+        mIndicatorMargin = typedArray.getDimensionPixelSize(R.styleable.LoopLayout_indicator_margin, BannerConfig.PADDING_SIZE);
+        mIndicatorSelectedResId = typedArray.getResourceId(R.styleable.LoopLayout_indicator_drawable_selected, R.drawable.gray_radius);
+        mIndicatorUnselectedResId = typedArray.getResourceId(R.styleable.LoopLayout_indicator_drawable_unselected, R.drawable.white_radius);
+        delayTime = typedArray.getInt(R.styleable.LoopLayout_delay_time, BannerConfig.TIME);
+        scrollTime = typedArray.getInt(R.styleable.LoopLayout_scroll_time, BannerConfig.DURATION);
+        isAutoPlay = typedArray.getBoolean(R.styleable.LoopLayout_is_auto_play, BannerConfig.IS_AUTO_PLAY);
+        titleBackground = typedArray.getColor(R.styleable.LoopLayout_title_background, BannerConfig.TITLE_BACKGROUND);
+        titleHeight = typedArray.getDimensionPixelSize(R.styleable.LoopLayout_title_height, BannerConfig.TITLE_HEIGHT);
+        titleTextColor = typedArray.getColor(R.styleable.LoopLayout_title_textcolor, BannerConfig.TITLE_TEXT_COLOR);
+        titleTextSize = typedArray.getDimensionPixelSize(R.styleable.LoopLayout_title_textsize, BannerConfig.TITLE_TEXT_SIZE);
+        mLayoutResId = typedArray.getResourceId(R.styleable.LoopLayout_banner_layout, mLayoutResId);
+        bannerBackgroundImage = typedArray.getResourceId(R.styleable.LoopLayout_banner_default_image, R.drawable.no_banner);
     }
 
     private void initViewPagerScroll() {
@@ -157,19 +197,6 @@ public abstract class LoopLayout extends FrameLayout implements ViewPager.OnPage
         }
     }
 
-    public void update(int count, List<String> titles) {
-        this.titles.clear();
-        this.titles.addAll(titles);
-        update(count);
-    }
-
-    public void update(int count) {
-        this.imageViews.clear();
-        this.indicatorImages.clear();
-        this.count = count;
-        start();
-    }
-
     public void updateBannerStyle(int bannerStyle) {
         indicator.setVisibility(GONE);
         numIndicator.setVisibility(GONE);
@@ -178,10 +205,10 @@ public abstract class LoopLayout extends FrameLayout implements ViewPager.OnPage
         bannerTitle.setVisibility(View.GONE);
         titleView.setVisibility(View.GONE);
         this.bannerStyle = bannerStyle;
-        start();
+        startLoop();
     }
 
-    private void start() {
+    private void startLoop() {
         setBannerStyleUI();
         setImageList();
         setData();
@@ -235,7 +262,7 @@ public abstract class LoopLayout extends FrameLayout implements ViewPager.OnPage
     }
 
     private void initImages() {
-        imageViews.clear();
+        views.clear();
         if (bannerStyle == BannerConfig.CIRCLE_INDICATOR ||
                 bannerStyle == BannerConfig.CIRCLE_INDICATOR_TITLE ||
                 bannerStyle == BannerConfig.CIRCLE_INDICATOR_TITLE_INSIDE) {
@@ -256,11 +283,9 @@ public abstract class LoopLayout extends FrameLayout implements ViewPager.OnPage
         bannerDefaultImage.setVisibility(GONE);
         initImages();
         for (int i = 0; i <= count + 1; i++) {
-            imageViews.add(getItemView(toRealPosition(i)));
+            views.add(loopAdapter.getItemView(context, toRealPosition(i)));
         }
     }
-
-    protected abstract View getItemView(int realPosition);
 
     private void createIndicator() {
         indicatorImages.clear();
@@ -366,7 +391,7 @@ public abstract class LoopLayout extends FrameLayout implements ViewPager.OnPage
 
         @Override
         public int getCount() {
-            return imageViews.size();
+            return views.size();
         }
 
         @Override
@@ -377,8 +402,8 @@ public abstract class LoopLayout extends FrameLayout implements ViewPager.OnPage
         @Override
         @NonNull
         public Object instantiateItem(@NonNull ViewGroup container, int position) {
-            container.addView(imageViews.get(position));
-            View view = imageViews.get(position);
+            container.addView(views.get(position));
+            View view = views.get(position);
             initItem(view, position);
             return view;
         }
@@ -470,110 +495,75 @@ public abstract class LoopLayout extends FrameLayout implements ViewPager.OnPage
 
     }
 
+    public void isAutoPlay(boolean isAutoPlay) {
+        this.isAutoPlay = isAutoPlay;
+    }
+
+    public void setDelayTime(int delayTime) {
+        this.delayTime = delayTime;
+    }
+
+    public void setIndicatorGravity(int type) {
+        switch (type) {
+            case BannerConfig.LEFT:
+                this.gravity = Gravity.LEFT | Gravity.CENTER_VERTICAL;
+                break;
+            case BannerConfig.CENTER:
+                this.gravity = Gravity.CENTER;
+                break;
+            case BannerConfig.RIGHT:
+                this.gravity = Gravity.RIGHT | Gravity.CENTER_VERTICAL;
+                break;
+        }
+    }
+
+    public void setBannerAnimation(Class<? extends ViewPager.PageTransformer> transformer) {
+        try {
+            setPageTransformer(true, transformer.newInstance());
+        } catch (Exception e) {
+            Log.e(this.tag, "Please set the PageTransformer class");
+        }
+    }
 
     /**
-     * A strange builder to be compatible with old code.
+     * Set the number of pages that should be retained to either side of the
+     * current page in the view hierarchy in an idle state. Pages beyond this
+     * limit will be recreated from the adapter when needed.
+     *
+     * @param limit How many pages will be kept offscreen in an idle state.
      */
-    public static class Builder {
-        private final LoopLayout loopLayout;
-
-        public Builder(LoopLayout loopLayout) {
-            this.loopLayout = loopLayout;
+    public void setOffscreenPageLimit(int limit) {
+        if (this.viewPager != null) {
+            this.viewPager.setOffscreenPageLimit(limit);
         }
+    }
 
-        public Builder setItemCount(int count) {
-            loopLayout.count = count;
-            return this;
-        }
+    /**
+     * Set a {@link ViewPager.PageTransformer} that will be called for each attached page whenever
+     * the scroll position is changed. This allows the application to apply custom property
+     * transformations to each page, overriding the default sliding look and feel.
+     *
+     * @param reverseDrawingOrder true if the supplied PageTransformer requires page views
+     *                            to be drawn from last to first instead of first to last.
+     * @param transformer         PageTransformer that will modify each page's animation properties
+     */
+    public void setPageTransformer(boolean reverseDrawingOrder, ViewPager.PageTransformer transformer) {
+        this.viewPager.setPageTransformer(reverseDrawingOrder, transformer);
+    }
 
-        public Builder isAutoPlay(boolean isAutoPlay) {
-            loopLayout.isAutoPlay = isAutoPlay;
-            return this;
-        }
+    public void setBannerStyle(int bannerStyle) {
+        this.bannerStyle = bannerStyle;
+    }
 
-        public Builder setBannerTitles(List<String> titles) {
-            loopLayout.titles = titles;
-            return this;
-        }
+    public void setViewPagerIsScroll(boolean isScroll) {
+        this.isScroll = isScroll;
+    }
 
-        public Builder setDelayTime(int delayTime) {
-            loopLayout.delayTime = delayTime;
-            return this;
-        }
-
-        public Builder setIndicatorGravity(int type) {
-            switch (type) {
-                case BannerConfig.LEFT:
-                    loopLayout.gravity = Gravity.LEFT | Gravity.CENTER_VERTICAL;
-                    break;
-                case BannerConfig.CENTER:
-                    loopLayout.gravity = Gravity.CENTER;
-                    break;
-                case BannerConfig.RIGHT:
-                    loopLayout.gravity = Gravity.RIGHT | Gravity.CENTER_VERTICAL;
-                    break;
-            }
-            return this;
-        }
-
-        public Builder setBannerAnimation(Class<? extends ViewPager.PageTransformer> transformer) {
-            try {
-                setPageTransformer(true, transformer.newInstance());
-            } catch (Exception e) {
-                Log.e(loopLayout.tag, "Please set the PageTransformer class");
-            }
-            return this;
-        }
-
-        /**
-         * Set the number of pages that should be retained to either side of the
-         * current page in the view hierarchy in an idle state. Pages beyond this
-         * limit will be recreated from the adapter when needed.
-         *
-         * @param limit How many pages will be kept offscreen in an idle state.
-         */
-        public Builder setOffscreenPageLimit(int limit) {
-            if (loopLayout.viewPager != null) {
-                loopLayout.viewPager.setOffscreenPageLimit(limit);
-            }
-            return this;
-        }
-
-        /**
-         * Set a {@link ViewPager.PageTransformer} that will be called for each attached page whenever
-         * the scroll position is changed. This allows the application to apply custom property
-         * transformations to each page, overriding the default sliding look and feel.
-         *
-         * @param reverseDrawingOrder true if the supplied PageTransformer requires page views
-         *                            to be drawn from last to first instead of first to last.
-         * @param transformer         PageTransformer that will modify each page's animation properties
-         */
-        public Builder setPageTransformer(boolean reverseDrawingOrder, ViewPager.PageTransformer transformer) {
-            loopLayout.viewPager.setPageTransformer(reverseDrawingOrder, transformer);
-            return this;
-        }
-
-        public Builder setBannerStyle(int bannerStyle) {
-            loopLayout.bannerStyle = bannerStyle;
-            return this;
-        }
-
-        public Builder setViewPagerIsScroll(boolean isScroll) {
-            loopLayout.isScroll = isScroll;
-            return this;
-        }
-
-        public void start() {
-            loopLayout.start();
-        }
-
-        /**
-         * 废弃了旧版接口，新版的接口下标是从1开始，同时解决下标越界问题
-         */
-        public Builder setOnBannerListener(OnBannerListener listener) {
-            loopLayout.listener = listener;
-            return this;
-        }
+    /**
+     * 废弃了旧版接口，新版的接口下标是从1开始，同时解决下标越界问题
+     */
+    public void setOnBannerListener(OnBannerListener listener) {
+        this.listener = listener;
     }
 
     public void setOnPageChangeListener(ViewPager.OnPageChangeListener onPageChangeListener) {

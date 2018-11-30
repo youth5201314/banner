@@ -12,9 +12,10 @@ import com.test.banner.loader.GlideImageLoader;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 
-public class BannerStyleActivity extends AppCompatActivity implements  AdapterView.OnItemSelectedListener {
+public class BannerStyleActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     Banner banner;
     Spinner spinnerStyle;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,15 +25,15 @@ public class BannerStyleActivity extends AppCompatActivity implements  AdapterVi
         spinnerStyle.setOnItemSelectedListener(this);
 
         //默认是CIRCLE_INDICATOR
-        banner.setImages(App.images)
-                .setBannerTitles(App.titles)
-                .setImageLoader(new GlideImageLoader())
-                .start();
+        banner.setImages(App.images);
+        banner.setTitles(App.titles);
+        banner.setImageLoader(new GlideImageLoader());
+        banner.start();
     }
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        switch (position){
+        switch (position) {
             case 0:
                 banner.updateBannerStyle(BannerConfig.NOT_INDICATOR);
                 break;

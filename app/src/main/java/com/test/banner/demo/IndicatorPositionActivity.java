@@ -15,17 +15,18 @@ import com.youth.banner.BannerConfig;
 public class IndicatorPositionActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     Banner banner;
     Spinner spinnerPosition;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_indicator_position);
         banner = (Banner) findViewById(R.id.banner);
-        spinnerPosition= (Spinner) findViewById(R.id.spinnerPosition);
+        spinnerPosition = (Spinner) findViewById(R.id.spinnerPosition);
         spinnerPosition.setOnItemSelectedListener(this);
 
-        banner.setImages(App.images)
-                .setImageLoader(new GlideImageLoader())
-                .start();
+        banner.setImages(App.images);
+        banner.setImageLoader(new GlideImageLoader());
+        banner.start();
     }
 
     @Override

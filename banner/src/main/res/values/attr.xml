@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="Banner">
+    <declare-styleable name="LoopLayout">
         <attr name="delay_time" format="integer" />
         <attr name="scroll_time" format="integer" />
         <attr name="is_auto_play" format="boolean" />
@@ -13,8 +13,10 @@
         <attr name="indicator_margin" format="dimension" />
         <attr name="indicator_drawable_selected" format="reference" />
         <attr name="indicator_drawable_unselected" format="reference" />
-        <attr name="banner_layout" format="reference"/>
-        <attr name="banner_default_image" format="reference"/>
+        <attr name="banner_layout" format="reference" />
+        <attr name="banner_default_image" format="reference" />
+    </declare-styleable>
+    <declare-styleable name="Banner">
         <attr name="image_scale_type" format="enum">
             <enum name="center" value="0" />
             <enum name="center_crop" value="1" />
@@ -25,7 +27,5 @@
             <enum name="fit_xy" value="6" />
             <enum name="matrix" value="7" />
         </attr>
-        <!--<attr name="indicator_animator" format="reference" />-->
-        <!--<attr name="indicator_animator_reverse" format="reference" />-->
     </declare-styleable>
 </resources>

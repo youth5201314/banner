@@ -66,10 +66,10 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         listView.setOnItemClickListener(this);
 
         //简单使用
-        banner.setImages(App.images)
-                .setImageLoader(new GlideImageLoader())
-                .setOnBannerListener(this)
-                .start();
+        banner.setImages(App.images);
+        banner.setImageLoader(new GlideImageLoader());
+        banner.setOnBannerListener(this);
+        banner.start();
 
     }
 

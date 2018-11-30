@@ -32,8 +32,8 @@ public class BannerLocalActivity extends AppCompatActivity {
 
 
 
-        banner.setImages(list)
-                .setImageLoader(new GlideImageLoader())
-                .start();
+        banner.setImages(list);
+        banner.setImageLoader(new GlideImageLoader());
+        banner.start();
     }
 }

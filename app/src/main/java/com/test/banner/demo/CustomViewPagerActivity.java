@@ -14,6 +14,7 @@ import com.youth.banner.listener.OnBannerListener;
 
 public class CustomViewPagerActivity extends AppCompatActivity implements OnBannerListener {
     Banner banner;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,10 +23,10 @@ public class CustomViewPagerActivity extends AppCompatActivity implements OnBann
         banner = (Banner) findViewById(R.id.banner);
         banner.setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, App.H / 4));
         //简单使用
-        banner.setImages(App.images)
-                .setImageLoader(new GlideImageLoader())
-                .setOnBannerListener(this)
-                .start();
+        banner.setImages(App.images);
+        banner.setImageLoader(new GlideImageLoader());
+        banner.setOnBannerListener(this);
+        banner.start();
     }
 
     @Override
