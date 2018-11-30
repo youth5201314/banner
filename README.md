@@ -1,12 +1,11 @@
 # Android图片轮播控件
 [![Apache 2.0 License](https://img.shields.io/badge/license-Apache%202.0-blue.svg?style=flat)](http://www.apache.org/licenses/LICENSE-2.0.html)
 
+<br>
 
-## 新框架发布，欢迎大家Star
-
-[XFrame - Android快速开发框架](https://github.com/youth5201314/XFrame)
-
-[XFrame详细功能文档预览](https://github.com/youth5201314/XFrame/wiki)
+现在Banner支持自定义ItemView,只要继承LoopAdapter，实现里面的getItemView方法。
+<br>
+现在Banner以Observer模式来监听数据变化，api调用方式类似于RecyclerView。
 
 
 <br>
