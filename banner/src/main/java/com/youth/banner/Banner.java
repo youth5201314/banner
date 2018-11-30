@@ -1,6 +1,5 @@
 package com.youth.banner;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.os.Build;
@@ -30,7 +29,6 @@ public class Banner extends LoopLayout {
 
     public Banner(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        new AlertDialog.Builder(getContext()).create().show();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -64,6 +62,10 @@ public class Banner extends LoopLayout {
         bannerAdapter.setTitles(titles);
     }
 
+    public void setScaleType(int scaleType) {
+        bannerAdapter.setScaleType(scaleType);
+    }
+
     /**
      * @see #setImages(List).
      */
@@ -72,7 +74,7 @@ public class Banner extends LoopLayout {
         bannerAdapter.notifyDataSetChanged();
     }
 
-    public void start(){
+    public void start() {
         bannerAdapter.notifyDataSetChanged();
     }
 }

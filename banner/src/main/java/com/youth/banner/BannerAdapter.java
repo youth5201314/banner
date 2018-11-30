@@ -28,6 +28,10 @@ public class BannerAdapter extends LoopAdapter {
         this.titles = titles;
     }
 
+    public void setScaleType(int scaleType) {
+        this.scaleType = scaleType;
+    }
+
     public void setImagesUrls(List<?> imagesUrls) {
         this.imagesUrls = imagesUrls;
     }

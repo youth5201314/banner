@@ -159,10 +159,7 @@ public class LoopLayout extends FrameLayout implements ViewPager.OnPageChangeLis
     }
 
     private void handleTypedArray(Context context, AttributeSet attrs) {
-        if (attrs == null) {
-            return;
-        }
-        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.Banner);
+        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.LoopLayout);
         initStyleable(typedArray);
         typedArray.recycle();
     }
