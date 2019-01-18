@@ -427,8 +427,10 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
         if (adapter == null) {
             adapter = new BannerPagerAdapter();
             viewPager.addOnPageChangeListener(this);
+            viewPager.setAdapter(adapter);
+        }else {
+            adapter.notifyDataSetChanged();
         }
-        viewPager.setAdapter(adapter);
         viewPager.setFocusable(true);
         viewPager.setCurrentItem(1);
         if (gravity != -1)
