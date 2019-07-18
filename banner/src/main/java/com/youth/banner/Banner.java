@@ -53,6 +53,7 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
     private int titleBackground;
     private int titleTextColor;
     private int titleTextSize;
+    private int startIndex;
     private int count = 0;
     private int currentItem;
     private int gravity = -1;
@@ -428,14 +429,18 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
 
 
     private void setData() {
-        currentItem = 1;
+        if (startIndex != 0) {
+            currentItem = startIndex;
+        } else {
+            currentItem = 1;
+        }
         if (adapter == null) {
             adapter = new BannerPagerAdapter();
             viewPager.addOnPageChangeListener(this);
         }
         viewPager.setAdapter(adapter);
         viewPager.setFocusable(true);
-        viewPager.setCurrentItem(1);
+        viewPager.setCurrentItem(currentItem);
         if (gravity != -1)
             indicator.setGravity(gravity);
         if (isScroll && count > 1) {
@@ -643,6 +648,11 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
      */
     public Banner setOnBannerListener(OnBannerListener listener) {
         this.listener = listener;
+        return this;
+    }
+
+    public Banner setStartIndex(int index) {
+        this.startIndex = index;
         return this;
     }
 
