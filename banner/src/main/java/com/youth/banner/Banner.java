@@ -665,4 +665,9 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
     public void releaseBanner() {
         handler.removeCallbacksAndMessages(null);
     }
+
+
+    public void setPageMargin(int marginPixels){
+        this.viewPager.setPageMargin(marginPixels);
+    }
 }
