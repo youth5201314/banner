@@ -17,15 +17,28 @@ public class BannerViewPager extends ViewPager {
         super(context, attrs);
     }
 
-
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
-        return this.scrollable && super.onTouchEvent(ev);
+        if(this.scrollable) {
+            if (getCurrentItem() == 0 && getChildCount() == 0) {
+                return false;
+            }
+            return super.onTouchEvent(ev);
+        } else {
+            return false;
+        }
     }
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
-        return this.scrollable && super.onInterceptTouchEvent(ev);
+        if(this.scrollable) {
+            if (getCurrentItem() == 0 && getChildCount() == 0) {
+                return false;
+            }
+            return super.onInterceptTouchEvent(ev);
+        } else {
+            return false;
+        }
     }
 
     public void setScrollable(boolean scrollable) {

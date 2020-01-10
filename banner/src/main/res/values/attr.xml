@@ -10,6 +10,8 @@
         <attr name="title_height" format="dimension" />
         <attr name="indicator_width" format="dimension" />
         <attr name="indicator_height" format="dimension" />
+        <attr name="indicator_selected_width" format="dimension" />
+        <attr name="indicator_selected_height" format="dimension" />
         <attr name="indicator_margin" format="dimension" />
         <attr name="indicator_drawable_selected" format="reference" />
         <attr name="indicator_drawable_unselected" format="reference" />

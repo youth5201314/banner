@@ -19,7 +19,7 @@ public class FrescoImageLoader extends ImageLoader {
 
     //提供createImageView 方法，方便fresco自定义ImageView
     @Override
-    public ImageView createImageView(Context context) {
+    public ImageView createImageView(Context context, Object path) {
         SimpleDraweeView simpleDraweeView = new SimpleDraweeView(context);
         return simpleDraweeView;
     }

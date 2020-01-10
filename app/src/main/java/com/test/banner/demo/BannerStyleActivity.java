@@ -26,7 +26,6 @@ public class BannerStyleActivity extends AppCompatActivity implements  AdapterVi
         //默认是CIRCLE_INDICATOR
         banner.setImages(App.images)
                 .setBannerTitles(App.titles)
-                .setBannerStyle(BannerConfig.NOT_INDICATOR)
                 .setImageLoader(new GlideImageLoader())
                 .start();
     }

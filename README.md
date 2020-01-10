@@ -26,9 +26,9 @@
 |指示器加标题模式<br>水平显示|![效果示例](http://oceh51kku.bkt.clouddn.com/banner_example5.png)|
 
 ### 联系方式  <a target="_blank" href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=KBkYGhAfGhEYEB5oWVkGS0dF" style="text-decoration:none;"><img src="http://rescdn.qqmail.com/zh_CN/htmledition/images/function/qm_open/ico_mailme_11.png"/></a>
-![效果示例](http://oceh51kku.bkt.clouddn.com/Android%E6%8A%80%E6%9C%AF%E4%BA%A4%E6%B5%81%E7%BE%A4%E4%BA%8C%E7%BB%B4%E7%A0%81.png)
-* 如果遇到问题和建议欢迎在给我发送邮件或者加入qq群，希望让这个工程越来越完善。
-* 群满可以加群2：594813900
+ ![效果示例](http://oceh51kku.bkt.clouddn.com/Android%E6%8A%80%E6%9C%AF%E4%BA%A4%E6%B5%81%E7%BE%A4%E4%BA%8C%E7%BB%B4%E7%A0%81.png)
+* 如果有问题可以加群大家一起交流
+* 我的个人微博：https://weibo.com/u/3013494003 有兴趣的也可以关注，大家一起交流
 
 ## 常量
 |常量名称|描述|所属方法
@@ -78,7 +78,7 @@
 |update(List<?> imageUrls)| 更新图片 |1.4.5开始
 |startAutoPlay()|开始轮播|1.4开始，此方法只作用于banner加载完毕-->需要在start()后执行
 |stopAutoPlay()|结束轮播|1.4开始，此方法只作用于banner加载完毕-->需要在start()后执行
-|start()|开始进行banner渲染|1.4开始
+|start()|开始进行banner渲染（必须放到最后执行）|1.4开始
 |setOffscreenPageLimit(int limit)|同viewpager的方法作用一样|1.4.2开始
 |setBannerTitle(String[] titles)| 设置轮播要显示的标题和图片对应（如果不传默认不显示标题）|1.3.3结束
 |setBannerTitleList(List<String> titles)| 设置轮播要显示的标题和图片对应（如果不传默认不显示标题）|1.3.3结束
@@ -187,6 +187,9 @@ public class GlideImageLoader extends ImageLoader {
 ```
 
 #### Step 5.在Activity或者Fragment中配置Banner 
+
+- 注意！start()方法必须放到最后执行，点击事件请放到start()前，每次都提交问题问为什么点击没有反应？需要轮播一圈才能点击？点击第一个怎么返回1？麻烦仔细阅读文档。
+
 ```java
 --------------------------简单使用-------------------------------
 @Override
@@ -309,12 +312,12 @@ protected void onStop() {
         
 * 问：设置banner指示器颜色怎么变成方的了？
 
-    * 答：首先我先要说很多软件的指示器也是矩形的，然后banner的指示器可以设置color、资源图片、drawable文件夹自定义xml，
+    * 答：首先我先要说很多软件的指示器也是矩形的，然后banner的指示器可以设置color、资源图片、drawable文件夹自定义shape ，
     所以形状你自己可以根据需求定义哦！
 
-* 问：为什么banner的点击事件没有反应，需要下一次轮播才行？
+* 问：为什么banner的点击事件没有反应，需要下一次轮播才行？点击第一个图片怎么返回1？
 
-     * 答：请将点击事件放在start方法之前执行，详情可以看demo。
+     * 答：请将点击事件放在start方法之前执行，start必须放到最后执行，详情可以看demo。
 
 ## Thanks
 
@@ -333,6 +336,8 @@ protected void onStop() {
  * 将onPageScrolled和onPageSelected方法返回的position转成真实的position
  * 增加属性banner_default_image，设置当banner数据为空是显示的默认图片
  * 增加属性banner_layout，可以自定义布局文件，但是必须保证id的名称一样
+ * 修改ViewPager偶发性的越界问题
+ * SwipeRefreshLayout嵌套ViewPager的滑动冲突问题参考demo的SuperSwipeRefreshLayout类
 
 #### v1.4.9
     banner 优化更新
