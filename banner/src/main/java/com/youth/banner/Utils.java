@@ -1,4 +1,4 @@
-package com.youth.banner.vp2;
+package com.youth.banner;
 
 public class Utils {
 

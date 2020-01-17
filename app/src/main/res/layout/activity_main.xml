@@ -7,8 +7,4 @@
         android:id="@+id/banner"
         android:layout_width="match_parent"
         android:layout_height="200dp"/>
-    <com.youth.banner.vp2.Banner2
-        android:id="@+id/banner2"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"/>
 </LinearLayout>

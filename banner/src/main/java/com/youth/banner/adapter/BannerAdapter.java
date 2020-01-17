@@ -5,8 +5,8 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.youth.banner.vp2.IViewHolder;
-import com.youth.banner.vp2.Utils;
+import com.youth.banner.IViewHolder;
+import com.youth.banner.Utils;
 
 import java.util.ArrayList;
 import java.util.List;

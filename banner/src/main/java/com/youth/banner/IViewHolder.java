@@ -1,4 +1,4 @@
-package com.youth.banner.vp2;
+package com.youth.banner;
 
 import android.view.ViewGroup;
 

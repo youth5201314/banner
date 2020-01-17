@@ -8,8 +8,8 @@ import androidx.lifecycle.Lifecycle;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.adapter.FragmentViewHolder;
 
-import com.youth.banner.vp2.IViewHolder;
-import com.youth.banner.vp2.Utils;
+import com.youth.banner.IViewHolder;
+import com.youth.banner.Utils;
 
 import java.util.List;
 
