@@ -1,8 +1,8 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 28
-    buildToolsVersion "28.0.3"
+    compileSdkVersion 29
+    buildToolsVersion '29.0.2'
 
     defaultConfig {
         applicationId "com.test.banner"
@@ -17,15 +17,22 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    compileOptions {
+        targetCompatibility = 1.8
+        sourceCompatibility = 1.8
+    }
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'com.android.support:appcompat-v7:28+'
-    implementation 'com.android.support:recyclerview-v7:28+'
-    implementation "com.github.bumptech.glide:glide:3.7.0"
-    implementation 'com.facebook.fresco:fresco:0.12.0'
-    implementation 'com.zxy.android:recovery:0.0.8'
+//    implementation 'com.android.support:appcompat-v7:+'
+//    implementation 'com.android.support:recyclerview-v7:+'
+//    implementation "com.github.bumptech.glide:glide:3.7.0"
+    implementation 'androidx.appcompat:appcompat:+'
+    implementation 'androidx.recyclerview:recyclerview:+'
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:+'
+    implementation 'com.github.bumptech.glide:glide:4.11.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
     implementation project(':banner')
 //    implementation 'com.youth.banner:banner:+'
 }

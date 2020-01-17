@@ -4,11 +4,11 @@ apply plugin: 'com.jfrog.bintray'
 version = "1.4.10"
 
 android {
-    compileSdkVersion 28
-    buildToolsVersion "28.0.3"
+    compileSdkVersion 29
+    buildToolsVersion '29.0.2'
 
     defaultConfig {
-        minSdkVersion 11
+        minSdkVersion 14
         targetSdkVersion 28
         versionCode 41
         versionName version
@@ -22,11 +22,17 @@ android {
     lintOptions {
         abortOnError false
     }
+    compileOptions {
+        sourceCompatibility = 1.8
+        targetCompatibility = 1.8
+    }
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'com.android.support:support-v4:28+'
+    implementation "androidx.viewpager2:viewpager2:1.0.0"
+//    implementation 'com.android.support:support-v4:+'
+
 }
 
 

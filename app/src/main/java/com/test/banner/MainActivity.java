@@ -1,126 +1,149 @@
 package com.test.banner;
 
-import android.content.Intent;
+import android.content.Context;
 import android.os.Bundle;
-import android.os.Handler;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
-import android.widget.AdapterView;
-import android.widget.ListView;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import com.test.banner.demo.BannerAnimationActivity;
-import com.test.banner.demo.BannerLocalActivity;
-import com.test.banner.demo.BannerStyleActivity;
-import com.test.banner.demo.CustomBannerActivity;
-import com.test.banner.demo.CustomViewPagerActivity;
-import com.test.banner.demo.IndicatorPositionActivity;
-import com.test.banner.loader.GlideImageLoader;
-import com.youth.banner.Banner;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.youth.banner.holder.ViewHolder;
 import com.youth.banner.listener.OnBannerListener;
+import com.youth.banner.Banner;
+import com.youth.banner.listener.OnPageChangeListener;
+import com.youth.banner.vp2.Banner2;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 
-public class MainActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener, AdapterView.OnItemClickListener, OnBannerListener {
-    static final int REFRESH_COMPLETE = 0X1112;
-    SuperSwipeRefreshLayout mSwipeLayout;
-    ListView listView;
+public class MainActivity extends AppCompatActivity implements OnBannerListener {
+    private static final String TAG = "banner_log";
     Banner banner;
+    Banner2 banner2;
+    List<Integer> data;
 
-    private Handler mHandler = new Handler() {
-        public void handleMessage(android.os.Message msg) {
-            switch (msg.what) {
-                case REFRESH_COMPLETE:
-                    String[] urls = getResources().getStringArray(R.array.url4);
-                    List list = Arrays.asList(urls);
-                    List arrayList = new ArrayList(list);
-                    banner.update(arrayList);
-                    mSwipeLayout.setRefreshing(false);
-                    break;
-            }
-        }
-    };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mSwipeLayout = (SuperSwipeRefreshLayout) findViewById(R.id.swipe);
-        mSwipeLayout.setOnRefreshListener(this);
-        listView = (ListView) findViewById(R.id.list);
-        View header = LayoutInflater.from(this).inflate(R.layout.header, null);
-        banner = (Banner) header.findViewById(R.id.banner);
-        banner.setLayoutParams(new AbsListView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, App.H / 4));
-        listView.addHeaderView(banner);
+        banner = findViewById(R.id.banner);
+        data = new ArrayList<>();
+        data.add(R.drawable.b1);
+        data.add(R.drawable.b2);
+        data.add(R.drawable.b3);
+//        banner.setData(data)
+//                .setViewHolderCreator(() -> new BannerViewHolder())
+//                .setOnBannerListener(this)
+//                .build();
 
-        String[] data = getResources().getStringArray(R.array.demo_list);
-        listView.setAdapter(new SampleAdapter(this,data));
-        listView.setOnItemClickListener(this);
+        banner2 = findViewById(R.id.banner2);
+        banner2.setAdapter(new BannerAdapter(data));
+//        banner2.start();
+        banner2.setOnBannerListener(this);
+        banner2.addOnPageChangeListener(new OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                Log.e(TAG, "onPageScrolled:" + position);
+            }
 
-        //简单使用
-        banner.setImages(App.images)
-                .setImageLoader(new GlideImageLoader())
-                .setOnBannerListener(this)
-                .start();
+            @Override
+            public void onPageSelected(int position) {
+                Log.e(TAG, "onPageSelected:----" + position);
+            }
 
+            @Override
+            public void onPageScrollStateChanged(int state) {
+                Log.e(TAG, "onPageScrollStateChanged:" + state);
+            }
+        });
     }
 
     @Override
-    public void OnBannerClick(int position) {
-        Toast.makeText(getApplicationContext(),"你点击了："+position,Toast.LENGTH_SHORT).show();
+    public void OnBannerClick(Object data, int position) {
+        Toast.makeText(this, "点击" + position, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onBannerChanged(int position) {
+//        Log.e(TAG,"onBannerChanged:"+position);
     }
 
 
-    //如果你需要考虑更好的体验，可以这么操作
+    class BannerViewHolder implements ViewHolder<Integer> {
+        ImageView imageView;
+        TextView title;
+        TextView numIndicator;
+
+        @Override
+        public View createView(Context context) {
+            View view = LayoutInflater.from(context).inflate(R.layout.banner, null);
+            imageView = view.findViewById(R.id.image);
+            title = view.findViewById(R.id.bannerTitle);
+            numIndicator = view.findViewById(R.id.numIndicator);
+            return view;
+        }
+
+        @Override
+        public void onBindView(View item, Integer data, int position, int size) {
+            imageView.setImageResource(data);
+            title.setText(data + "");
+            numIndicator.setText((position+1)+"/"+size);
+        }
+    }
+
+    class BannerAdapter extends com.youth.banner.adapter.BannerAdapter<Integer, PagerViewHolder> {
+
+        public BannerAdapter(List<Integer> mDatas) {
+            super(mDatas);
+        }
+
+        @Override
+        public PagerViewHolder onCreateHolder(ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.banner, parent, false);
+            return new PagerViewHolder(view);
+        }
+
+        @Override
+        public void onBindView(PagerViewHolder holder, Integer data, int position, int size) {
+            holder.imageView.setImageResource(data);
+            holder.title.setText(data + "");
+            holder.numIndicator.setText((position+1)+"/"+size);
+        }
+    }
+
+    class PagerViewHolder extends RecyclerView.ViewHolder {
+        ImageView imageView;
+        TextView title;
+        TextView numIndicator;
+
+        public PagerViewHolder(@NonNull View view) {
+            super(view);
+            imageView = view.findViewById(R.id.image);
+            title = view.findViewById(R.id.bannerTitle);
+            numIndicator = view.findViewById(R.id.numIndicator);
+        }
+    }
+
     @Override
     protected void onStart() {
         super.onStart();
-        //开始轮播
-        banner.startAutoPlay();
+        banner.start();
+        banner2.start();
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        //结束轮播
-        banner.stopAutoPlay();
+        banner.stop();
+        banner2.stop();
     }
-
-
-    @Override
-    public void onRefresh() {
-        mHandler.sendEmptyMessageDelayed(REFRESH_COMPLETE, 2000);
-    }
-
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        switch (position){
-            case 1:
-                startActivity(new Intent(this, BannerAnimationActivity.class));
-                break;
-            case 2:
-                startActivity(new Intent(this, BannerStyleActivity.class));
-                break;
-            case 3:
-                startActivity(new Intent(this, IndicatorPositionActivity.class));
-                break;
-            case 4:
-                startActivity(new Intent(this, CustomBannerActivity.class));
-                break;
-            case 5:
-                startActivity(new Intent(this, BannerLocalActivity.class));
-                break;
-            case 6:
-                startActivity(new Intent(this, CustomViewPagerActivity.class));
-                break;
-        }
-    }
-
-
 }

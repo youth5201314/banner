@@ -3,16 +3,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-
-    <com.test.banner.SuperSwipeRefreshLayout
-        android:id="@+id/swipe"
+    <com.youth.banner.Banner
+        android:id="@+id/banner"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <ListView
-            android:id="@+id/list"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:divider="@null"/>
-    </com.test.banner.SuperSwipeRefreshLayout>
+        android:layout_height="200dp"/>
+    <com.youth.banner.vp2.Banner2
+        android:id="@+id/banner2"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"/>
 </LinearLayout>

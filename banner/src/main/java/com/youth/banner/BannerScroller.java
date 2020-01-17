@@ -4,6 +4,9 @@ import android.content.Context;
 import android.view.animation.Interpolator;
 import android.widget.Scroller;
 
+/**
+ * 控制ViewPager滑动速度
+ */
 public class BannerScroller extends Scroller {
     private int mDuration = BannerConfig.DURATION;
 
