@@ -2,7 +2,6 @@ package com.youth.banner;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.os.Handler;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -14,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.viewpager.widget.ViewPager;
 
+import com.youth.banner.adapter.BannerPagerAdapter;
 import com.youth.banner.holder.ViewHolderCreator;
 import com.youth.banner.listener.OnBannerListener;
 
