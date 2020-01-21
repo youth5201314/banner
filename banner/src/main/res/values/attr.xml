@@ -2,8 +2,25 @@
 <resources>
     <declare-styleable name="Banner">
         <attr name="delay_time" format="integer" />
-        <attr name="duration_time" format="integer" />
-        <attr name="is_auto_play" format="boolean" />
-        <attr name="placeholder_mage" format="reference"/>
+        <attr name="is_auto_loop" format="boolean" />
+        <attr name="orientation">
+            <enum name="horizontal" value="0" />
+            <enum name="vertical" value="1" />
+        </attr>
+        <attr name="indicator_gravity" format="enum">
+            <enum name="left" value="0" />
+            <enum name="center" value="1" />
+            <enum name="right" value="2" />
+        </attr>
+        <attr name="indicator_normal_width" format="dimension"/>
+        <attr name="indicator_selected_width" format="dimension"/>
+        <attr name="indicator_normal_color" format="color"/>
+        <attr name="indicator_selected_color" format="color"/>
+        <attr name="indicator_space" format="dimension"/>
+        <attr name="indicator_margin" format="dimension"/>
+        <attr name="indicator_marginLeft" format="dimension"/>
+        <attr name="indicator_marginTop" format="dimension"/>
+        <attr name="indicator_marginRight" format="dimension"/>
+        <attr name="indicator_marginBottom" format="dimension"/>
     </declare-styleable>
 </resources>

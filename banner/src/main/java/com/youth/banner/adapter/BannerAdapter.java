@@ -6,32 +6,38 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.youth.banner.IViewHolder;
-import com.youth.banner.Utils;
+import com.youth.banner.util.BannerUtils;
+import com.youth.banner.listener.OnBannerListener;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
 public abstract class BannerAdapter<T, VH extends RecyclerView.ViewHolder> extends RecyclerView.Adapter<VH> implements IViewHolder<T, VH> {
-    private List<T> mDatas ;
-    private List<T> mOriginalDatas ;
-    private boolean mIsLoop;
-    private int mCount;
+    private List<T> mDatas;
+    private OnBannerListener listener;
+
     public BannerAdapter(List<T> datas) {
-        this.mOriginalDatas=datas;
-        mCount=getRealCount();
+        setDatas(datas);
+    }
+
+    public void setDatas(List<T> datas) {
         mDatas = new ArrayList<>();
         mDatas.addAll(datas);
-        if (mCount>1) {
-            mDatas.add(0, datas.get(mCount - 1));
+        int count = datas.size();
+        if (count > 1) {
+            mDatas.add(0, datas.get(count - 1));
             mDatas.add(datas.get(0));
         }
+        notifyDataSetChanged();
     }
 
     @Override
     public final void onBindViewHolder(@NonNull VH holder, int position) {
-        int real = Utils.getRealPosition(position, getRealCount());
+        int real = BannerUtils.getRealPosition(position, getRealCount());
         onBindView(holder, mDatas.get(position), real, getRealCount());
+        if (listener != null)
+            holder.itemView.setOnClickListener(view -> listener.OnBannerClick(mDatas.get(position), real));
     }
 
     @NonNull
@@ -46,8 +52,11 @@ public abstract class BannerAdapter<T, VH extends RecyclerView.ViewHolder> exten
     }
 
     public int getRealCount() {
-        return mOriginalDatas == null ? 0 : mOriginalDatas.size();
+        int count = mDatas.size();
+        return count <= 1 ? count : count - 2;
     }
 
-
+    public void setOnBannerListener(OnBannerListener listener) {
+        this.listener = listener;
+    }
 }
