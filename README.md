@@ -1,5 +1,4 @@
-## Banner 2.0 
-[![Apache 2.0 License](https://img.shields.io/badge/license-Apache%202.0-blue.svg?style=flat)](http://www.apache.org/licenses/LICENSE-2.0.html)
+## Banner 2.0  [![Apache 2.0 License](https://img.shields.io/badge/license-Apache%202.0-blue.svg?style=flat)](http://www.apache.org/licenses/LICENSE-2.0.html)
 > 只做一个可以自定义的轮播容器，不侵入UI ———— Banner 2.0
 
 ### 阔别已久，从新回归
@@ -12,7 +11,7 @@
     * 如果你觉得实在是没用，也请你做一个有自我修养的人。
    
 ### 主要改进功能介绍
-- [x] 使用了ViewPager2为基础控件  <a href="https://developer.android.google.cn/jetpack/androidx/releases/viewpager2" target="_blank">[ViewPager2介绍]
+- [x] 使用了ViewPager2为基础控件  <a href="https://developer.android.google.cn/jetpack/androidx/releases/viewpager2" target="_blank">[ViewPager2介绍] 
 - [x] 支持了androidx兼容包
 - [x] 方便了UI、Indicator自定义（现在还是基础版本）
 - [x] 依赖包目前只导入了ViewPager2
