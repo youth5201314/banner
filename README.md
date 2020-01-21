@@ -1,17 +1,20 @@
-## Banner 2.0  [![Apache 2.0 License](https://img.shields.io/badge/license-Apache%202.0-blue.svg?style=flat)](http://www.apache.org/licenses/LICENSE-2.0.html)
+## Banner 2.0 全新升级
 > 只做一个可以自定义的轮播容器，不侵入UI ———— Banner 2.0
+
+<a href="https://github.com/youth5201314/banner/tree/release-1.4.10" target="_blank">Banner 1.4.10(还想看老版本的可以点击这里)</a>
 
 ### 阔别已久，从新回归
 > 很长一段时间没有维护这个项目了，有很多人发邮件反馈，有好的，也有让人无语气氛的；特别是2017经常收到各种骂人的邮件，所以我只能停止更新关闭邮件提醒。
 但是隔了这么长时间看突然发现有这么多人使用，又反馈了很多问题和意见，我决定重新开始重构下，能更好的解决大家的需求：
 
-- 首先我声明几点：
-    * 这只是开源交流的平台，如果满意你可以使用、可以借鉴修改，希望对你们有所帮助。
+* 首先我声明几点：
+    * 这只是一个开源库，如果满意你可以使用、可以借鉴修改，希望对你们有所帮助。
     * 如果不满意请友好的提出，注明详细信息或者修改建议，亦可以直接提交，我会考虑合并。
     * 如果你觉得实在是没用，也请你做一个有自我修养的人。
    
 ### 主要改进功能介绍
-- [x] 使用了ViewPager2为基础控件  <a href="https://developer.android.google.cn/jetpack/androidx/releases/viewpager2" target="_blank">[ViewPager2介绍] 
+
+- [x] 使用了ViewPager2为基础控件  <a href="https://developer.android.google.cn/jetpack/androidx/releases/viewpager2" target="_blank">[ViewPager2介绍]</a>
 - [x] 支持了androidx兼容包
 - [x] 方便了UI、Indicator自定义（现在还是基础版本）
 - [x] 依赖包目前只导入了ViewPager2
@@ -231,9 +234,7 @@ public class BannerActivity extends AppCompatActivity {
 
 - []()
 
-## 更新说明
 
-#### v2.0.0-alpha
   
 
 
