@@ -233,7 +233,7 @@ public class BannerActivity extends AppCompatActivity {
 * 我的个人微博：https://weibo.com/u/3013494003 有兴趣的也可以关注，大家一起交流
 * 有问题可以加群大家一起交流，如果你觉得对你有帮助可以扫描下面支付宝二维码随意打赏下哦！
 
-<img src="images/qq.png" width="100"/> <img src="images/pay.jpg" width="100"/>
+<img src="images/qq.png" width="220"/> <img src="images/pay.jpg" width="220"/>
 
 
 
