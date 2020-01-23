@@ -37,7 +37,7 @@ public class IndicatorConfig {
         public int bottomMargin;
 
         public Margins() {
-            this((int) BannerConfig.INDICATOR_MARGIN);
+            this(BannerConfig.INDICATOR_MARGIN);
         }
 
         public Margins(int marginSize) {

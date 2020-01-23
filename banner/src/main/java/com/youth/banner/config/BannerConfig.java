@@ -11,5 +11,6 @@ public class BannerConfig {
     public static final float INDICATOR_NORMAL_WIDTH = BannerUtils.dp2px(6);
     public static final float INDICATOR_SELECTED_WIDTH = BannerUtils.dp2px(8);
     public static final float INDICATOR_SPACE = BannerUtils.dp2px(6);
-    public static final float INDICATOR_MARGIN = BannerUtils.dp2px(5);
+    public static final int INDICATOR_MARGIN = (int) BannerUtils.dp2px(5);
+
 }

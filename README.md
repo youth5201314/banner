@@ -1,34 +1,32 @@
+# 今年最后一天Banner全新升级，祝大家新年快乐
+<img src="images/sunian.png"/>
+
 ## Banner 2.0 全新升级
 > 只做一个可以自定义的轮播容器，不侵入UI ———— Banner 2.0
 
 <a href="https://github.com/youth5201314/banner/tree/release-1.4.10" target="_blank">Banner 1.4.10(还想看老版本的可以点击这里)</a>
 
 ### 阔别已久，从新回归
-> 很长一段时间没有维护这个项目了，有很多人发邮件反馈，有好的，也有让人无语气氛的；特别是2017经常收到各种骂人的邮件，所以我只能停止更新关闭邮件提醒。
-但是隔了这么长时间看突然发现有这么多人使用，又反馈了很多问题和意见，我决定重新开始重构下，能更好的解决大家的需求：
+> 很长一段时间没有维护这个项目了，有很多人发邮件反馈，有好的，也有让人无语气氛的；特别是2017经常收到各种谩骂的邮件，所以我只能停止更新关闭邮件提醒。
+但是隔了这么长时间看突然发现有这么多人使用，又反馈了很多问题和意见，本着有始有终我决定重新开始重构下，能更好的解决大家的需求：
 
 * 首先我声明几点：
     * 这只是一个开源库，如果满意你可以使用、可以借鉴修改，希望对你们有所帮助。
-    * 如果不满意请友好的提出，注明详细信息或者修改建议，亦可以直接提交，我会考虑合并。
+    * 如果不满意请友好的提出，注明错误的详细信息或者修改建议，亦可以直接提交，我会考虑合并。
     * 如果你觉得实在是没用，也请你做一个有自我修养的人。
    
 ### 主要改进功能介绍
+最开始是想上传以前基于viewpager更新好的版本，但是看着viewpager2正式版已经出来了，就上新的吧，
+确实viewpager2确实比viewpager性能好很多，就是目前还没有找到合适方法来控制滑动切换的速度。
 
 - [x] 使用了ViewPager2为基础控件  <a href="https://developer.android.google.cn/jetpack/androidx/releases/viewpager2" target="_blank">[ViewPager2介绍]</a>
 - [x] 支持了androidx兼容包
-- [x] 方便了UI、Indicator自定义（现在还是基础版本）
-- [x] 依赖包目前只导入了ViewPager2
+- [x] 方便了UI、Indicator自定义（现在还是基础版本，后面再提升）
+- [x] 依赖包目前只需要导入了ViewPager2
 
 ### 已知问题
 
 `在转到稳定版之前，我仍在努力解决剩余待解决的问题，也希望大家反馈新版的bug，其他功能会慢慢叠加先保证基础功能稳定。`
-
-
-### 联系方式  <a target="_blank" href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=KBkYGhAfGhEYEB5oWVkGS0dF" style="text-decoration:none;"><img src="http://rescdn.qqmail.com/zh_CN/htmledition/images/function/qm_open/ico_mailme_11.png"/></a>
- ![效果示例](http://oceh51kku.bkt.clouddn.com/Android%E6%8A%80%E6%9C%AF%E4%BA%A4%E6%B5%81%E7%BE%A4%E4%BA%8C%E7%BB%B4%E7%A0%81.png)
-* 如果有问题可以加群大家一起交流
-* 我的个人微博：https://weibo.com/u/3013494003 有兴趣的也可以关注，大家一起交流
-
 
 ### 效果图
 
@@ -52,7 +50,7 @@
 |setAdapter(T extends BannerAdapter)|this|设置banner的适配器
 |setOrientation(@Orientation)|this|设置banner轮播方向(垂直or水平)
 |setOnBannerListener(this)|this|设置点击事件，下标是从0开始
-|addOnPageChangeListener(this)|this|设置viewpager的滑动监听
+|addOnPageChangeListener(this)|this|添加viewpager2的滑动监听
 |setPageTransformer|this|设置viewpager的切换效果
 |setIndicator(Indicator)|this|设置banner轮播指示器(提供有base和接口，可以自定义)
 |setIndicatorSelectedColor(@ColorInt)|this|设置指示器选中颜色
@@ -63,6 +61,8 @@
 |setIndicatorSpace(float)|this|设置指示器之间的间距
 |setIndicatorMargins(IndicatorConfig.Margins)|this|设置指示器的Margins
 |setIndicatorWidth(int,int)|this|设置指示器选中和未选中的宽度，直接影响绘制指示器的大小
+|setIndicatorNormalWidth(int)|this|设置指示器未选中的宽度
+|setIndicatorSelectedWidth(int)|this|设置指示器选中的宽度
 
 ## Attributes属性
 >在banner布局文件中调用,如果你自定义了indicator请做好兼容处理
@@ -122,47 +122,40 @@ compile project(':banner')
 ```java
 
 /**
- * 自定义布局，随你发挥
+ * 自定义布局，下面是常见的图片样式，更多实现可以看demo，可以自己随意发挥
  */
-public class BannerExampleAdapter extends BannerAdapter<DataBean, BannerExampleAdapter.PagerViewHolder> {
+public class ImageAdapter extends BannerAdapter<DataBean, ImageAdapter.BannerViewHolder> {
 
-    public BannerExampleAdapter(List<DataBean> mDatas) {
-        //设置数据，也可以调用banner提供的方法
+    public ImageAdapter(List<DataBean> mDatas) {
+        //设置数据，也可以调用banner提供的方法,或者自己在adapter中实现
         super(mDatas);
     }
 
     //创建ViewHolder，可以用viewType这个字段来区分不同的ViewHolder
     @Override
-    public PagerViewHolder onCreateHolder(ViewGroup parent, int viewType) {
-        //注意布局文件，item布局文件要设置为match_parent，这个是viewpager2强制要求的
-        //或者调用BannerUtils.getView(parent,R.layout.banner);
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.banner, parent, false);
-        return new PagerViewHolder(view);
+    public BannerViewHolder onCreateHolder(ViewGroup parent, int viewType) {
+        ImageView imageView = new ImageView(parent.getContext());
+        //注意，必须设置为match_parent，这个是viewpager2强制要求的
+        imageView.setLayoutParams(new ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT));
+        imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        return new BannerViewHolder(imageView);
     }
 
-    //绑定数据
     @Override
-    public void onBindView(PagerViewHolder holder, DataBean data, int position, int size) {
+    public void onBindView(BannerViewHolder holder, DataBean data, int position, int size) {
         holder.imageView.setImageResource(data.imageRes);
-        holder.title.setText(data.title);
-        //可以在布局文件中自己实现指示器，亦可以使用banner提供的方法自定义指示器，目前样式较少，后面补充
-        holder.numIndicator.setText((position + 1) + "/" + size);
     }
 
-
-    class PagerViewHolder extends RecyclerView.ViewHolder {
+    class BannerViewHolder extends RecyclerView.ViewHolder {
         ImageView imageView;
-        TextView title;
-        TextView numIndicator;
 
-        public PagerViewHolder(@NonNull View view) {
+        public BannerViewHolder(@NonNull ImageView view) {
             super(view);
-            imageView = view.findViewById(R.id.image);
-            title = view.findViewById(R.id.bannerTitle);
-            numIndicator = view.findViewById(R.id.numIndicator);
+            this.imageView = view;
         }
     }
-
 }
 
 ```
@@ -191,6 +184,7 @@ public class BannerActivity extends AppCompatActivity {
         banner.setPageTransformer(new DepthPageTransformer());
         banner.setOnBannerListener(this);
         banner.addOnPageChangeListener(this);
+        //还有更多方法自己使用哦！！！！！！
         
         //-----------------当然如果你想偷下懒也可以这么用--------------------
         //banner所有set方法都支持链式调用(以下列举了一些方法)
@@ -235,7 +229,11 @@ public class BannerActivity extends AppCompatActivity {
 - []()
 
 
-  
+### 联系方式  <a target="_blank" href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=KBkYGhAfGhEYEB5oWVkGS0dF" style="text-decoration:none;"><img src="images/mailme.png"/></a>
+* 我的个人微博：https://weibo.com/u/3013494003 有兴趣的也可以关注，大家一起交流
+* 有问题可以加群大家一起交流，如果你觉得对你有帮助可以扫描下面支付宝二维码随意打赏下哦！
+<img src="images/qq.png" width="100"/>
+<img src="images/pay.jpg" width="100"/>
 
 
 

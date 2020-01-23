@@ -5,7 +5,7 @@ import android.view.View;
 import androidx.viewpager2.widget.ViewPager2;
 
 /**
- * Created by wangpeiyuan on 2019-12-14.
+ * 层叠渐变效果.
  * copy from: https://developer.android.com/training/animation/screen-slide-2
  */
 public class DepthPageTransformer implements ViewPager2.PageTransformer {

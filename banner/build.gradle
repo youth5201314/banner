@@ -1,7 +1,8 @@
 apply plugin: 'com.android.library'
 apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'com.jfrog.bintray'
-version = "2.0.0"
+
+version = "2.0.0-alpha"
 
 android {
     compileSdkVersion 29
@@ -44,7 +45,7 @@ install {
             project {
                 packaging 'aar'
                 // Add your description here项目描述
-                name 'Android图片轮播控件'
+                name 'Android Banner 2.0 全新轮播控件，采用viewpager2为基础控件，支持AndroidX'
                 url siteUrl
                 licenses {
                     license {

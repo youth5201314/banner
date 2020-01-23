@@ -1,6 +1,10 @@
 package com.youth.banner.util;
 
+import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +12,9 @@ import android.view.ViewGroup;
 
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
+
+import com.youth.banner.Banner;
+import com.youth.banner.R;
 
 public class BannerUtils {
 
@@ -46,6 +53,15 @@ public class BannerUtils {
             view.setLayoutParams(params);
         }
         return view;
+    }
+
+    public static int getColor(Context context,Drawable drawable){
+        if (drawable==null) return -1;
+        if (drawable instanceof ColorDrawable) {
+            return ((ColorDrawable) drawable).getColor();
+        }
+        Log.e(Banner.TAG, context.getString(R.string.indicator_color_error));
+        return -1;
     }
 
     public static float dp2px(float dp) {

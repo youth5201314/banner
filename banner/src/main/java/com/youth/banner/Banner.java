@@ -2,7 +2,10 @@ package com.youth.banner;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -13,6 +16,7 @@ import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -31,13 +35,13 @@ import java.util.List;
 import static java.lang.annotation.RetentionPolicy.SOURCE;
 
 
-public class Banner<T, A extends BannerAdapter> extends FrameLayout {
-    private static final String TAG = "banner_log";
+public class Banner<T, BA extends BannerAdapter> extends FrameLayout {
+    public static final String TAG = "banner_log";
     private ViewPager2 mViewPager2;
     private AutoLoopTask mLoopTask;
     private OnBannerListener listener;
     private OnPageChangeListener pageListener;
-    private A mAdapter;
+    private BA mAdapter;
     private Indicator mIndicator;
 
     // 是否自动播放
@@ -47,6 +51,18 @@ public class Banner<T, A extends BannerAdapter> extends FrameLayout {
     // 当前位置（默认开始为1）
     private int mCurrentPosition = 1;
 
+    //指示器配置
+    private int normalWidth;
+    private int selectedWidth;
+    private Drawable normalColor;
+    private Drawable selectedColor;
+    private int indicatorGravity;
+    private int indicatorSpace;
+    private int indicatorMargin;
+    private int indicatorMarginLeft;
+    private int indicatorMarginTop;
+    private int indicatorMarginRight;
+    private int indicatorMarginBottom;
 
     public static final int HORIZONTAL = 0;
     public static final int VERTICAL = 1;
@@ -80,38 +96,61 @@ public class Banner<T, A extends BannerAdapter> extends FrameLayout {
     }
 
     private void initTypedArray(@NonNull Context context, @NonNull AttributeSet attrs) {
-        if (attrs != null) {
-            TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.Banner);
-            mDelayTime = typedArray.getInt(R.styleable.Banner_delay_time, BannerConfig.DELAY_TIME);
-            mIsAutoLoop = typedArray.getBoolean(R.styleable.Banner_is_auto_loop, BannerConfig.IS_AUTO_LOOP);
-            int orientation = typedArray.getInt(R.styleable.Banner_orientation, HORIZONTAL);
-            int normalWidth = typedArray.getDimensionPixelSize(R.styleable.Banner_indicator_normal_width, (int) BannerConfig.INDICATOR_NORMAL_WIDTH);
-            int selectedWidth = typedArray.getDimensionPixelSize(R.styleable.Banner_indicator_selected_width, (int) BannerConfig.INDICATOR_SELECTED_WIDTH);
-            int normalColor = typedArray.getColor(R.styleable.Banner_indicator_normal_color, BannerConfig.INDICATOR_NORMAL_COLOR);
-            int selectedColor = typedArray.getColor(R.styleable.Banner_indicator_selected_color, BannerConfig.INDICATOR_SELECTED_COLOR);
-            int indicatorGravity = typedArray.getInt(R.styleable.Banner_indicator_gravity, IndicatorConfig.Direction.CENTER);
-            int indicatorSpace = typedArray.getDimensionPixelSize(R.styleable.Banner_indicator_space, 0);
-            int indicatorMargin = typedArray.getDimensionPixelSize(R.styleable.Banner_indicator_margin, 0);
-            int indicatorMarginLeft = typedArray.getDimensionPixelSize(R.styleable.Banner_indicator_marginLeft, 0);
-            int indicatorMarginTop = typedArray.getDimensionPixelSize(R.styleable.Banner_indicator_marginTop, 0);
-            int indicatorMarginRight = typedArray.getDimensionPixelSize(R.styleable.Banner_indicator_marginRight, 0);
-            int indicatorMarginBottom = typedArray.getDimensionPixelSize(R.styleable.Banner_indicator_marginBottom, 0);
-            if (indicatorMargin != 0) {
-                setIndicatorMargins(new IndicatorConfig.Margins(indicatorMargin));
-            } else if (indicatorMarginLeft != 0 || indicatorMarginTop != 0 || indicatorMarginRight != 0 || indicatorMarginBottom != 0) {
-                setIndicatorMargins(new IndicatorConfig.Margins(indicatorMarginLeft, indicatorMarginTop, indicatorMarginRight, indicatorMarginBottom));
-            }
-            if (indicatorSpace != 0) {
-                setIndicatorSpace(indicatorSpace);
-            }
-            if (indicatorGravity != IndicatorConfig.Direction.CENTER) {
-                setIndicatorGravity(indicatorGravity);
-            }
-            setIndicatorWidth(normalWidth, selectedWidth);
-            setIndicatorNormalColor(normalColor);
-            setIndicatorSelectedColor(selectedColor);
-            setOrientation(orientation);
-            typedArray.recycle();
+        if (attrs == null) return;
+        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.Banner);
+        mDelayTime = a.getInt(R.styleable.Banner_delay_time, BannerConfig.DELAY_TIME);
+        mIsAutoLoop = a.getBoolean(R.styleable.Banner_is_auto_loop, BannerConfig.IS_AUTO_LOOP);
+        normalWidth = a.getDimensionPixelSize(R.styleable.Banner_indicator_normal_width, (int) BannerConfig.INDICATOR_NORMAL_WIDTH);
+        selectedWidth = a.getDimensionPixelSize(R.styleable.Banner_indicator_selected_width, (int) BannerConfig.INDICATOR_SELECTED_WIDTH);
+        normalColor = a.getDrawable(R.styleable.Banner_indicator_normal_color);
+        selectedColor = a.getDrawable(R.styleable.Banner_indicator_selected_color);
+        indicatorGravity = a.getInt(R.styleable.Banner_indicator_gravity, IndicatorConfig.Direction.CENTER);
+        indicatorSpace = a.getDimensionPixelSize(R.styleable.Banner_indicator_space, 0);
+        indicatorMargin = a.getDimensionPixelSize(R.styleable.Banner_indicator_margin, 0);
+        indicatorMarginLeft = a.getDimensionPixelSize(R.styleable.Banner_indicator_marginLeft, 0);
+        indicatorMarginTop = a.getDimensionPixelSize(R.styleable.Banner_indicator_marginTop, 0);
+        indicatorMarginRight = a.getDimensionPixelSize(R.styleable.Banner_indicator_marginRight, 0);
+        indicatorMarginBottom = a.getDimensionPixelSize(R.styleable.Banner_indicator_marginBottom, 0);
+        int orientation = a.getInt(R.styleable.Banner_orientation, HORIZONTAL);
+        setOrientation(orientation);
+        a.recycle();
+    }
+
+    private void initIndicatorAttr() {
+        if (indicatorMargin != 0) {
+            setIndicatorMargins(new IndicatorConfig.Margins(indicatorMargin));
+        } else if (indicatorMarginLeft != 0
+                || indicatorMarginTop != 0
+                || indicatorMarginRight != 0
+                || indicatorMarginBottom != 0) {
+            setIndicatorMargins(new IndicatorConfig.Margins(
+                    indicatorMarginLeft,
+                    indicatorMarginTop,
+                    indicatorMarginRight,
+                    indicatorMarginBottom));
+        }
+        if (indicatorSpace > 0) {
+            setIndicatorSpace(indicatorSpace);
+        }
+        if (indicatorGravity != IndicatorConfig.Direction.CENTER) {
+            setIndicatorGravity(indicatorGravity);
+        }
+
+        int nColor = BannerUtils.getColor(getContext(), normalColor);
+        if (nColor != -1) {
+            setIndicatorNormalColor(nColor);
+        }
+
+        int sColor = BannerUtils.getColor(getContext(), selectedColor);
+        if (sColor != -1) {
+            setIndicatorSelectedColor(sColor);
+        }
+
+        if (normalWidth > 0) {
+            setIndicatorNormalWidth(normalWidth);
+        }
+        if (selectedWidth > 0) {
+            setIndicatorSelectedWidth(selectedWidth);
         }
     }
 
@@ -119,7 +158,9 @@ public class Banner<T, A extends BannerAdapter> extends FrameLayout {
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
         int action = ev.getActionMasked();
-        if (action == MotionEvent.ACTION_UP || action == MotionEvent.ACTION_CANCEL || action == MotionEvent.ACTION_OUTSIDE) {
+        if (action == MotionEvent.ACTION_UP
+                || action == MotionEvent.ACTION_CANCEL
+                || action == MotionEvent.ACTION_OUTSIDE) {
             if (mIsAutoLoop) start();
         } else if (action == MotionEvent.ACTION_DOWN) {
             if (mIsAutoLoop) stop();
@@ -152,7 +193,7 @@ public class Banner<T, A extends BannerAdapter> extends FrameLayout {
 
         @Override
         public void onPageSelected(int position) {
-//            Log.e(TAG, "onPageSelected:" + position);
+            //Log.e(TAG, "onPageSelected:" + position);
             if (filterPosition(position)) {
                 mCurrentPosition = position;
                 return;
@@ -237,14 +278,17 @@ public class Banner<T, A extends BannerAdapter> extends FrameLayout {
 
     private void initIndicator() {
         if (mIndicator == null) return;
+        removeIndicator();
         addView(mIndicator.getIndicatorView());
+        initIndicatorAttr();
         int realPosition = BannerUtils.getRealPosition(getCurrentItem(), getRealCount());
         mIndicator.onPageChanged(getRealCount(), realPosition);
     }
 
-    private void removeIndicator() {
-        if (mIndicator == null) return;
-        removeView(mIndicator.getIndicatorView());
+    public void removeIndicator() {
+        if (mIndicator != null) {
+            removeView(mIndicator.getIndicatorView());
+        }
     }
 
 
@@ -255,7 +299,7 @@ public class Banner<T, A extends BannerAdapter> extends FrameLayout {
      */
 
     @NonNull
-    public A getAdapter() {
+    public BA getAdapter() {
         return mAdapter;
     }
 
@@ -266,13 +310,16 @@ public class Banner<T, A extends BannerAdapter> extends FrameLayout {
 
     public Indicator getIndicator() {
         if (mIndicator == null) {
-            throw new RuntimeException("Call the setIndicator() method first to set the Indicator");
+            Log.e(TAG, getContext().getString(R.string.indicator_null_error));
         }
         return mIndicator;
     }
 
     public IndicatorConfig getIndicatorConfig() {
-        return getIndicator().getIndicatorConfig();
+        if (getIndicator() != null) {
+            return getIndicator().getIndicatorConfig();
+        }
+        return null;
     }
 
     /**
@@ -306,10 +353,20 @@ public class Banner<T, A extends BannerAdapter> extends FrameLayout {
         return this;
     }
 
+    public Banner addItemDecoration(@NonNull RecyclerView.ItemDecoration decor){
+        getViewPager2().addItemDecoration(decor);
+        return this;
+    }
+
+    public Banner addItemDecoration(@NonNull RecyclerView.ItemDecoration decor, int index){
+        getViewPager2().addItemDecoration(decor,index);
+        return this;
+    }
+
     /**
      * 重新设置banner数据，当然你也可以在你adapter中自己操作数据
      *
-     * @param datas
+     * @param datas 数据集合，当传null或者datas没有数据时，banner会变成空白的，请做好占位UI处理
      * @return
      */
     public Banner setDatas(@NonNull List<T> datas) {
@@ -372,9 +429,9 @@ public class Banner<T, A extends BannerAdapter> extends FrameLayout {
      * @param adapter
      * @return
      */
-    public Banner setAdapter(@NonNull A adapter) {
+    public Banner setAdapter(@NonNull BA adapter) {
         if (adapter == null) {
-            throw new NullPointerException("Banner adapter cannot be empty");
+            throw new NullPointerException(getContext().getString(R.string.banner_adapter_null_error));
         }
         this.mAdapter = adapter;
         mViewPager2.setAdapter(adapter);
@@ -460,6 +517,20 @@ public class Banner<T, A extends BannerAdapter> extends FrameLayout {
     public Banner setIndicatorWidth(int normalWidth, int selectedWidth) {
         if (mIndicator != null) {
             mIndicator.getIndicatorConfig().setNormalWidth(normalWidth);
+            mIndicator.getIndicatorConfig().setSelectedWidth(selectedWidth);
+        }
+        return this;
+    }
+
+    public Banner setIndicatorNormalWidth(int normalWidth) {
+        if (mIndicator != null) {
+            mIndicator.getIndicatorConfig().setNormalWidth(normalWidth);
+        }
+        return this;
+    }
+
+    public Banner setIndicatorSelectedWidth(int selectedWidth) {
+        if (mIndicator != null) {
             mIndicator.getIndicatorConfig().setSelectedWidth(selectedWidth);
         }
         return this;

@@ -14,7 +14,7 @@ import java.util.List;
 
 
 public abstract class BannerAdapter<T, VH extends RecyclerView.ViewHolder> extends RecyclerView.Adapter<VH> implements IViewHolder<T, VH> {
-    private List<T> mDatas;
+    protected List<T> mDatas = new ArrayList<>();
     private OnBannerListener listener;
 
     public BannerAdapter(List<T> datas) {
@@ -22,7 +22,10 @@ public abstract class BannerAdapter<T, VH extends RecyclerView.ViewHolder> exten
     }
 
     public void setDatas(List<T> datas) {
-        mDatas = new ArrayList<>();
+        mDatas.clear();
+        if (datas == null) {
+            datas = new ArrayList<>();
+        }
         mDatas.addAll(datas);
         int count = datas.size();
         if (count > 1) {
@@ -30,6 +33,10 @@ public abstract class BannerAdapter<T, VH extends RecyclerView.ViewHolder> exten
             mDatas.add(datas.get(0));
         }
         notifyDataSetChanged();
+    }
+
+    public T getData(int position) {
+        return mDatas.get(position);
     }
 
     @Override
