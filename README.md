@@ -1,5 +1,5 @@
 # 今年最后一天Banner全新升级，祝大家新年快乐
-<img src="images/sunian.png"/>
+<img src="images/mouse_year.png" width="1080"/>
 
 ## Banner 2.0 全新升级
 > 只做一个可以自定义的轮播容器，不侵入UI ———— Banner 2.0
@@ -232,8 +232,8 @@ public class BannerActivity extends AppCompatActivity {
 ### 联系方式  <a target="_blank" href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=KBkYGhAfGhEYEB5oWVkGS0dF" style="text-decoration:none;"><img src="images/mailme.png"/></a>
 * 我的个人微博：https://weibo.com/u/3013494003 有兴趣的也可以关注，大家一起交流
 * 有问题可以加群大家一起交流，如果你觉得对你有帮助可以扫描下面支付宝二维码随意打赏下哦！
-<img src="images/qq.png" width="100"/>
-<img src="images/pay.jpg" width="100"/>
+
+<img src="images/qq.png" width="100"/> <img src="images/pay.jpg" width="100"/>
 
 
 
