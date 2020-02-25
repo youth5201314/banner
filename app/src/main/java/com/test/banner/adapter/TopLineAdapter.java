@@ -2,16 +2,13 @@ package com.test.banner.adapter;
 
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.test.banner.DataBean;
+import com.test.banner.bean.DataBean;
 import com.test.banner.R;
-import com.test.banner.viewholder.ImageHolder;
-import com.youth.banner.Banner;
 import com.youth.banner.adapter.BannerAdapter;
 import com.youth.banner.util.BannerUtils;
 

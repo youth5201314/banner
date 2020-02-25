@@ -1,18 +1,15 @@
 package com.test.banner;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import androidx.viewpager2.widget.ViewPager2;
 
 import com.test.banner.adapter.ImageAdapter;
 import com.test.banner.adapter.ImageNetAdapter;
@@ -20,15 +17,15 @@ import com.test.banner.adapter.ImageTitleAdapter;
 import com.test.banner.adapter.ImageTitleNumAdapter;
 import com.test.banner.adapter.MultipleTypesAdapter;
 import com.test.banner.adapter.TopLineAdapter;
-import com.test.banner.itemdecoration.MarginItemDecoration;
-import com.test.banner.transformer.DepthPageTransformer;
-import com.test.banner.transformer.MultiplePagerScaleInTransformer;
+import com.test.banner.bean.DataBean;
+import com.test.banner.ui.ConstraintLayoutBannerActivity;
+import com.test.banner.ui.RecyclerViewBannerActivity;
+import com.youth.banner.Banner;
 import com.youth.banner.config.BannerConfig;
 import com.youth.banner.config.IndicatorConfig;
 import com.youth.banner.indicator.CircleIndicator;
 import com.youth.banner.listener.OnBannerListener;
 import com.youth.banner.listener.OnPageChangeListener;
-import com.youth.banner.Banner;
 import com.youth.banner.util.BannerUtils;
 
 public class MainActivity extends AppCompatActivity implements OnBannerListener, OnPageChangeListener {
@@ -159,6 +156,12 @@ public class MainActivity extends AppCompatActivity implements OnBannerListener,
 
 //                banner.addItemDecoration(new MarginItemDecoration((int) BannerUtils.dp2px(20)));
 //                banner.setPageTransformer(new MultiplePagerScaleInTransformer((int) BannerUtils.dp2px(30),0.1f));
+                break;
+            case R.id.rv_banner:
+                startActivity(new Intent(this, RecyclerViewBannerActivity.class));
+                break;
+            case R.id.cl_banner:
+                startActivity(new Intent(this, ConstraintLayoutBannerActivity.class));
                 break;
         }
     }

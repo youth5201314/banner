@@ -3,10 +3,7 @@ package com.test.banner.adapter;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
-
-import com.test.banner.DataBean;
+import com.test.banner.bean.DataBean;
 import com.test.banner.viewholder.ImageHolder;
 import com.youth.banner.adapter.BannerAdapter;
 
@@ -21,6 +18,14 @@ public class ImageAdapter extends BannerAdapter<DataBean,ImageHolder> {
         //设置数据，也可以调用banner提供的方法,或者自己在adapter中实现
         super(mDatas);
     }
+
+    //更新数据
+    public void updateData(List<DataBean> data){
+        //这里的代码自己发挥，比如如下的写法等等
+        mDatas.addAll(data);
+        notifyDataSetChanged();
+    }
+
 
     //创建ViewHolder，可以用viewType这个字段来区分不同的ViewHolder
     @Override

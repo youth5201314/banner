@@ -1,7 +1,10 @@
-package com.test.banner;
+package com.test.banner.bean;
+
+import com.test.banner.R;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class DataBean {
     public Integer imageRes;
@@ -52,5 +55,33 @@ public class DataBean {
         list.add(new DataBean("https://img.zcool.cn/community/01085d5e27a174a80120a8958791c4.jpg", null, 1));
         list.add(new DataBean("https://img.zcool.cn/community/01f8735e27a174a8012165188aa959.jpg", null, 1));
         return list;
+    }
+
+    public static List<String> getColors(int size) {
+        List<String> list = new ArrayList<>();
+        for(int i = 0; i < size; i++) {
+            list.add(getRandColor());
+        }
+        return list;
+    }
+
+    /**
+     * 获取十六进制的颜色代码.例如  "#5A6677"
+     * 分别取R、G、B的随机值，然后加起来即可
+     *
+     * @return String
+     */
+    public static String getRandColor() {
+        String R, G, B;
+        Random random = new Random();
+        R = Integer.toHexString(random.nextInt(256)).toUpperCase();
+        G = Integer.toHexString(random.nextInt(256)).toUpperCase();
+        B = Integer.toHexString(random.nextInt(256)).toUpperCase();
+
+        R = R.length() == 1 ? "0" + R : R;
+        G = G.length() == 1 ? "0" + G : G;
+        B = B.length() == 1 ? "0" + B : B;
+
+        return "#" + R + G + B;
     }
 }

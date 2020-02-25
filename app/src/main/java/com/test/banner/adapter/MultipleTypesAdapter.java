@@ -4,7 +4,7 @@ import android.view.ViewGroup;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.test.banner.DataBean;
+import com.test.banner.bean.DataBean;
 import com.test.banner.R;
 import com.test.banner.viewholder.ImageHolder;
 import com.test.banner.viewholder.ImageTitleHolder;

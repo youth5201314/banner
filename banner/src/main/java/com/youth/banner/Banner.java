@@ -111,7 +111,7 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout {
         indicatorMarginTop = a.getDimensionPixelSize(R.styleable.Banner_indicator_marginTop, 0);
         indicatorMarginRight = a.getDimensionPixelSize(R.styleable.Banner_indicator_marginRight, 0);
         indicatorMarginBottom = a.getDimensionPixelSize(R.styleable.Banner_indicator_marginBottom, 0);
-        int orientation = a.getInt(R.styleable.Banner_orientation, HORIZONTAL);
+        int orientation = a.getInt(R.styleable.Banner_banner_orientation, HORIZONTAL);
         setOrientation(orientation);
         a.recycle();
     }
@@ -272,6 +272,8 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout {
     }
 
     private int getItemCount() {
+        if (getAdapter() == null)
+            return 0;
         return getAdapter().getItemCount();
     }
 
@@ -298,8 +300,16 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout {
      * **********************************************************************
      */
 
+    public Banner setBannerHeight(int height) {
+        setLayoutParams(new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT, (int) BannerUtils.dp2px(height)));
+        return this;
+    }
+
     @NonNull
     public BA getAdapter() {
+        if (mAdapter == null) {
+            Log.e(TAG, getContext().getString(R.string.banner_adapter_use_error));
+        }
         return mAdapter;
     }
 
@@ -353,13 +363,13 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout {
         return this;
     }
 
-    public Banner addItemDecoration(@NonNull RecyclerView.ItemDecoration decor){
+    public Banner addItemDecoration(@NonNull RecyclerView.ItemDecoration decor) {
         getViewPager2().addItemDecoration(decor);
         return this;
     }
 
-    public Banner addItemDecoration(@NonNull RecyclerView.ItemDecoration decor, int index){
-        getViewPager2().addItemDecoration(decor,index);
+    public Banner addItemDecoration(@NonNull RecyclerView.ItemDecoration decor, int index) {
+        getViewPager2().addItemDecoration(decor, index);
         return this;
     }
 

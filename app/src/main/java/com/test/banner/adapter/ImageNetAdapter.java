@@ -4,7 +4,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
-import com.test.banner.DataBean;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.bumptech.glide.request.RequestOptions;
+import com.test.banner.bean.DataBean;
 import com.test.banner.viewholder.ImageHolder;
 import com.youth.banner.adapter.BannerAdapter;
 
@@ -25,13 +27,17 @@ public class ImageNetAdapter extends BannerAdapter<DataBean,ImageHolder> {
         imageView.setLayoutParams(new ViewGroup.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT));
-        imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+//        imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
         return new ImageHolder(imageView);
     }
 
     @Override
     public void onBindView(ImageHolder holder, DataBean data, int position, int size) {
-        Glide.with(holder.itemView).load(data.imageUrl).into(holder.imageView);
+
+        Glide.with(holder.itemView)
+                .load(data.imageUrl)
+                .apply(RequestOptions.bitmapTransform(new RoundedCorners(20)))
+                .into(holder.imageView);
     }
 
 }

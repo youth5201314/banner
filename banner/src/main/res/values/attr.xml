@@ -20,7 +20,7 @@
             <enum name="right" value="2" />
         </attr>
 
-        <attr name="orientation">
+        <attr name="banner_orientation">
             <enum name="horizontal" value="0" />
             <enum name="vertical" value="1" />
         </attr>

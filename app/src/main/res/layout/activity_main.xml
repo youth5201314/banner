@@ -2,7 +2,7 @@
     android:id="@+id/swipeRefresh"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#f5f5f5">
+    android:background="#e5e5e5">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -19,7 +19,8 @@
         <com.youth.banner.Banner xmlns:banner="http://schemas.android.com/apk/res-auto"
             android:id="@+id/banner"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="180dp"
+            android:layout_margin="10dp"
             banner:indicator_selected_color="@color/colorPrimary" />
         <Button
             android:id="@+id/style_image"
@@ -106,7 +107,22 @@
                 android:layout_centerVertical="true"/>
         </RelativeLayout>
 
-
+        <Button
+            android:id="@+id/rv_banner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="changeStyle"
+            android:textAllCaps="false"
+            android:text="RecyclerView嵌套banner作为header"
+            android:layout_below="@+id/topLine"/>
+        <Button
+            android:id="@+id/cl_banner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="changeStyle"
+            android:textAllCaps="false"
+            android:text="ConstraintLayout嵌套banner"
+            android:layout_below="@+id/rv_banner"/>
 
     </RelativeLayout>
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

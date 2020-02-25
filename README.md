@@ -1,5 +1,5 @@
-# 今年最后一天Banner全新升级，祝大家新年快乐
-<img src="images/mouse_year.png" width="1080"/>
+<!--# 今年最后一天Banner全新升级，祝大家新年快乐-->
+<!--<img src="images/mouse_year.png" width="1080"/>-->
 
 ## Banner 2.0 全新升级
 > 只做一个可以自定义的轮播容器，不侵入UI ———— Banner 2.0
@@ -71,7 +71,7 @@
 |---|---|---|
 |delay_time|integer|轮播间隔时间，默认3000
 |is_auto_loop|boolean|是否自动轮播，默认true
-|orientation|enum|轮播方向：horizontal（默认） or vertical
+|banner_orientation|enum|轮播方向：horizontal（默认） or vertical
 |indicator_normal_width|dimension|指示器默认的宽度，默认6dp
 |indicator_selected_width|dimension|指示器选中的宽度，默认8dp
 |indicator_normal_color|color|指示器默认颜色，默认0x88ffffff
@@ -92,7 +92,7 @@
 Gradle 
 ```groovy
 dependencies{
-    compile 'com.youth.banner:banner:2.0.0-alpha'  //预览版
+    compile 'com.youth.banner:banner:2.0.0-alpha02'  //预览版
 }
 ```
 或者引用本地lib
@@ -196,10 +196,11 @@ public class BannerActivity extends AppCompatActivity {
 }
 ```
 
-#### Step 6.（可选）生命周期改变优化体验
+## Banner使用中优化体验
+**如果你需要考虑更好的体验，可以看看下面的代码**
+#### Step 1.（可选）生命周期改变时
 ```java
-public class BannerActivity extends AppCompatActivity {
-    //如果你需要考虑更好的体验，可以这么操作
+public class BannerActivity {
     @Override
     protected void onStart() {
         super.onStart();
@@ -216,6 +217,40 @@ public class BannerActivity extends AppCompatActivity {
 }
 ```
 
+#### Step 2.（可选）当RecyclerView嵌套Banner时，下面以Header举例
+
+**重写RecyclerView.Adapter里的方法，你也可以在销毁与创建时判断优化，下面采取的可见和不可见优化：**
+```java
+
+//当banner不可见时暂停
+@Override
+public void onViewDetachedFromWindow(@NonNull BaseViewHolder holder) {
+    super.onViewDetachedFromWindow(holder);
+    /**
+    * 下面的代码需要根据你的实际情况调整哦！
+    */
+    //定位你的header位置
+    if (holder.getAdapterPosition()==0) {
+        if (getHeaderLayoutCount() > 0) {
+            //这里是获取你banner放的位置，这个根据你自己实际位置来获取，我这里header只有一个所以这么获取
+            Banner banner = (Banner) getHeaderLayout().getChildAt(0);
+            banner.stop();
+        }
+    }
+}
+
+//当banner可见时继续
+@Override
+public void onViewAttachedToWindow(BaseViewHolder holder) {
+    super.onViewAttachedToWindow(holder);
+    if (holder.getAdapterPosition()==0) {
+        if (getHeaderLayoutCount() > 0) {
+            Banner banner = (Banner) getHeaderLayout().getChildAt(0);
+            banner.start();
+        }
+    }
+}
+```
 
 
 
@@ -236,6 +271,18 @@ public class BannerActivity extends AppCompatActivity {
 <img src="images/qq.png" width="220"/> <img src="images/pay.jpg" width="220"/>
 
 
+## 更新说明
 
+#### v2.0.0-alpha02
+    banner 预览版使用中的问题优化
+ * #666 修改orientation自定义属性与其他库冲突问题：改成banner_orientation
+ * 增加RecyclerView嵌套banner和ConstraintLayout中使用banner测试demo
+ * #669 RecyclerView嵌套banner 轮播优化代码建议，demo中可以查看
+ * 其他问题修复
 
-
+#### v2.0.0-alpha
+    banner 2.0全新基础升级，目前是预览版，使用中的问题慢慢迭代
+ *  使用了ViewPager2为基础控件  
+ * 支持了androidx兼容包
+ * 方便了UI、Indicator自定义（现在还是基础版本，后面再提升）
+ * 依赖包目前只需要导入了ViewPager2
