@@ -245,7 +245,7 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout {
                 int count = banner.getItemCount();
                 if (count <= 1) return;
                 int next = banner.getCurrentItem() % (count - 1) + 1;
-                if (next == 1) {
+                if (banner.getCurrentItem() == count - 1) {
                     banner.setCurrentItem(next, false);
                     banner.post(banner.mLoopTask);
                 } else {
