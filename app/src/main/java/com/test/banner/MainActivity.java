@@ -1,6 +1,7 @@
 package com.test.banner;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -33,7 +34,7 @@ public class MainActivity extends AppCompatActivity implements OnBannerListener,
     private Banner banner,banner2;
     private SwipeRefreshLayout refresh;
     private RelativeLayout topLine;
-
+    private CircleIndicator indicator;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,6 +43,7 @@ public class MainActivity extends AppCompatActivity implements OnBannerListener,
         banner = findViewById(R.id.banner);
         banner2 = findViewById(R.id.banner2);
         topLine = findViewById(R.id.topLine);
+        indicator = findViewById(R.id.indicator);
 
         //设置适配器
         banner.setAdapter(new ImageAdapter(DataBean.getTestData()));
@@ -52,7 +54,12 @@ public class MainActivity extends AppCompatActivity implements OnBannerListener,
         //添加切换监听
         banner.addOnPageChangeListener(this);
 
-        //实现1号店和淘宝头条类似的效果，由于viewpager2过渡速度太快，这里通过动画增加下体验
+        //圆角
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            banner.setBannerRound(BannerUtils.dp2px(5));
+        }
+
+        //实现1号店和淘宝头条类似的效果，由于viewpager2过渡速度太快，这里可以通过动画增加下体验
         banner2.setAdapter(new TopLineAdapter(DataBean.getTestData2()));
         banner2.setOrientation(Banner.VERTICAL);
 
@@ -121,6 +128,7 @@ public class MainActivity extends AppCompatActivity implements OnBannerListener,
     }
 
     public void changeStyle(View view) {
+        indicator.setVisibility(View.GONE);
         switch (view.getId()){
             case R.id.style_image:
                 refresh.setEnabled(true);
@@ -156,6 +164,12 @@ public class MainActivity extends AppCompatActivity implements OnBannerListener,
 
 //                banner.addItemDecoration(new MarginItemDecoration((int) BannerUtils.dp2px(20)));
 //                banner.setPageTransformer(new MultiplePagerScaleInTransformer((int) BannerUtils.dp2px(30),0.1f));
+                break;
+            case R.id.change_indicator:
+                indicator.setVisibility(View.VISIBLE);
+                //推荐你在布局文件中定位好指示器的位置，如果想直接new，可以使用setIndicator方法
+                banner.setCustomIndicator(indicator);
+                banner.setIndicatorSpace(BannerUtils.dp2px(10));
                 break;
             case R.id.rv_banner:
                 startActivity(new Intent(this, RecyclerViewBannerActivity.class));

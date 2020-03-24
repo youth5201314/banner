@@ -31,7 +31,6 @@ public abstract class BannerAdapter<T, VH extends RecyclerView.ViewHolder> exten
             mDatas.add(0, datas.get(count - 1));
             mDatas.add(datas.get(0));
         }
-        notifyDataSetChanged();
     }
 
     public T getData(int position) {
@@ -54,11 +53,11 @@ public abstract class BannerAdapter<T, VH extends RecyclerView.ViewHolder> exten
 
     @Override
     public int getItemCount() {
-        return mDatas.size();
+        return mDatas == null ? 0 : mDatas.size();
     }
 
     public int getRealCount() {
-        int count = mDatas.size();
+        int count = getItemCount();
         return count <= 1 ? count : count - 2;
     }
 

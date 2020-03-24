@@ -3,17 +3,21 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#e5e5e5">
-
-    <RelativeLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none">
 
         <TextView
             android:id="@+id/tip"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/banner"
+            android:layout_below="@+id/indicator"
             android:gravity="center"
+            android:layout_marginTop="10dp"
             android:text="下拉刷新重新设置数据数据，点击按钮改变使用场景" />
 
         <com.youth.banner.Banner xmlns:banner="http://schemas.android.com/apk/res-auto"
@@ -22,6 +26,15 @@
             android:layout_height="180dp"
             android:layout_margin="10dp"
             banner:indicator_selected_color="@color/colorPrimary" />
+
+        <com.youth.banner.indicator.CircleIndicator
+            android:id="@+id/indicator"
+            android:layout_below="@+id/banner"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_centerHorizontal="true"
+            android:visibility="gone"/>
+
         <Button
             android:id="@+id/style_image"
             android:layout_width="wrap_content"
@@ -29,6 +42,7 @@
             android:layout_below="@+id/tip"
             android:onClick="changeStyle"
             android:text="图片"/>
+
         <Button
             android:id="@+id/style_image_title"
             android:layout_width="wrap_content"
@@ -60,6 +74,15 @@
             android:layout_toRightOf="@+id/style_multiple"
             android:onClick="changeStyle"
             android:text="加载网络图片"/>
+
+        <Button
+            android:id="@+id/change_indicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/style_image"
+            android:layout_toRightOf="@+id/style_net_image"
+            android:onClick="changeStyle"
+            android:text="指示器更多用法"/>
 
         <TextView
             android:id="@+id/tip2"
@@ -124,5 +147,15 @@
             android:text="ConstraintLayout嵌套banner"
             android:layout_below="@+id/rv_banner"/>
 
+        <Button
+            android:id="@+id/vp_banner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="changeStyle"
+            android:textAllCaps="false"
+            android:text="viewpager+fragment+banner"
+            android:layout_below="@+id/cl_banner"/>
+
     </RelativeLayout>
+    </ScrollView>
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

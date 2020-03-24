@@ -6,6 +6,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.test.banner.R;
 import com.test.banner.adapter.ImageAdapter;
@@ -13,6 +15,7 @@ import com.test.banner.adapter.NetBannerAdapter;
 import com.test.banner.bean.DataBean;
 import com.youth.banner.Banner;
 import com.youth.banner.indicator.CircleIndicator;
+import com.youth.banner.util.BannerUtils;
 
 public class RecyclerViewBannerActivity extends AppCompatActivity {
     Banner banner;
@@ -25,7 +28,8 @@ public class RecyclerViewBannerActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         banner = (Banner) LayoutInflater.from(this).inflate(R.layout.banner,null);
-        banner.setBannerHeight(200);
+        banner.setLayoutParams(new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, (int) BannerUtils.dp2px(200)));
         banner.setAdapter(new ImageAdapter(DataBean.getTestData2()));
         banner.setIndicator(new CircleIndicator(this));
 

@@ -22,6 +22,9 @@ public class IndicatorConfig {
 
     private Margins margins;
 
+    //是否包含指示器
+    private boolean includeIndicator = true;
+
     @IntDef({Direction.LEFT, Direction.CENTER, Direction.RIGHT})
     @Retention(RetentionPolicy.SOURCE)
     public @interface Direction {
@@ -150,5 +153,13 @@ public class IndicatorConfig {
             this.gravity = gravity;
         }
         return this;
+    }
+
+    public boolean isIncludeIndicator() {
+        return includeIndicator;
+    }
+
+    public void setIncludeIndicator(boolean includeIndicator) {
+        this.includeIndicator = includeIndicator;
     }
 }

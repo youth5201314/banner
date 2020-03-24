@@ -8,14 +8,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
-import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.youth.banner.config.IndicatorConfig;
-
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
 
 public class BaseIndicator extends View implements Indicator {
     protected IndicatorConfig config;
@@ -40,24 +36,26 @@ public class BaseIndicator extends View implements Indicator {
     @NonNull
     @Override
     public View getIndicatorView() {
-        FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        switch (config.getGravity()) {
-            case IndicatorConfig.Direction.LEFT:
-                layoutParams.gravity = Gravity.BOTTOM | Gravity.START;
-                break;
-            case IndicatorConfig.Direction.CENTER:
-                layoutParams.gravity = Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL;
-                break;
-            case IndicatorConfig.Direction.RIGHT:
-                layoutParams.gravity = Gravity.BOTTOM | Gravity.END;
-                break;
+        if (config.isIncludeIndicator()) {
+            FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(
+                    ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            switch (config.getGravity()) {
+                case IndicatorConfig.Direction.LEFT:
+                    layoutParams.gravity = Gravity.BOTTOM | Gravity.START;
+                    break;
+                case IndicatorConfig.Direction.CENTER:
+                    layoutParams.gravity = Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL;
+                    break;
+                case IndicatorConfig.Direction.RIGHT:
+                    layoutParams.gravity = Gravity.BOTTOM | Gravity.END;
+                    break;
+            }
+            layoutParams.leftMargin = config.getMargins().leftMargin;
+            layoutParams.rightMargin = config.getMargins().rightMargin;
+            layoutParams.topMargin = config.getMargins().topMargin;
+            layoutParams.bottomMargin = config.getMargins().bottomMargin;
+            setLayoutParams(layoutParams);
         }
-        layoutParams.leftMargin=config.getMargins().leftMargin;
-        layoutParams.rightMargin=config.getMargins().rightMargin;
-        layoutParams.topMargin=config.getMargins().topMargin;
-        layoutParams.bottomMargin=config.getMargins().bottomMargin;
-        setLayoutParams(layoutParams);
         return this;
     }
 

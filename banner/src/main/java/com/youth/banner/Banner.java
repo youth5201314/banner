@@ -2,12 +2,15 @@ package com.youth.banner;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.graphics.drawable.ColorDrawable;
+import android.graphics.Outline;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
+import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewOutlineProvider;
 import android.widget.FrameLayout;
 
 import androidx.annotation.ColorInt;
@@ -15,6 +18,7 @@ import androidx.annotation.ColorRes;
 import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
@@ -280,8 +284,10 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout {
 
     private void initIndicator() {
         if (mIndicator == null) return;
-        removeIndicator();
-        addView(mIndicator.getIndicatorView());
+        if (mIndicator.getIndicatorConfig().isIncludeIndicator()) {
+            removeIndicator();
+            addView(mIndicator.getIndicatorView());
+        }
         initIndicatorAttr();
         int realPosition = BannerUtils.getRealPosition(getCurrentItem(), getRealCount());
         mIndicator.onPageChanged(getRealCount(), realPosition);
@@ -299,11 +305,6 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout {
      * ------------------------ 对外公开API ---------------------------------*
      * **********************************************************************
      */
-
-    public Banner setBannerHeight(int height) {
-        setLayoutParams(new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT, (int) BannerUtils.dp2px(height)));
-        return this;
-    }
 
     @NonNull
     public BA getAdapter() {
@@ -382,8 +383,13 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout {
     public Banner setDatas(@NonNull List<T> datas) {
         if (getAdapter() != null) {
             getAdapter().setDatas(datas);
-            int realPosition = BannerUtils.getRealPosition(getCurrentItem(), getRealCount());
-            mIndicator.onPageChanged(getRealCount(), realPosition);
+            getAdapter().notifyDataSetChanged();
+            setCurrentItem(1);
+            if (mIndicator != null) {
+                int realPosition = BannerUtils.getRealPosition(getCurrentItem(), getRealCount());
+                mIndicator.onPageChanged(getRealCount(), realPosition);
+            }
+            start();
         }
         return this;
     }
@@ -477,6 +483,23 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout {
         return this;
     }
 
+
+    /**
+     * 设置自定义轮播指示器
+     * （如果想改变指示器或者位置，可以调用此方法配合布局文件自我发挥）
+     * <p>
+     * 注意：调用后，内置的 setIndicatorGravity()和setIndicatorMargins() 方法将失效。
+     * 想改变可以自己调用系统提供的属性设置
+     *
+     * @param indicator
+     */
+    public Banner setCustomIndicator(@NonNull Indicator indicator) {
+        if (mIndicator == indicator) return this;
+        indicator.getIndicatorConfig().setIncludeIndicator(false);
+        setIndicator(indicator);
+        return this;
+    }
+
     public Banner setIndicatorSelectedColor(@ColorInt int color) {
         if (mIndicator != null) {
             mIndicator.getIndicatorConfig().setSelectedColor(color);
@@ -502,7 +525,7 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout {
     }
 
     public Banner setIndicatorGravity(@IndicatorConfig.Direction int gravity) {
-        if (mIndicator != null) {
+        if (mIndicator != null && mIndicator.getIndicatorConfig().isIncludeIndicator()) {
             mIndicator.getIndicatorConfig().setGravity(gravity);
             mIndicator.getIndicatorView().postInvalidate();
         }
@@ -517,7 +540,7 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout {
     }
 
     public Banner setIndicatorMargins(IndicatorConfig.Margins margins) {
-        if (mIndicator != null) {
+        if (mIndicator != null && mIndicator.getIndicatorConfig().isIncludeIndicator()) {
             mIndicator.getIndicatorConfig().setMargins(margins);
             mIndicator.getIndicatorView().requestLayout();
         }
@@ -573,6 +596,24 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout {
      */
     public Banner addOnPageChangeListener(@NonNull OnPageChangeListener pageListener) {
         this.pageListener = pageListener;
+        return this;
+    }
+
+
+    /**
+     * 设置banner 圆角
+     * @param radius
+     * @return
+     */
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    public Banner setBannerRound(float radius){
+        setOutlineProvider(new ViewOutlineProvider() {
+            @Override
+            public void getOutline(View view, Outline outline) {
+                outline.setRoundRect(0, 0, view.getWidth(), view.getHeight(), radius);
+            }
+        });
+        setClipToOutline(true);
         return this;
     }
 }

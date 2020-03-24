@@ -63,6 +63,8 @@
 |setIndicatorWidth(int,int)|this|设置指示器选中和未选中的宽度，直接影响绘制指示器的大小
 |setIndicatorNormalWidth(int)|this|设置指示器未选中的宽度
 |setIndicatorSelectedWidth(int)|this|设置指示器选中的宽度
+|setCustomIndicator(Indicator)|this|设置自定义指示器（配合布局文件，可以自我发挥）
+|setBannerRound(float)|this|设置banner圆角（裁剪方式，需要5.0以上）
 
 ## Attributes属性
 >在banner布局文件中调用,如果你自定义了indicator请做好兼容处理
@@ -92,7 +94,7 @@
 Gradle 
 ```groovy
 dependencies{
-    compile 'com.youth.banner:banner:2.0.0-alpha02'  //预览版
+    compile 'com.youth.banner:banner:2.0.0-alpha03'  //预览版
 }
 ```
 或者引用本地lib
@@ -272,6 +274,16 @@ public void onViewAttachedToWindow(BaseViewHolder holder) {
 
 
 ## 更新说明
+
+#### v2.0.0-alpha03
+    banner 预览版使用中的问题优化。
+    这里要感谢BoldFruit朋友修复了一个bug；我爷爷得了癌症住院了需要照顾，公司事情也多，所以更新频率会慢很多。希望大家理解！
+    不过我更希望大家要是发现bug，亦可以自己修复提交，有什么想法新增的功能也可以提交过来。可以提供一个良好的开源环境哈！
+    还有不要一直夺命连环催，大家都有自己的事情，多多理解！
+    
+ * 增加支持布局文件中使用自定义指示器了（自己发挥）
+ * 增加支持Android5.0以上的设置banner圆角方法
+ * 其他问题修复（有些实在是不好复现加上有点忙，只修改了部分bug）
 
 #### v2.0.0-alpha02
     banner 预览版使用中的问题优化
