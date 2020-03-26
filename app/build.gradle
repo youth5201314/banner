@@ -38,6 +38,6 @@ dependencies {
     implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.0-beta11'
     implementation 'com.google.android.material:material:1.0.0'
 
-//    implementation project(':banner')
-    implementation 'com.youth.banner:banner:2.0.0-alpha03'
+    implementation project(':banner')
+//    implementation 'com.youth.banner:banner:2.0.0-alpha03'
 }

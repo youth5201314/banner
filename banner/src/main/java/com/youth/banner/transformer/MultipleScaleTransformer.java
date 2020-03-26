@@ -1,4 +1,4 @@
-package com.test.banner.transformer;
+package com.youth.banner.transformer;
 
 import android.view.View;
 import android.view.ViewParent;
@@ -9,33 +9,34 @@ import androidx.core.view.ViewCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
-
 /**
- * 左右条目缩小漏出效果
+ * 实现画廊效果，配合addItemDecoration一起使用，单独使用无效
  */
-public class MultiplePagerScaleInTransformer implements ViewPager2.PageTransformer {
-    private int marginPx;
-    private float scale;
+public class MultipleScaleTransformer implements ViewPager2.PageTransformer {
+    private int mMarginPx;
+    private float mScale;
 
-    public MultiplePagerScaleInTransformer(@Px int marginPx, float scale) {
-        this.marginPx = marginPx;
-        this.scale = scale;
+    public MultipleScaleTransformer(@Px int marginPx, float scale) {
+        mMarginPx = marginPx;
+        mScale = scale;
     }
 
     @Override
     public void transformPage(@NonNull View page, float position) {
         ViewPager2 viewPager = requireViewPager(page);
-        float offset = position * marginPx;
+        if (viewPager==null) return;
+        float offset = position * mMarginPx;
+        float scaleFactor = 1 - (mScale * Math.abs(position));
         if (viewPager.getOrientation() == ViewPager2.ORIENTATION_HORIZONTAL) {
             if (ViewCompat.getLayoutDirection(viewPager) == ViewCompat.LAYOUT_DIRECTION_RTL) {
                 page.setTranslationX(offset);
             } else {
                 page.setTranslationX(-offset);
             }
-            page.setScaleY(1 - (scale * Math.abs(position)));
+            page.setScaleY(scaleFactor);
         } else {
             page.setTranslationY(-offset);
-            page.setScaleX(1 - (scale * Math.abs(position)));
+            page.setScaleY(scaleFactor);
         }
     }
 
@@ -44,7 +45,12 @@ public class MultiplePagerScaleInTransformer implements ViewPager2.PageTransform
         ViewParent parentParent = parent.getParent();
 
         if (parent instanceof RecyclerView && parentParent instanceof ViewPager2) {
-            return (ViewPager2) parentParent;
+            //判断是否设置了间距，否则单独使用无效
+            if (((RecyclerView) parent).getItemDecorationCount()>0) {
+                return (ViewPager2) parentParent;
+            }else {
+                return null;
+            }
         }
 
         throw new IllegalStateException(

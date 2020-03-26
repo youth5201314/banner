@@ -27,6 +27,8 @@ import com.youth.banner.config.IndicatorConfig;
 import com.youth.banner.indicator.CircleIndicator;
 import com.youth.banner.listener.OnBannerListener;
 import com.youth.banner.listener.OnPageChangeListener;
+import com.youth.banner.transformer.DepthPageTransformer;
+import com.youth.banner.transformer.ZoomOutPageTransformer;
 import com.youth.banner.util.BannerUtils;
 
 public class MainActivity extends AppCompatActivity implements OnBannerListener, OnPageChangeListener {
@@ -53,15 +55,20 @@ public class MainActivity extends AppCompatActivity implements OnBannerListener,
         banner.setOnBannerListener(this);
         //添加切换监听
         banner.addOnPageChangeListener(this);
-
         //圆角
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             banner.setBannerRound(BannerUtils.dp2px(5));
         }
+        //添加画廊效果，可以参考我给的参数自己调试(不要和其他PageTransformer同时使用)
+//        banner.setBannerGalleryEffect(25,40,0.14f);
 
-        //实现1号店和淘宝头条类似的效果，由于viewpager2过渡速度太快，这里可以通过动画增加下体验
+        banner.setPageTransformer(new ZoomOutPageTransformer());
+        banner.setPageTransformer(new DepthPageTransformer());
+
+        //实现1号店和淘宝头条类似的效果
         banner2.setAdapter(new TopLineAdapter(DataBean.getTestData2()));
         banner2.setOrientation(Banner.VERTICAL);
+        banner2.setPageTransformer(new ZoomOutPageTransformer());
 
         //和下拉刷新配套使用
         refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -90,13 +97,7 @@ public class MainActivity extends AppCompatActivity implements OnBannerListener,
     }
 
     @Override
-    public void onBannerChanged(int position) {
-        Log.e(TAG,"onBannerChanged:"+position);
-    }
-
-    @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-        Log.e(TAG, "onPageScrolled:" + position);
     }
 
     @Override
@@ -106,7 +107,6 @@ public class MainActivity extends AppCompatActivity implements OnBannerListener,
 
     @Override
     public void onPageScrollStateChanged(int state) {
-        Log.e(TAG, "onPageScrollStateChanged:" + state);
     }
 
 
@@ -151,19 +151,14 @@ public class MainActivity extends AppCompatActivity implements OnBannerListener,
                 break;
             case R.id.style_multiple:
                 refresh.setEnabled(true);
+                indicator.setVisibility(View.VISIBLE);
                 banner.setAdapter(new MultipleTypesAdapter(DataBean.getTestData()));
-                banner.setIndicator(new CircleIndicator(this));
-                banner.setIndicatorGravity(IndicatorConfig.Direction.RIGHT);
-                banner.setIndicatorMargins(new IndicatorConfig.Margins(0,0,
-                        BannerConfig.INDICATOR_MARGIN, (int) BannerUtils.dp2px(12)));
+                banner.setCustomIndicator(indicator);
                 break;
             case R.id.style_net_image:
                 refresh.setEnabled(false);
                 banner.setAdapter(new ImageNetAdapter(DataBean.getTestData3()));
                 banner.setIndicator(new CircleIndicator(this));
-
-//                banner.addItemDecoration(new MarginItemDecoration((int) BannerUtils.dp2px(20)));
-//                banner.setPageTransformer(new MultiplePagerScaleInTransformer((int) BannerUtils.dp2px(30),0.1f));
                 break;
             case R.id.change_indicator:
                 indicator.setVisibility(View.VISIBLE);

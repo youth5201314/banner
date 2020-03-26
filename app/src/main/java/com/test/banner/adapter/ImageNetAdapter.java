@@ -6,9 +6,11 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
+import com.test.banner.R;
 import com.test.banner.bean.DataBean;
 import com.test.banner.viewholder.ImageHolder;
 import com.youth.banner.adapter.BannerAdapter;
+import com.youth.banner.util.BannerUtils;
 
 import java.util.List;
 
@@ -23,11 +25,7 @@ public class ImageNetAdapter extends BannerAdapter<DataBean,ImageHolder> {
 
     @Override
     public ImageHolder onCreateHolder(ViewGroup parent, int viewType) {
-        ImageView imageView = new ImageView(parent.getContext());
-        imageView.setLayoutParams(new ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT));
-//        imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        ImageView imageView = (ImageView) BannerUtils.getView(parent, R.layout.banner_image);
         return new ImageHolder(imageView);
     }
 

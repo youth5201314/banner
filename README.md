@@ -30,7 +30,9 @@
 
 ### 效果图
 
-后面补上
+#### 内置官方的PageTransformer效果
+![DepthPageTransformer](images/DepthPageTransformer.gif)
+![ZoomOutPageTransformer](images/ZoomOutPageTransformer.gif)
 
 
 ## 方法
@@ -44,7 +46,8 @@
 |setUserInputEnabled(boolean)|this|禁止手动滑动Banner;true 允许，false 禁止
 |setDatas(List<T>)|this|重新设置banner数据
 |isAutoLoop(boolean)|this|是否允许自动轮播
-|setDelayTime(long)|this|设置轮播间隔时间（毫秒）
+|setDelayTime(long)|this|设置轮播间隔时间（默认3000毫秒）
+|setScrollTime(long)|this|设置轮播滑动的时间（默认800毫秒）
 |start()|this|开始轮播(主要配合生命周期使用)，或者你手动暂停再次启动
 |stop()|this|停止轮播(主要配合生命周期使用)，或者你需要手动暂停
 |setAdapter(T extends BannerAdapter)|this|设置banner的适配器
@@ -94,7 +97,7 @@
 Gradle 
 ```groovy
 dependencies{
-    compile 'com.youth.banner:banner:2.0.0-alpha03'  //预览版
+    compile 'com.youth.banner:banner:2.0.0-beta01'  //预览版
 }
 ```
 或者引用本地lib
@@ -263,7 +266,7 @@ public void onViewAttachedToWindow(BaseViewHolder holder) {
     
 ## Thanks
 
-- []()
+- [zguop的控制viewpager2的滑动时间方案](https://github.com/zguop/banner/blob/master/pager2banner/src/main/java/com/to/aboomy/pager2banner/Banner.java)
 
 
 ### 联系方式  <a target="_blank" href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=KBkYGhAfGhEYEB5oWVkGS0dF" style="text-decoration:none;"><img src="images/mailme.png"/></a>
@@ -274,6 +277,14 @@ public void onViewAttachedToWindow(BaseViewHolder holder) {
 
 
 ## 更新说明
+
+#### v2.0.0-beta
+    banner 测试版发布
+ * 修改banner内部轮播逻辑
+ * 增加设置画廊效果方法
+ * 内置有2种官方Transformer效果，更多效果你可以自定义
+ * 优化切换事件,去掉onBannerChanged
+ * 新增轮播滑动时间控制，感谢zguop，这里的具体实现方法来自zguop的项目
 
 #### v2.0.0-alpha03
     banner 预览版使用中的问题优化。

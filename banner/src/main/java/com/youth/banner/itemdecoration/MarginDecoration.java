@@ -1,18 +1,21 @@
-package com.test.banner.itemdecoration;
+package com.youth.banner.itemdecoration;
 
 import android.graphics.Rect;
 import android.view.View;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Px;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.youth.banner.util.BannerUtils;
 
-public class MarginItemDecoration extends RecyclerView.ItemDecoration {
-    private int marginPx;
 
-    public MarginItemDecoration(int marginPx) {
-        this.marginPx = marginPx;
+public class MarginDecoration extends RecyclerView.ItemDecoration {
+    private int mMarginPx;
+
+    public MarginDecoration(@Px int margin) {
+        mMarginPx = margin;
     }
 
     @Override
@@ -20,11 +23,11 @@ public class MarginItemDecoration extends RecyclerView.ItemDecoration {
                                @NonNull RecyclerView.State state) {
         LinearLayoutManager linearLayoutManager = requireLinearLayoutManager(parent);
         if (linearLayoutManager.getOrientation() == LinearLayoutManager.VERTICAL) {
-            outRect.top = marginPx;
-            outRect.bottom = marginPx;
+            outRect.top = mMarginPx;
+            outRect.bottom = mMarginPx;
         } else {
-            outRect.left = marginPx;
-            outRect.right = marginPx;
+            outRect.left = mMarginPx;
+            outRect.right = mMarginPx;
         }
     }
 

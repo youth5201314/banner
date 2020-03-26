@@ -61,7 +61,7 @@ public class BannerUtils {
             return ((ColorDrawable) drawable).getColor();
         }
         Log.e(Banner.TAG, context.getString(R.string.indicator_color_error));
-        return -1;
+        return Banner.INVALID_VALUE;
     }
 
     public static float dp2px(float dp) {

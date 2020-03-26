@@ -14,23 +14,17 @@ import java.util.List;
 
 public abstract class BannerAdapter<T, VH extends RecyclerView.ViewHolder> extends RecyclerView.Adapter<VH> implements IViewHolder<T, VH> {
     protected List<T> mDatas = new ArrayList<>();
-    private OnBannerListener listener;
+    private OnBannerListener mOnBannerListener;
 
     public BannerAdapter(List<T> datas) {
         setDatas(datas);
     }
 
     public void setDatas(List<T> datas) {
-        mDatas.clear();
         if (datas == null) {
             datas = new ArrayList<>();
         }
-        mDatas.addAll(datas);
-        int count = datas.size();
-        if (count > 1) {
-            mDatas.add(0, datas.get(count - 1));
-            mDatas.add(datas.get(0));
-        }
+        mDatas = datas;
     }
 
     public T getData(int position) {
@@ -39,10 +33,10 @@ public abstract class BannerAdapter<T, VH extends RecyclerView.ViewHolder> exten
 
     @Override
     public final void onBindViewHolder(@NonNull VH holder, int position) {
-        int real = BannerUtils.getRealPosition(position, getRealCount());
-        onBindView(holder, mDatas.get(position), real, getRealCount());
-        if (listener != null)
-            holder.itemView.setOnClickListener(view -> listener.OnBannerClick(mDatas.get(position), real));
+        int real = getRealPosition(position);
+        onBindView(holder, mDatas.get(real), real, getRealCount());
+        if (mOnBannerListener != null)
+            holder.itemView.setOnClickListener(view -> mOnBannerListener.OnBannerClick(mDatas.get(real), real));
     }
 
     @NonNull
@@ -53,15 +47,18 @@ public abstract class BannerAdapter<T, VH extends RecyclerView.ViewHolder> exten
 
     @Override
     public int getItemCount() {
-        return mDatas == null ? 0 : mDatas.size();
+        return getRealCount() > 1 ? getRealCount() + 2 : getRealCount();
     }
 
     public int getRealCount() {
-        int count = getItemCount();
-        return count <= 1 ? count : count - 2;
+        return mDatas == null ? 0 : mDatas.size();
+    }
+
+    public int getRealPosition(int position){
+        return BannerUtils.getRealPosition(position, getRealCount());
     }
 
     public void setOnBannerListener(OnBannerListener listener) {
-        this.listener = listener;
+        this.mOnBannerListener = listener;
     }
 }

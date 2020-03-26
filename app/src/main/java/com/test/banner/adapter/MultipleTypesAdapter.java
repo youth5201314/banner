@@ -1,5 +1,6 @@
 package com.test.banner.adapter;
 
+import android.graphics.Color;
 import android.view.ViewGroup;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -8,6 +9,7 @@ import com.test.banner.bean.DataBean;
 import com.test.banner.R;
 import com.test.banner.viewholder.ImageHolder;
 import com.test.banner.viewholder.ImageTitleHolder;
+import com.test.banner.viewholder.TitleHolder;
 import com.youth.banner.adapter.BannerAdapter;
 import com.youth.banner.util.BannerUtils;
 
@@ -28,11 +30,9 @@ public class MultipleTypesAdapter extends BannerAdapter<DataBean, RecyclerView.V
             case 1:
                 return new ImageHolder(BannerUtils.getView(parent, R.layout.banner_image));
             case 2:
-                //不同的holder
                 return new ImageTitleHolder(BannerUtils.getView(parent, R.layout.banner_image_title));
             case 3:
-                //相同的holder，切换不同的ui
-                return new ImageTitleHolder(BannerUtils.getView(parent, R.layout.banner_image_title2));
+                return new TitleHolder(BannerUtils.getView(parent, R.layout.banner_title));
             default:
                 return new ImageHolder(BannerUtils.getView(parent, R.layout.banner_image));
         }
@@ -40,7 +40,7 @@ public class MultipleTypesAdapter extends BannerAdapter<DataBean, RecyclerView.V
 
     @Override
     public int getItemViewType(int position) {
-        return getData(position).viewType;
+        return getData(getRealPosition(position)).viewType;
     }
 
     @Override
@@ -52,10 +52,14 @@ public class MultipleTypesAdapter extends BannerAdapter<DataBean, RecyclerView.V
                 imageHolder.imageView.setImageResource(data.imageRes);
                 break;
             case 2:
+                ImageTitleHolder imageTitleHolder = (ImageTitleHolder) holder;
+                imageTitleHolder.imageView.setImageResource(data.imageRes);
+                imageTitleHolder.title.setText(data.title);
+                break;
             case 3:
-                ImageTitleHolder titleHolder = (ImageTitleHolder) holder;
-                titleHolder.imageView.setImageResource(data.imageRes);
+                TitleHolder titleHolder = (TitleHolder) holder;
                 titleHolder.title.setText(data.title);
+                titleHolder.title.setBackgroundColor(Color.parseColor(DataBean.getRandColor()));
                 break;
         }
     }
