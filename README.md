@@ -35,6 +35,7 @@
 
 ![](images/banner_example.gif)
 ![](images/banner_example2.gif)
+![](images/banner_example3.gif)
 
 #### 内置官方的PageTransformer效果
 ![DepthPageTransformer](images/DepthPageTransformer.gif)
