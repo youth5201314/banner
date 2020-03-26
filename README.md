@@ -37,7 +37,7 @@
 ![](images/banner_example2.gif)
 ![](images/banner_example3.gif)
 
-#### 内置官方的PageTransformer效果
+##### 内置了官方提供的2种PageTransformer效果
 ![DepthPageTransformer](images/DepthPageTransformer.gif)
 ![ZoomOutPageTransformer](images/ZoomOutPageTransformer.gif)
 
@@ -104,7 +104,7 @@
 Gradle 
 ```groovy
 dependencies{
-    compile 'com.youth.banner:banner:2.0.0-beta01'  //预览版
+    compile 'com.youth.banner:banner:2.0.0-beta01'  
 }
 ```
 或者引用本地lib

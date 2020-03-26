@@ -12,6 +12,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.test.banner.adapter.ImageAdapter;
 import com.test.banner.adapter.ImageNetAdapter;
 import com.test.banner.adapter.ImageTitleAdapter;
@@ -31,12 +32,13 @@ import com.youth.banner.transformer.DepthPageTransformer;
 import com.youth.banner.transformer.ZoomOutPageTransformer;
 import com.youth.banner.util.BannerUtils;
 
-public class MainActivity extends AppCompatActivity implements OnBannerListener, OnPageChangeListener {
+public class MainActivity extends AppCompatActivity implements OnPageChangeListener {
     private static final String TAG = "banner_log";
-    private Banner banner,banner2;
+    private Banner banner, banner2;
     private SwipeRefreshLayout refresh;
     private RelativeLayout topLine;
     private CircleIndicator indicator;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,7 +54,9 @@ public class MainActivity extends AppCompatActivity implements OnBannerListener,
         //设置指示器
         banner.setIndicator(new CircleIndicator(this));
         //设置点击事件
-        banner.setOnBannerListener(this);
+        banner.setOnBannerListener((data, position) -> {
+            Snackbar.make(banner, ((DataBean) data).title, Snackbar.LENGTH_SHORT).show();
+        });
         //添加切换监听
         banner.addOnPageChangeListener(this);
         //圆角
@@ -60,41 +64,36 @@ public class MainActivity extends AppCompatActivity implements OnBannerListener,
             banner.setBannerRound(BannerUtils.dp2px(5));
         }
         //添加画廊效果，可以参考我给的参数自己调试(不要和其他PageTransformer同时使用)
-        banner.setBannerGalleryEffect(25,40,0.14f);
+        banner.setBannerGalleryEffect(25, 40, 0.14f);
         banner.setDelayTime(2000);
 //        banner.setPageTransformer(new ZoomOutPageTransformer());
 //        banner.setPageTransformer(new DepthPageTransformer());
+
 
         //实现1号店和淘宝头条类似的效果
         banner2.setAdapter(new TopLineAdapter(DataBean.getTestData2()));
         banner2.setOrientation(Banner.VERTICAL);
         banner2.setPageTransformer(new ZoomOutPageTransformer());
+        banner2.setOnBannerListener((data, position) -> {
+            Snackbar.make(banner, ((DataBean) data).title, Snackbar.LENGTH_SHORT).show();
+        });
+
 
         //和下拉刷新配套使用
-        refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                //模拟网络请求需要3秒，请求完成，设置setRefreshing 为false
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        refresh.setRefreshing(false);
-                        //给banner重新设置数据
-                        banner.setDatas(DataBean.getTestData2());
-                    }
-                }, 3000);
-            }
+        refresh.setOnRefreshListener(() -> {
+            //模拟网络请求需要3秒，请求完成，设置setRefreshing 为false
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    refresh.setRefreshing(false);
+                    //给banner重新设置数据
+                    banner.setDatas(DataBean.getTestData2());
+                }
+            }, 3000);
         });
 
     }
 
-    /**
-     * 点击事件、切换事件方法
-     */
-    @Override
-    public void OnBannerClick(Object data, int position) {
-        Toast.makeText(this, "点击" + position, Toast.LENGTH_SHORT).show();
-    }
 
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -102,7 +101,7 @@ public class MainActivity extends AppCompatActivity implements OnBannerListener,
 
     @Override
     public void onPageSelected(int position) {
-        Log.e(TAG, "onPageSelected:----" + position);
+        Log.e(TAG, "onPageSelected:" + position);
     }
 
     @Override
@@ -129,7 +128,7 @@ public class MainActivity extends AppCompatActivity implements OnBannerListener,
 
     public void changeStyle(View view) {
         indicator.setVisibility(View.GONE);
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.style_image:
                 refresh.setEnabled(true);
                 banner.setAdapter(new ImageAdapter(DataBean.getTestData()));
@@ -141,7 +140,7 @@ public class MainActivity extends AppCompatActivity implements OnBannerListener,
                 banner.setAdapter(new ImageTitleAdapter(DataBean.getTestData()));
                 banner.setIndicator(new CircleIndicator(this));
                 banner.setIndicatorGravity(IndicatorConfig.Direction.RIGHT);
-                banner.setIndicatorMargins(new IndicatorConfig.Margins(0,0,
+                banner.setIndicatorMargins(new IndicatorConfig.Margins(0, 0,
                         BannerConfig.INDICATOR_MARGIN, (int) BannerUtils.dp2px(12)));
                 break;
             case R.id.style_image_title_num:
