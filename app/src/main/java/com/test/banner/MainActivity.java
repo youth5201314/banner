@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity implements OnBannerListener,
         }
         //添加画廊效果，可以参考我给的参数自己调试(不要和其他PageTransformer同时使用)
 //        banner.setBannerGalleryEffect(25,40,0.14f);
-
+        banner.setDelayTime(2000);
         banner.setPageTransformer(new ZoomOutPageTransformer());
         banner.setPageTransformer(new DepthPageTransformer());
 

@@ -29,6 +29,9 @@
 `在转到稳定版之前，我仍在努力解决剩余待解决的问题，也希望大家反馈新版的bug，其他功能会慢慢叠加先保证基础功能稳定。`
 
 ### 效果图
+具体效果可以运行demo查看
+![](images/banner_example.gif)
+
 
 #### 内置官方的PageTransformer效果
 ![DepthPageTransformer](images/DepthPageTransformer.gif)
