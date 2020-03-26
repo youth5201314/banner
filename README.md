@@ -21,7 +21,9 @@
 
 - [x] 使用了ViewPager2为基础控件  <a href="https://developer.android.google.cn/jetpack/androidx/releases/viewpager2" target="_blank">[ViewPager2介绍]</a>
 - [x] 支持了androidx兼容包
-- [x] 方便了UI、Indicator自定义（现在还是基础版本，后面再提升）
+- [x] 方便了UI、Indicator自定义
+- [x] 支持画廊效果
+- [x] 兼容了水平和垂直轮播，也可以实现类型淘宝头条的效果
 - [x] 依赖包目前只需要导入了ViewPager2
 
 ### 已知问题
@@ -29,9 +31,10 @@
 `在转到稳定版之前，我仍在努力解决剩余待解决的问题，也希望大家反馈新版的bug，其他功能会慢慢叠加先保证基础功能稳定。`
 
 ### 效果图
-具体效果可以运行demo查看
-![](images/banner_example.gif)
+更多效果运行demo查看
 
+![](images/banner_example.gif)
+![](images/banner_example2.gif)
 
 #### 内置官方的PageTransformer效果
 ![DepthPageTransformer](images/DepthPageTransformer.gif)
