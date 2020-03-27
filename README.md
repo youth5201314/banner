@@ -61,7 +61,9 @@
 |setOrientation(@Orientation)|this|设置banner轮播方向(垂直or水平)
 |setOnBannerListener(this)|this|设置点击事件，下标是从0开始
 |addOnPageChangeListener(this)|this|添加viewpager2的滑动监听
-|setPageTransformer|this|设置viewpager的切换效果
+|setPageTransformer(PageTransformer)|this|设置viewpager的切换效果
+|addPageTransformer(PageTransformer)|this|添加viewpager的切换效果（可以设置多个）
+|removeIndicator()|this|移除设置的Indicator
 |setIndicator(Indicator)|this|设置banner轮播指示器(提供有base和接口，可以自定义)
 |setIndicatorSelectedColor(@ColorInt)|this|设置指示器选中颜色
 |setIndicatorSelectedColorRes(@ColorRes)|this|设置指示器选中颜色
@@ -75,6 +77,7 @@
 |setIndicatorSelectedWidth(int)|this|设置指示器选中的宽度
 |setCustomIndicator(Indicator)|this|设置自定义指示器（配合布局文件，可以自我发挥）
 |setBannerRound(float)|this|设置banner圆角（裁剪方式，需要5.0以上）
+|setBannerGalleryEffect(int,int,float)|this|画廊效果(可设置间距缩放)
 
 ## Attributes属性
 >在banner布局文件中调用,如果你自定义了indicator请做好兼容处理
@@ -84,8 +87,8 @@
 |delay_time|integer|轮播间隔时间，默认3000
 |is_auto_loop|boolean|是否自动轮播，默认true
 |banner_orientation|enum|轮播方向：horizontal（默认） or vertical
-|indicator_normal_width|dimension|指示器默认的宽度，默认6dp
-|indicator_selected_width|dimension|指示器选中的宽度，默认8dp
+|indicator_normal_width|dimension|指示器默认的宽度，默认5dp
+|indicator_selected_width|dimension|指示器选中的宽度，默认7dp
 |indicator_normal_color|color|指示器默认颜色，默认0x88ffffff
 |indicator_selected_color|color|指示器选中颜色，默认0x88000000
 |indicator_space|dimension|指示器之间的间距，默认6dp
@@ -266,9 +269,14 @@ public void onViewAttachedToWindow(BaseViewHolder holder) {
 
 
 
-## 常见问题
+## 常见问题（收录被反复询问的问题）
 
-* 等使用一段时间在整理
+* 网络图片加载不出来？
+
+  `banner本身不提供图片加载功能，首先确认banner本身使用是否正确，具体参考demo，
+  然后请检查你的图片加载框架或者网络请求框架，服务端也可能加了https安全认证，是看下是否报有证书相关错误`
+
+* 怎么监控轮播过程的？
 
     
 ## Thanks
@@ -290,8 +298,9 @@ public void onViewAttachedToWindow(BaseViewHolder holder) {
  * 修改banner内部轮播逻辑
  * 增加设置画廊效果方法
  * 内置有2种官方Transformer效果，更多效果你可以自定义
- * 优化切换事件,去掉onBannerChanged
+ * 优化切换事件和点击事件,去掉onBannerChanged方法
  * 新增轮播滑动时间控制，感谢zguop，这里的具体实现方法来自zguop的项目
+ * 支持多PageTransformer组合设置
 
 #### v2.0.0-alpha03
     banner 预览版使用中的问题优化。

@@ -7,6 +7,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -172,9 +173,12 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout {
         }
     }
 
-
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
+        if (!getViewPager2().isUserInputEnabled()) {
+            return super.dispatchTouchEvent(ev);
+        }
+
         int action = ev.getActionMasked();
         if (action == MotionEvent.ACTION_UP
                 || action == MotionEvent.ACTION_CANCEL
@@ -308,6 +312,13 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout {
         mIndicator.onPageChanged(getRealCount(), realPosition);
     }
 
+
+    /**
+     * **********************************************************************
+     * ------------------------ 对外公开API ---------------------------------*
+     * **********************************************************************
+     */
+
     public void removeIndicator() {
         if (mIndicator != null) {
             removeView(mIndicator.getIndicatorView());
@@ -317,12 +328,6 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout {
     public long getScrollTime() {
         return mScrollTime;
     }
-
-    /**
-     * **********************************************************************
-     * ------------------------ 对外公开API ---------------------------------*
-     * **********************************************************************
-     */
 
     @NonNull
     public BA getAdapter() {
@@ -387,7 +392,7 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout {
         return this;
     }
 
-    public Banner removeTransformer(ViewPager2.PageTransformer transformer){
+    public Banner removeTransformer(ViewPager2.PageTransformer transformer) {
         mCompositePageTransformer.removeTransformer(transformer);
         return this;
     }
