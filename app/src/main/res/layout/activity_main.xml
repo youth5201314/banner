@@ -27,7 +27,7 @@
             android:layout_margin="10dp"
             banner:indicator_selected_color="@color/colorPrimary" />
 
-        <com.youth.banner.indicator.CircleIndicator
+        <com.youth.banner.indicator.RoundLinesIndicator
             android:id="@+id/indicator"
             android:layout_below="@+id/banner"
             android:layout_width="wrap_content"

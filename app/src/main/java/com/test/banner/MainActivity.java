@@ -1,13 +1,11 @@
 package com.test.banner;
 
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -26,9 +24,9 @@ import com.youth.banner.Banner;
 import com.youth.banner.config.BannerConfig;
 import com.youth.banner.config.IndicatorConfig;
 import com.youth.banner.indicator.CircleIndicator;
-import com.youth.banner.listener.OnBannerListener;
+import com.youth.banner.indicator.RectangleIndicator;
+import com.youth.banner.indicator.RoundLinesIndicator;
 import com.youth.banner.listener.OnPageChangeListener;
-import com.youth.banner.transformer.DepthPageTransformer;
 import com.youth.banner.transformer.ZoomOutPageTransformer;
 import com.youth.banner.util.BannerUtils;
 
@@ -37,7 +35,7 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
     private Banner banner, banner2;
     private SwipeRefreshLayout refresh;
     private RelativeLayout topLine;
-    private CircleIndicator indicator;
+    private RoundLinesIndicator indicator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,9 +58,8 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
         //添加切换监听
         banner.addOnPageChangeListener(this);
         //圆角
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            banner.setBannerRound(BannerUtils.dp2px(5));
-        }
+        banner.setBannerRound(BannerUtils.dp2px(5));
+
         //添加画廊效果，可以参考我给的参数自己调试(不要和其他PageTransformer同时使用)
 //        banner.setBannerGalleryEffect(25, 40, 0.14f);
 
@@ -72,12 +69,12 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
 
 
         //实现1号店和淘宝头条类似的效果
-        banner2.setAdapter(new TopLineAdapter(DataBean.getTestData2()));
-        banner2.setOrientation(Banner.VERTICAL);
-        banner2.setPageTransformer(new ZoomOutPageTransformer());
-        banner2.setOnBannerListener((data, position) -> {
-            Snackbar.make(banner, ((DataBean) data).title, Snackbar.LENGTH_SHORT).show();
-        });
+        banner2.setAdapter(new TopLineAdapter(DataBean.getTestData2()))
+                .setOrientation(Banner.VERTICAL)
+                .setPageTransformer(new ZoomOutPageTransformer())
+                .setOnBannerListener((data, position) -> {
+                    Snackbar.make(banner, ((DataBean) data).title, Snackbar.LENGTH_SHORT).show();
+                });
 
 
         //和下拉刷新配套使用
@@ -151,20 +148,23 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
                 break;
             case R.id.style_multiple:
                 refresh.setEnabled(true);
-                indicator.setVisibility(View.VISIBLE);
                 banner.setAdapter(new MultipleTypesAdapter(DataBean.getTestData()));
-                banner.setCustomIndicator(indicator);
+                banner.setIndicator(new RectangleIndicator(this));
+                banner.setIndicatorNormalWidth((int) BannerUtils.dp2px(12));
+                banner.setIndicatorSpace((int) BannerUtils.dp2px(4));
+                banner.setIndicatorRadius(0);
                 break;
             case R.id.style_net_image:
                 refresh.setEnabled(false);
                 banner.setAdapter(new ImageNetAdapter(DataBean.getTestData3()));
-                banner.setIndicator(new CircleIndicator(this));
+                banner.setIndicator(new RoundLinesIndicator(this));
+                banner.setIndicatorSelectedWidth((int) BannerUtils.dp2px(15));
                 break;
             case R.id.change_indicator:
                 indicator.setVisibility(View.VISIBLE);
                 //推荐你在布局文件中定位好指示器的位置，如果想直接new，可以使用setIndicator方法
                 banner.setCustomIndicator(indicator);
-                banner.setIndicatorSpace(BannerUtils.dp2px(10));
+                banner.setIndicatorSelectedWidth((int) BannerUtils.dp2px(15));
                 break;
             case R.id.rv_banner:
                 startActivity(new Intent(this, RecyclerViewBannerActivity.class));

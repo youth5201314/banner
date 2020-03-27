@@ -80,7 +80,7 @@ public class BaseIndicator extends View implements Indicator {
     @Override
     public void onPageSelected(int position) {
         config.setCurrentPosition(position);
-        invalidate();
+        postInvalidate();
     }
 
     @Override

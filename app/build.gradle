@@ -2,12 +2,11 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 29
-    buildToolsVersion '29.0.2'
 
     defaultConfig {
         applicationId "com.test.banner"
         minSdkVersion 14
-        targetSdkVersion 28
+        targetSdkVersion 29
         versionCode 1
         versionName "1.0"
     }
@@ -39,5 +38,5 @@ dependencies {
     implementation 'com.google.android.material:material:1.0.0'
 
     implementation project(':banner')
-//    implementation 'com.youth.banner:banner:2.0.0-alpha03'
+//    implementation 'com.youth.banner:banner:+'
 }

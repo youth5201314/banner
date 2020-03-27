@@ -2,16 +2,15 @@ package com.youth.banner;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.graphics.Outline;
+import android.graphics.Canvas;
+import android.graphics.Path;
+import android.graphics.RectF;
+import android.graphics.Region;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.MotionEvent;
-import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewOutlineProvider;
 import android.widget.FrameLayout;
 
 import androidx.annotation.ColorInt;
@@ -19,9 +18,7 @@ import androidx.annotation.ColorRes;
 import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.widget.CompositePageTransformer;
@@ -40,7 +37,6 @@ import com.youth.banner.util.ProxyLayoutManger;
 
 import java.lang.annotation.Retention;
 import java.lang.ref.WeakReference;
-import java.lang.reflect.Field;
 import java.util.List;
 
 import static java.lang.annotation.RetentionPolicy.SOURCE;
@@ -66,6 +62,8 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout {
     private long mScrollTime = BannerConfig.SCROLL_TIME;
     // 轮播开始位置
     private int mStartPosition = 1;
+    // banner圆角半径
+    private float mBannerRadius = 0;
 
     // 指示器相关配置
     private int normalWidth;
@@ -79,6 +77,8 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout {
     private int indicatorMarginTop;
     private int indicatorMarginRight;
     private int indicatorMarginBottom;
+    private int indicatorHeight;
+    private int indicatorRadius;
 
     public static final int HORIZONTAL = 0;
     public static final int VERTICAL = 1;
@@ -119,8 +119,8 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout {
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.Banner);
         mDelayTime = a.getInt(R.styleable.Banner_delay_time, BannerConfig.LOOP_TIME);
         mIsAutoLoop = a.getBoolean(R.styleable.Banner_is_auto_loop, BannerConfig.IS_AUTO_LOOP);
-        normalWidth = a.getDimensionPixelSize(R.styleable.Banner_indicator_normal_width, (int) BannerConfig.INDICATOR_NORMAL_WIDTH);
-        selectedWidth = a.getDimensionPixelSize(R.styleable.Banner_indicator_selected_width, (int) BannerConfig.INDICATOR_SELECTED_WIDTH);
+        normalWidth = a.getDimensionPixelSize(R.styleable.Banner_indicator_normal_width, BannerConfig.INDICATOR_NORMAL_WIDTH);
+        selectedWidth = a.getDimensionPixelSize(R.styleable.Banner_indicator_selected_width, BannerConfig.INDICATOR_SELECTED_WIDTH);
         normalColor = a.getDrawable(R.styleable.Banner_indicator_normal_color);
         selectedColor = a.getDrawable(R.styleable.Banner_indicator_selected_color);
         indicatorGravity = a.getInt(R.styleable.Banner_indicator_gravity, IndicatorConfig.Direction.CENTER);
@@ -130,6 +130,8 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout {
         indicatorMarginTop = a.getDimensionPixelSize(R.styleable.Banner_indicator_marginTop, 0);
         indicatorMarginRight = a.getDimensionPixelSize(R.styleable.Banner_indicator_marginRight, 0);
         indicatorMarginBottom = a.getDimensionPixelSize(R.styleable.Banner_indicator_marginBottom, 0);
+        indicatorHeight = a.getDimensionPixelSize(R.styleable.Banner_indicator_height,BannerConfig.INDICATOR_HEIGHT);
+        indicatorRadius = a.getDimensionPixelSize(R.styleable.Banner_indicator_radius,BannerConfig.INDICATOR_RADIUS);
         int orientation = a.getInt(R.styleable.Banner_banner_orientation, HORIZONTAL);
         setOrientation(orientation);
         a.recycle();
@@ -171,6 +173,13 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout {
         if (selectedWidth > 0) {
             setIndicatorSelectedWidth(selectedWidth);
         }
+
+        if (indicatorHeight>0){
+            setIndicatorHeight(indicatorHeight);
+        }
+        if (indicatorRadius>0){
+            setIndicatorRadius(indicatorRadius);
+        }
     }
 
     @Override
@@ -190,6 +199,16 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout {
         return super.dispatchTouchEvent(ev);
     }
 
+    @Override
+    protected void dispatchDraw(Canvas canvas) {
+        if (mBannerRadius > 0) {
+            Path path = new Path();
+            path.addRoundRect(new RectF(0, 0, getMeasuredWidth(), getMeasuredHeight()),
+                    BannerUtils.dp2px(5), BannerUtils.dp2px(5), Path.Direction.CW);
+            canvas.clipPath(path, Region.Op.REPLACE);
+        }
+        super.dispatchDraw(canvas);
+    }
 
     class BannerOnPageChangeCallback extends ViewPager2.OnPageChangeCallback {
         private int mTempPosition = INVALID_VALUE;
@@ -513,6 +532,61 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout {
         return this;
     }
 
+    /**
+     * 设置点击事件
+     *
+     * @param listener
+     * @return
+     */
+    public Banner setOnBannerListener(@NonNull OnBannerListener listener) {
+        if (getAdapter() != null) {
+            getAdapter().setOnBannerListener(listener);
+        }
+        return this;
+    }
+
+    /**
+     * 添加viewpager切换事件
+     * <p>
+     * 在viewpager2中切换事件{@link ViewPager2.OnPageChangeCallback}是一个抽象类，
+     * 为了方便使用习惯这里用的是和viewpager一样的{@link ViewPager.OnPageChangeListener}接口
+     * </p>
+     *
+     * @param pageListener
+     */
+    public Banner addOnPageChangeListener(@NonNull OnPageChangeListener pageListener) {
+        this.mOnPageChangeListener = pageListener;
+        return this;
+    }
+
+    /**
+     * 设置banner圆角
+     * <p>
+     * 默认没有圆角，需要取消圆角把半径设置为0即可
+     *
+     * @param radius 圆角半径
+     * @return
+     */
+    public Banner setBannerRound(float radius) {
+        mBannerRadius = radius;
+        return this;
+    }
+
+    /**
+     * 为banner添加画廊效果
+     *
+     * @param itemMargin item间距,单位dp,参考值25
+     * @param pageMargin 页面间距,单位dp,参考值40
+     * @param scale      缩放[0-1],参考值0.14f
+     * @return
+     */
+    public Banner setBannerGalleryEffect(int itemMargin, int pageMargin, float scale) {
+        if (scale > 1 || scale < 0) scale = 0.14f;
+        addItemDecoration(new MarginDecoration((int) BannerUtils.dp2px(itemMargin)));
+        setPageTransformer(new MultipleScaleTransformer((int) BannerUtils.dp2px(pageMargin), scale));
+        return this;
+    }
+
 
     /**
      * 设置轮播指示器
@@ -529,6 +603,12 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout {
         return this;
     }
 
+
+    /**
+     * **********************************************************************
+     * ------------------------ 指示器相关设置 --------------------------------*
+     * **********************************************************************
+     */
 
     /**
      * 设置自定义轮播指示器
@@ -578,7 +658,7 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout {
         return this;
     }
 
-    public Banner setIndicatorSpace(float indicatorSpace) {
+    public Banner setIndicatorSpace(int indicatorSpace) {
         if (mIndicator != null) {
             mIndicator.getIndicatorConfig().setIndicatorSpace(indicatorSpace);
         }
@@ -615,65 +695,19 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout {
         return this;
     }
 
-    /**
-     * 设置点击事件
-     *
-     * @param listener
-     * @return
-     */
-    public Banner setOnBannerListener(@NonNull OnBannerListener listener) {
-        if (getAdapter() != null) {
-            getAdapter().setOnBannerListener(listener);
+    public Banner<T, BA> setIndicatorRadius(int indicatorRadius) {
+        if (mIndicator != null) {
+            mIndicator.getIndicatorConfig().setRadius(indicatorRadius);
         }
         return this;
     }
 
-    /**
-     * 添加viewpager切换事件
-     * <p>
-     * 在viewpager2中切换事件{@link ViewPager2.OnPageChangeCallback}是一个抽象类，
-     * 为了方便使用习惯这里用的是和viewpager一样的{@link ViewPager.OnPageChangeListener}接口
-     * </p>
-     *
-     * @param pageListener
-     */
-    public Banner addOnPageChangeListener(@NonNull OnPageChangeListener pageListener) {
-        this.mOnPageChangeListener = pageListener;
+    public Banner<T, BA> setIndicatorHeight(int indicatorHeight) {
+        if (mIndicator != null) {
+            mIndicator.getIndicatorConfig().setHeight(indicatorHeight);
+        }
         return this;
     }
 
-
-    /**
-     * 设置banner 圆角
-     *
-     * @param radius
-     * @return
-     */
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    public Banner setBannerRound(float radius) {
-        setOutlineProvider(new ViewOutlineProvider() {
-            @Override
-            public void getOutline(View view, Outline outline) {
-                outline.setRoundRect(0, 0, view.getWidth(), view.getHeight(), radius);
-            }
-        });
-        setClipToOutline(true);
-        return this;
-    }
-
-    /**
-     * 为banner添加画廊效果
-     *
-     * @param itemMargin item间距,单位dp,参考值25
-     * @param pageMargin 页面间距,单位dp,参考值40
-     * @param scale      缩放[0-1],参考值0.14f
-     * @return
-     */
-    public Banner setBannerGalleryEffect(int itemMargin, int pageMargin, float scale) {
-        if (scale > 1 || scale < 0) scale = 0.14f;
-        addItemDecoration(new MarginDecoration((int) BannerUtils.dp2px(itemMargin)));
-        setPageTransformer(new MultipleScaleTransformer((int) BannerUtils.dp2px(pageMargin), scale));
-        return this;
-    }
 
 }

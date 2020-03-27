@@ -1,7 +1,6 @@
 package com.youth.banner.config;
 
 import androidx.annotation.ColorInt;
-import androidx.annotation.ColorRes;
 import androidx.annotation.IntDef;
 
 import java.lang.annotation.Retention;
@@ -12,13 +11,16 @@ public class IndicatorConfig {
     private int indicatorSize;
     private int currentPosition;
     private int gravity = Direction.CENTER;
-    private float indicatorSpace = BannerConfig.INDICATOR_SPACE;
-    private float normalWidth = BannerConfig.INDICATOR_NORMAL_WIDTH;
-    private float selectedWidth = BannerConfig.INDICATOR_SELECTED_WIDTH;
+    private int indicatorSpace = BannerConfig.INDICATOR_SPACE;
+    private int normalWidth = BannerConfig.INDICATOR_NORMAL_WIDTH;
+    private int selectedWidth = BannerConfig.INDICATOR_SELECTED_WIDTH;
     @ColorInt
     private int normalColor = BannerConfig.INDICATOR_NORMAL_COLOR;
     @ColorInt
     private int selectedColor = BannerConfig.INDICATOR_SELECTED_COLOR;
+
+    private int radius = BannerConfig.INDICATOR_RADIUS;
+    private int height = BannerConfig.INDICATOR_HEIGHT;
 
     private Margins margins;
 
@@ -44,7 +46,7 @@ public class IndicatorConfig {
         }
 
         public Margins(int marginSize) {
-            this(marginSize,marginSize,marginSize,marginSize);
+            this(marginSize, marginSize, marginSize, marginSize);
         }
 
         public Margins(int leftMargin, int topMargin, int rightMargin, int bottomMargin) {
@@ -56,7 +58,7 @@ public class IndicatorConfig {
     }
 
     public Margins getMargins() {
-        if (margins==null){
+        if (margins == null) {
             setMargins(new Margins());
         }
         return margins;
@@ -72,9 +74,7 @@ public class IndicatorConfig {
     }
 
     public IndicatorConfig setIndicatorSize(int indicatorSize) {
-        if (this.indicatorSize!=indicatorSize) {
-            this.indicatorSize = indicatorSize;
-        }
+        this.indicatorSize = indicatorSize;
         return this;
     }
 
@@ -83,9 +83,7 @@ public class IndicatorConfig {
     }
 
     public IndicatorConfig setNormalColor(int normalColor) {
-        if (this.normalColor != normalColor) {
-            this.normalColor = normalColor;
-        }
+        this.normalColor = normalColor;
         return this;
     }
 
@@ -94,9 +92,7 @@ public class IndicatorConfig {
     }
 
     public IndicatorConfig setSelectedColor(int selectedColor) {
-        if (this.selectedColor != selectedColor) {
-            this.selectedColor = selectedColor;
-        }
+        this.selectedColor = selectedColor;
         return this;
     }
 
@@ -104,10 +100,8 @@ public class IndicatorConfig {
         return indicatorSpace;
     }
 
-    public IndicatorConfig setIndicatorSpace(float indicatorSpace) {
-        if (this.indicatorSpace != indicatorSpace) {
-            this.indicatorSpace = indicatorSpace;
-        }
+    public IndicatorConfig setIndicatorSpace(int indicatorSpace) {
+        this.indicatorSpace = indicatorSpace;
         return this;
     }
 
@@ -116,9 +110,7 @@ public class IndicatorConfig {
     }
 
     public IndicatorConfig setCurrentPosition(int currentPosition) {
-        if (this.currentPosition != currentPosition) {
-            this.currentPosition = currentPosition;
-        }
+        this.currentPosition = currentPosition;
         return this;
     }
 
@@ -126,10 +118,8 @@ public class IndicatorConfig {
         return normalWidth;
     }
 
-    public IndicatorConfig setNormalWidth(float normalWidth) {
-        if (this.normalWidth != normalWidth) {
-            this.normalWidth = normalWidth;
-        }
+    public IndicatorConfig setNormalWidth(int normalWidth) {
+        this.normalWidth = normalWidth;
         return this;
     }
 
@@ -137,10 +127,8 @@ public class IndicatorConfig {
         return selectedWidth;
     }
 
-    public IndicatorConfig setSelectedWidth(float selectedWidth) {
-        if (this.selectedWidth != selectedWidth) {
-            this.selectedWidth = selectedWidth;
-        }
+    public IndicatorConfig setSelectedWidth(int selectedWidth) {
+        this.selectedWidth = selectedWidth;
         return this;
     }
 
@@ -149,9 +137,7 @@ public class IndicatorConfig {
     }
 
     public IndicatorConfig setGravity(@Direction int gravity) {
-        if (this.gravity != gravity) {
-            this.gravity = gravity;
-        }
+        this.gravity = gravity;
         return this;
     }
 
@@ -159,7 +145,26 @@ public class IndicatorConfig {
         return includeIndicator;
     }
 
-    public void setIncludeIndicator(boolean includeIndicator) {
+    public IndicatorConfig setIncludeIndicator(boolean includeIndicator) {
         this.includeIndicator = includeIndicator;
+        return this;
+    }
+
+    public int getRadius() {
+        return radius;
+    }
+
+    public IndicatorConfig setRadius(int radius) {
+        this.radius = radius;
+        return this;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public IndicatorConfig setHeight(int height) {
+        this.height = height;
+        return this;
     }
 }

@@ -26,18 +26,16 @@
 - [x] 兼容了水平和垂直轮播，也可以实现类型淘宝头条的效果
 - [x] 依赖包目前只需要导入了ViewPager2
 
-### 已知问题
 
-`在转到稳定版之前，我仍在努力解决剩余待解决的问题，也希望大家反馈新版的bug，其他功能会慢慢叠加先保证基础功能稳定。`
 
 ### 效果图
 更多效果运行demo查看
 
-![](images/banner_example.gif)
+![默认](images/banner_example.gif)
 
-![](images/banner_example2.gif)
+![画廊](images/banner_example2.gif)
 
-![](images/banner_example3.gif)
+![头条](images/banner_example3.gif)
 
 ##### 内置了官方提供的2种PageTransformer效果
 ![DepthPageTransformer](images/DepthPageTransformer.gif)
@@ -72,34 +70,39 @@
 |setIndicatorNormalColor(@ColorInt)|this|设置指示器默认颜色
 |setIndicatorNormalColorRes(@ColorRes)|this|设置指示器默认颜色
 |setIndicatorGravity(@IndicatorConfig.Direction)|this|设置指示器位置（左，中，右）
-|setIndicatorSpace(float)|this|设置指示器之间的间距
+|setIndicatorSpace(int)|this|设置指示器之间的间距
 |setIndicatorMargins(IndicatorConfig.Margins)|this|设置指示器的Margins
 |setIndicatorWidth(int,int)|this|设置指示器选中和未选中的宽度，直接影响绘制指示器的大小
 |setIndicatorNormalWidth(int)|this|设置指示器未选中的宽度
 |setIndicatorSelectedWidth(int)|this|设置指示器选中的宽度
+|setIndicatorRadius(int)|this|设置指示器圆角，不要圆角可以设置为0
+|setIndicatorHeight(int)|this|设置指示器高度
 |setCustomIndicator(Indicator)|this|设置自定义指示器（配合布局文件，可以自我发挥）
 |setBannerRound(float)|this|设置banner圆角（裁剪方式，需要5.0以上）
 |setBannerGalleryEffect(int,int,float)|this|画廊效果(可设置间距缩放)
 
 ## Attributes属性
->在banner布局文件中调用,如果你自定义了indicator请做好兼容处理
+>在banner布局文件中调用,如果你自定义了indicator请做好兼容处理。
+下面的属性并不是每个指示器都用得到，所以使用时要注意！
 
-|Attributes|forma|describe
+|Attributes|format|describe
 |---|---|---|
 |delay_time|integer|轮播间隔时间，默认3000
 |is_auto_loop|boolean|是否自动轮播，默认true
 |banner_orientation|enum|轮播方向：horizontal（默认） or vertical
-|indicator_normal_width|dimension|指示器默认的宽度，默认5dp
-|indicator_selected_width|dimension|指示器选中的宽度，默认7dp
+|indicator_normal_width|dimension|指示器默认的宽度，默认5dp （对RoundLinesIndicator无效）
+|indicator_selected_width|dimension|指示器选中的宽度，默认7dp （对RectangleIndicator无效）
 |indicator_normal_color|color|指示器默认颜色，默认0x88ffffff
 |indicator_selected_color|color|指示器选中颜色，默认0x88000000
-|indicator_space|dimension|指示器之间的间距，默认6dp
+|indicator_space|dimension|指示器之间的间距，默认5dp （对RoundLinesIndicator无效）
 |indicator_gravity|dimension|指示器位置，默认center
 |indicator_margin|dimension|指示器的margin,默认5dp，不能和下面的同时使用
 |indicator_marginLeft|dimension|指示器左边的margin
 |indicator_marginTop|dimension|指示器上边的margin
 |indicator_marginRight|dimension|指示器右边的margin
 |indicator_marginBottom|dimension|指示器下边的margin
+|indicator_height|dimension|指示器高度（对CircleIndicator无效）
+|indicator_radius|dimension|指示器圆角（对CircleIndicator无效）
 
 
 ## 使用步骤
@@ -109,7 +112,7 @@
 Gradle 
 ```groovy
 dependencies{
-    compile 'com.youth.banner:banner:2.0.0-beta01'  
+    compile 'com.youth.banner:banner:2.0.0'  
 }
 ```
 或者引用本地lib
@@ -294,6 +297,11 @@ public void onViewAttachedToWindow(BaseViewHolder holder) {
 
 
 ## 更新说明
+
+#### v2.0.0
+    banner 正式版发布
+ * 改变banner圆角实现方式，兼容低版本
+ * 新增两种指示器效果，基本能满足大部分需求了
 
 #### v2.0.0-beta
     banner 测试版发布
