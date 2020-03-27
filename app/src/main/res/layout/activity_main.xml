@@ -82,7 +82,7 @@
             android:layout_below="@+id/style_image"
             android:layout_toRightOf="@+id/style_net_image"
             android:onClick="changeStyle"
-            android:text="指示器用法"/>
+            android:text="外部指示器用法"/>
 
         <TextView
             android:id="@+id/tip2"
