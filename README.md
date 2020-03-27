@@ -34,7 +34,9 @@
 更多效果运行demo查看
 
 ![](images/banner_example.gif)
+
 ![](images/banner_example2.gif)
+
 ![](images/banner_example3.gif)
 
 ##### 内置了官方提供的2种PageTransformer效果
