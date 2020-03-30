@@ -5,7 +5,10 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -20,6 +23,7 @@ import com.test.banner.adapter.TopLineAdapter;
 import com.test.banner.bean.DataBean;
 import com.test.banner.ui.ConstraintLayoutBannerActivity;
 import com.test.banner.ui.RecyclerViewBannerActivity;
+import com.test.banner.ui.Vp2FragmentRecyclerviewActivity;
 import com.youth.banner.Banner;
 import com.youth.banner.config.BannerConfig;
 import com.youth.banner.config.IndicatorConfig;
@@ -30,22 +34,52 @@ import com.youth.banner.listener.OnPageChangeListener;
 import com.youth.banner.transformer.ZoomOutPageTransformer;
 import com.youth.banner.util.BannerUtils;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
 public class MainActivity extends AppCompatActivity implements OnPageChangeListener {
     private static final String TAG = "banner_log";
-    private Banner banner, banner2;
-    private SwipeRefreshLayout refresh;
-    private RelativeLayout topLine;
-    private RoundLinesIndicator indicator;
+    @BindView(R.id.tip)
+    TextView tip;
+    @BindView(R.id.banner)
+    Banner banner;
+    @BindView(R.id.indicator)
+    RoundLinesIndicator indicator;
+    @BindView(R.id.style_image)
+    Button styleImage;
+    @BindView(R.id.style_image_title)
+    Button styleImageTitle;
+    @BindView(R.id.style_image_title_num)
+    Button styleImageTitleNum;
+    @BindView(R.id.style_multiple)
+    Button styleMultiple;
+    @BindView(R.id.style_net_image)
+    Button styleNetImage;
+    @BindView(R.id.change_indicator)
+    Button changeIndicator;
+    @BindView(R.id.tip2)
+    TextView tip2;
+    @BindView(R.id.image_top)
+    ImageView imageTop;
+    @BindView(R.id.banner2)
+    Banner banner2;
+    @BindView(R.id.image_right)
+    ImageView imageRight;
+    @BindView(R.id.topLine)
+    RelativeLayout topLine;
+    @BindView(R.id.rv_banner)
+    Button rvBanner;
+    @BindView(R.id.cl_banner)
+    Button clBanner;
+    @BindView(R.id.swipeRefresh)
+    SwipeRefreshLayout refresh;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        refresh = findViewById(R.id.swipeRefresh);
-        banner = findViewById(R.id.banner);
-        banner2 = findViewById(R.id.banner2);
-        topLine = findViewById(R.id.topLine);
-        indicator = findViewById(R.id.indicator);
+        ButterKnife.bind(this);
 
         //设置适配器
         banner.setAdapter(new ImageAdapter(DataBean.getTestData()));
@@ -124,7 +158,9 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
         banner2.stop();
     }
 
-    public void changeStyle(View view) {
+    @OnClick({R.id.style_image, R.id.style_image_title, R.id.style_image_title_num, R.id.style_multiple,
+            R.id.style_net_image, R.id.change_indicator, R.id.rv_banner, R.id.cl_banner, R.id.vp_banner})
+    public void click(View view) {
         indicator.setVisibility(View.GONE);
         switch (view.getId()) {
             case R.id.style_image:
@@ -171,6 +207,9 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
                 break;
             case R.id.cl_banner:
                 startActivity(new Intent(this, ConstraintLayoutBannerActivity.class));
+                break;
+            case R.id.vp_banner:
+                startActivity(new Intent(this, Vp2FragmentRecyclerviewActivity.class));
                 break;
         }
     }

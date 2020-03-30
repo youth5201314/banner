@@ -200,6 +200,23 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout {
     }
 
     @Override
+    public boolean onInterceptTouchEvent(MotionEvent event) {
+        if (!getViewPager2().isUserInputEnabled()) {
+            return super.onInterceptTouchEvent(event);
+        }
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_MOVE:
+                getParent().requestDisallowInterceptTouchEvent(true);
+                break;
+            case MotionEvent.ACTION_UP:
+            case MotionEvent.ACTION_CANCEL:
+                getParent().requestDisallowInterceptTouchEvent(false);
+                break;
+        }
+        return super.onInterceptTouchEvent(event);
+    }
+
+    @Override
     protected void dispatchDraw(Canvas canvas) {
         if (mBannerRadius > 0) {
             Path path = new Path();

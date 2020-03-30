@@ -6,147 +6,145 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scrollbars="none">
-
-        <TextView
-            android:id="@+id/tip"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/indicator"
-            android:gravity="center"
-            android:layout_marginTop="10dp"
-            android:text="下拉刷新重新设置数据数据，点击按钮改变使用场景" />
-
-        <com.youth.banner.Banner xmlns:banner="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/banner"
-            android:layout_width="match_parent"
-            android:layout_height="180dp"
-            android:layout_margin="10dp"
-            banner:indicator_selected_color="@color/colorPrimary" />
-
-        <com.youth.banner.indicator.RoundLinesIndicator
-            android:id="@+id/indicator"
-            android:layout_below="@+id/banner"
-            android:layout_width="wrap_content"
-            android:layout_height="20dp"
-            android:layout_centerHorizontal="true"
-            android:visibility="gone"/>
-
-        <Button
-            android:id="@+id/style_image"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tip"
-            android:onClick="changeStyle"
-            android:text="图片"/>
-
-        <Button
-            android:id="@+id/style_image_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tip"
-            android:layout_toRightOf="@id/style_image"
-            android:onClick="changeStyle"
-            android:text="图片+标题+指示器"/>
-        <Button
-            android:id="@+id/style_image_title_num"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tip"
-            android:layout_toRightOf="@+id/style_image_title"
-            android:onClick="changeStyle"
-            android:text="图片+标题+数字"/>
-        <Button
-            android:id="@+id/style_multiple"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/style_image"
-            android:onClick="changeStyle"
-            android:text="多类型UI"/>
-        <Button
-            android:id="@+id/style_net_image"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/style_image"
-            android:layout_toRightOf="@+id/style_multiple"
-            android:onClick="changeStyle"
-            android:text="网络图片"/>
-
-        <Button
-            android:id="@+id/change_indicator"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/style_image"
-            android:layout_toRightOf="@+id/style_net_image"
-            android:onClick="changeStyle"
-            android:text="外部指示器用法"/>
-
-        <TextView
-            android:id="@+id/tip2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/style_multiple"
-            android:gravity="center"
-            android:text="更多使用场景" />
-
         <RelativeLayout
-            android:id="@+id/topLine"
             android:layout_width="match_parent"
-            android:layout_height="65dp"
-            android:layout_below="@+id/tip2"
-            android:background="#ffffff"
-            android:layout_margin="5dp"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-            android:orientation="horizontal">
+            android:layout_height="match_parent"
+            android:scrollbars="none">
 
-            <ImageView
-                android:id="@+id/image_top"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/home_hotpoint"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_centerVertical="true"/>
-
-            <com.youth.banner.Banner
-                android:id="@+id/banner2"
+            <TextView
+                android:id="@+id/tip"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_toRightOf="@+id/image_top"
-                android:layout_toLeftOf="@+id/image_right"
-                android:layout_centerVertical="true"/>
-            <ImageView
-                android:id="@+id/image_right"
+                android:layout_below="@+id/indicator"
+                android:gravity="center"
+                android:layout_marginTop="10dp"
+                android:text="下拉刷新重新设置数据数据，点击按钮改变使用场景" />
+
+            <com.youth.banner.Banner xmlns:banner="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/banner"
+                android:layout_width="match_parent"
+                android:layout_height="180dp"
+                android:layout_margin="10dp"
+                banner:indicator_selected_color="@color/colorPrimary" />
+
+            <com.youth.banner.indicator.RoundLinesIndicator
+                android:id="@+id/indicator"
+                android:layout_below="@+id/banner"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:layout_centerHorizontal="true"
+                android:visibility="gone"/>
+
+            <Button
+                android:id="@+id/style_image"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/home_right_arrow"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"/>
+                android:layout_below="@+id/tip"
+                android:text="图片"/>
+
+            <Button
+                android:id="@+id/style_image_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tip"
+                android:layout_toRightOf="@id/style_image"
+                android:text="图片+标题+指示器"/>
+            <Button
+                android:id="@+id/style_image_title_num"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tip"
+                android:layout_toRightOf="@+id/style_image_title"
+                android:text="图片+标题+数字"/>
+            <Button
+                android:id="@+id/style_multiple"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/style_image"
+                android:text="多类型UI"/>
+            <Button
+                android:id="@+id/style_net_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/style_image"
+                android:layout_toRightOf="@+id/style_multiple"
+                android:text="网络图片"/>
+
+            <Button
+                android:id="@+id/change_indicator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/style_image"
+                android:layout_toRightOf="@+id/style_net_image"
+                android:text="外部指示器用法"/>
+
+            <TextView
+                android:id="@+id/tip2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/style_multiple"
+                android:gravity="center"
+                android:text="更多使用场景" />
+
+            <RelativeLayout
+                android:id="@+id/topLine"
+                android:layout_width="match_parent"
+                android:layout_height="65dp"
+                android:layout_below="@+id/tip2"
+                android:background="#ffffff"
+                android:layout_margin="5dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/image_top"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/home_hotpoint"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_centerVertical="true"/>
+
+                <com.youth.banner.Banner
+                    android:id="@+id/banner2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/image_top"
+                    android:layout_toLeftOf="@+id/image_right"
+                    android:layout_centerVertical="true"/>
+                <ImageView
+                    android:id="@+id/image_right"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/home_right_arrow"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"/>
+            </RelativeLayout>
+
+            <Button
+                android:id="@+id/rv_banner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAllCaps="false"
+                android:text="RecyclerView嵌套banner"
+                android:layout_below="@+id/topLine"/>
+            <Button
+                android:id="@+id/cl_banner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAllCaps="false"
+                android:text="ConstraintLayout嵌套banner"
+                android:layout_below="@+id/rv_banner"/>
+            <Button
+                android:id="@+id/vp_banner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAllCaps="false"
+                android:text="viewpaer2+fragment+RecyclerView嵌套banner"
+                android:layout_below="@+id/cl_banner"/>
         </RelativeLayout>
-
-        <Button
-            android:id="@+id/rv_banner"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:onClick="changeStyle"
-            android:textAllCaps="false"
-            android:text="RecyclerView嵌套banner作为header"
-            android:layout_below="@+id/topLine"/>
-        <Button
-            android:id="@+id/cl_banner"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:onClick="changeStyle"
-            android:textAllCaps="false"
-            android:text="ConstraintLayout嵌套banner"
-            android:layout_below="@+id/rv_banner"/>
-
-    </RelativeLayout>
     </ScrollView>
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
