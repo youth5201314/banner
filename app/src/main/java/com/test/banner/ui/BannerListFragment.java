@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.test.banner.R;
 import com.test.banner.adapter.MyRecyclerViewAdapter;
+import com.test.banner.util.ParentRecyclerView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -21,7 +22,7 @@ import butterknife.ButterKnife;
 public class BannerListFragment extends Fragment {
     private static int index;
     @BindView(R.id.net_rv)
-    RecyclerView recyclerView;
+    ParentRecyclerView recyclerView;
     @BindView(R.id.text)
     TextView text;
 

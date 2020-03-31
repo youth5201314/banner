@@ -64,28 +64,28 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter {
     }
 
 
-//    @Override
-//    public void onViewDetachedFromWindow(@NonNull RecyclerView.ViewHolder holder) {
-//        super.onViewDetachedFromWindow(holder);
-//        Log.e("banner_log", "onViewDetachedFromWindow:" + holder.getAdapterPosition());
-//        //定位你的位置
-//        if (holder.getAdapterPosition()%2!=0) {
-//            if (holder instanceof MyBannerViewHolder) {
-//                ((MyBannerViewHolder) holder).banner.stop();
-//            }
-//        }
-//    }
-//
-//    @Override
-//    public void onViewAttachedToWindow(RecyclerView.ViewHolder holder) {
-//        super.onViewAttachedToWindow(holder);
-//        Log.e("banner_log", "onViewAttachedToWindow:" + holder.getAdapterPosition());
-//        if (holder.getAdapterPosition()%2!=0) {
-//            if (holder instanceof MyBannerViewHolder) {
-//                ((MyBannerViewHolder) holder).banner.start();
-//            }
-//        }
-//    }
+    @Override
+    public void onViewDetachedFromWindow(@NonNull RecyclerView.ViewHolder holder) {
+        super.onViewDetachedFromWindow(holder);
+        Log.e("banner_log", "onViewDetachedFromWindow:" + holder.getAdapterPosition());
+        //定位你的位置
+        if (holder.getAdapterPosition()%2!=0) {
+            if (holder instanceof MyBannerViewHolder) {
+                ((MyBannerViewHolder) holder).banner.stop();
+            }
+        }
+    }
+
+    @Override
+    public void onViewAttachedToWindow(RecyclerView.ViewHolder holder) {
+        super.onViewAttachedToWindow(holder);
+        Log.e("banner_log", "onViewAttachedToWindow:" + holder.getAdapterPosition());
+        if (holder.getAdapterPosition()%2!=0) {
+            if (holder instanceof MyBannerViewHolder) {
+                ((MyBannerViewHolder) holder).banner.start();
+            }
+        }
+    }
 
     class MyViewHolder extends RecyclerView.ViewHolder {
         public CardView cardView;

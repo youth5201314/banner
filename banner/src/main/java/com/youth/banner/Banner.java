@@ -10,6 +10,7 @@ import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
+import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
@@ -83,6 +84,13 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout {
     public static final int HORIZONTAL = 0;
     public static final int VERTICAL = 1;
 
+    // 滑动距离范围
+    private int mTouchSlop;
+    // 记录触摸的位置（主要用于解决事件冲突问题）
+    private float mStartX, mStartY;
+    // 记录viewpager2是否被拖动
+    private boolean mIsViewPager2Drag;
+
     @Retention(SOURCE)
     @IntDef({HORIZONTAL, VERTICAL})
     public @interface Orientation {
@@ -103,6 +111,7 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout {
     }
 
     private void init(@NonNull Context context) {
+        mTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
         mCompositePageTransformer = new CompositePageTransformer();
         mLoopTask = new AutoLoopTask(this);
         mViewPager2 = new ViewPager2(context);
@@ -130,8 +139,8 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout {
         indicatorMarginTop = a.getDimensionPixelSize(R.styleable.Banner_indicator_marginTop, 0);
         indicatorMarginRight = a.getDimensionPixelSize(R.styleable.Banner_indicator_marginRight, 0);
         indicatorMarginBottom = a.getDimensionPixelSize(R.styleable.Banner_indicator_marginBottom, 0);
-        indicatorHeight = a.getDimensionPixelSize(R.styleable.Banner_indicator_height,BannerConfig.INDICATOR_HEIGHT);
-        indicatorRadius = a.getDimensionPixelSize(R.styleable.Banner_indicator_radius,BannerConfig.INDICATOR_RADIUS);
+        indicatorHeight = a.getDimensionPixelSize(R.styleable.Banner_indicator_height, BannerConfig.INDICATOR_HEIGHT);
+        indicatorRadius = a.getDimensionPixelSize(R.styleable.Banner_indicator_radius, BannerConfig.INDICATOR_RADIUS);
         int orientation = a.getInt(R.styleable.Banner_banner_orientation, HORIZONTAL);
         setOrientation(orientation);
         a.recycle();
@@ -174,10 +183,10 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout {
             setIndicatorSelectedWidth(selectedWidth);
         }
 
-        if (indicatorHeight>0){
+        if (indicatorHeight > 0) {
             setIndicatorHeight(indicatorHeight);
         }
-        if (indicatorRadius>0){
+        if (indicatorRadius > 0) {
             setIndicatorRadius(indicatorRadius);
         }
     }
@@ -205,8 +214,22 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout {
             return super.onInterceptTouchEvent(event);
         }
         switch (event.getAction()) {
-            case MotionEvent.ACTION_MOVE:
+            case MotionEvent.ACTION_DOWN:
+                mStartX = event.getX();
+                mStartY = event.getY();
                 getParent().requestDisallowInterceptTouchEvent(true);
+                break;
+            case MotionEvent.ACTION_MOVE:
+                float endX = event.getX();
+                float endY = event.getY();
+                float distanceX = Math.abs(endX - mStartX);
+                float distanceY = Math.abs(endY - mStartY);
+                if (getViewPager2().getOrientation() == HORIZONTAL) {
+                    mIsViewPager2Drag = distanceX > mTouchSlop && distanceX > distanceY;
+                } else {
+                    mIsViewPager2Drag = distanceY > mTouchSlop && distanceY > distanceX;
+                }
+                getParent().requestDisallowInterceptTouchEvent(mIsViewPager2Drag);
                 break;
             case MotionEvent.ACTION_UP:
             case MotionEvent.ACTION_CANCEL:

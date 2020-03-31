@@ -40,38 +40,12 @@ import butterknife.OnClick;
 
 public class MainActivity extends AppCompatActivity implements OnPageChangeListener {
     private static final String TAG = "banner_log";
-    @BindView(R.id.tip)
-    TextView tip;
     @BindView(R.id.banner)
     Banner banner;
     @BindView(R.id.indicator)
     RoundLinesIndicator indicator;
-    @BindView(R.id.style_image)
-    Button styleImage;
-    @BindView(R.id.style_image_title)
-    Button styleImageTitle;
-    @BindView(R.id.style_image_title_num)
-    Button styleImageTitleNum;
-    @BindView(R.id.style_multiple)
-    Button styleMultiple;
-    @BindView(R.id.style_net_image)
-    Button styleNetImage;
-    @BindView(R.id.change_indicator)
-    Button changeIndicator;
-    @BindView(R.id.tip2)
-    TextView tip2;
-    @BindView(R.id.image_top)
-    ImageView imageTop;
     @BindView(R.id.banner2)
     Banner banner2;
-    @BindView(R.id.image_right)
-    ImageView imageRight;
-    @BindView(R.id.topLine)
-    RelativeLayout topLine;
-    @BindView(R.id.rv_banner)
-    Button rvBanner;
-    @BindView(R.id.cl_banner)
-    Button clBanner;
     @BindView(R.id.swipeRefresh)
     SwipeRefreshLayout refresh;
 

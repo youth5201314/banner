@@ -281,8 +281,6 @@ public void onViewAttachedToWindow(BaseViewHolder holder) {
   `banner本身不提供图片加载功能，首先确认banner本身使用是否正确，具体参考demo，
   然后请检查你的图片加载框架或者网络请求框架，服务端也可能加了https安全认证，是看下是否报有证书相关错误`
 
-* 怎么监控轮播过程的？
-
     
 ## Thanks
 

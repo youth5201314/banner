@@ -3,7 +3,8 @@
 
 #### v2.0.1
     banner bug修改
- * 解决ViewPager2嵌套banner和RecyclerView嵌套banner的事件冲突
+ * 解决一系列嵌套banner的事件冲突和解决方案
+ （如果我没有考虑到的场景，大家再反馈或者提交方案）
 
 #### v2.0.0
     banner 正式版发布

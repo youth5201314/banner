@@ -8,13 +8,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.test.banner.R;
 import com.test.banner.adapter.MyRecyclerViewAdapter;
+import com.test.banner.util.ParentRecyclerView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class RecyclerViewBannerActivity extends AppCompatActivity {
     @BindView(R.id.net_rv)
-    RecyclerView recyclerView;
+    ParentRecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
