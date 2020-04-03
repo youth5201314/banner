@@ -15,7 +15,7 @@ import butterknife.ButterKnife;
 
 public class RecyclerViewBannerActivity extends AppCompatActivity {
     @BindView(R.id.net_rv)
-    ParentRecyclerView recyclerView;
+    RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -63,8 +63,8 @@
 |addOnPageChangeListener(this)|this|添加viewpager2的滑动监听
 |setPageTransformer(PageTransformer)|this|设置viewpager的切换效果
 |addPageTransformer(PageTransformer)|this|添加viewpager的切换效果（可以设置多个）
-|removeIndicator()|this|移除设置的Indicator
 |setIndicator(Indicator)|this|设置banner轮播指示器(提供有base和接口，可以自定义)
+|setIndicator(Indicator,boolean)|this|设置指示器（传false代表不将指示器添加到banner上，配合布局文件，可以自我发挥）
 |setIndicatorSelectedColor(@ColorInt)|this|设置指示器选中颜色
 |setIndicatorSelectedColorRes(@ColorRes)|this|设置指示器选中颜色
 |setIndicatorNormalColor(@ColorInt)|this|设置指示器默认颜色
@@ -77,9 +77,9 @@
 |setIndicatorSelectedWidth(int)|this|设置指示器选中的宽度
 |setIndicatorRadius(int)|this|设置指示器圆角，不要圆角可以设置为0
 |setIndicatorHeight(int)|this|设置指示器高度
-|setCustomIndicator(Indicator)|this|设置自定义指示器（配合布局文件，可以自我发挥）
 |setBannerRound(float)|this|设置banner圆角（裁剪方式，需要5.0以上）
 |setBannerGalleryEffect(int,int,float)|this|画廊效果(可设置间距缩放)
+|setStartPosition(int)|this|设置开始的位置 (需要在setAdapter或者setDatas之前调用才有效哦)
 
 ## Attributes属性
 >在banner布局文件中调用,如果你自定义了indicator请做好兼容处理。
@@ -89,6 +89,7 @@
 |---|---|---|
 |delay_time|integer|轮播间隔时间，默认3000
 |is_auto_loop|boolean|是否自动轮播，默认true
+|is_infinite_loop|boolean|是否支持无限循环（即首尾直接过渡），默认true
 |banner_orientation|enum|轮播方向：horizontal（默认） or vertical
 |indicator_normal_width|dimension|指示器默认的宽度，默认5dp （对RoundLinesIndicator无效）
 |indicator_selected_width|dimension|指示器选中的宽度，默认7dp （对RectangleIndicator无效）
@@ -112,7 +113,7 @@
 Gradle 
 ```groovy
 dependencies{
-    compile 'com.youth.banner:banner:2.0.1'  
+    compile 'com.youth.banner:banner:2.0.2'  
 }
 ```
 或者引用本地lib

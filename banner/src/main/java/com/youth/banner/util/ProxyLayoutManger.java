@@ -39,7 +39,9 @@ public class ProxyLayoutManger extends LinearLayoutManager {
         this.banner = banner;
         this.recyclerView = recyclerView;
         this.linearLayoutManager = layoutManager;
-        reflectLayoutManager();
+        if (layoutManager != null && recyclerView != null) {
+            reflectLayoutManager();
+        }
     }
 
     private void reflectLayoutManager() {
@@ -79,22 +81,31 @@ public class ProxyLayoutManger extends LinearLayoutManager {
         }
     }
 
+
     @Override
-    public boolean performAccessibilityAction(@NonNull RecyclerView.Recycler recycler,
-                                              @NonNull RecyclerView.State state, int action, @Nullable Bundle args) {
+    public boolean performAccessibilityAction(@NonNull RecyclerView.Recycler recycler, @NonNull RecyclerView.State state, int action, @Nullable Bundle args) {
+        if (linearLayoutManager == null) {
+            return super.performAccessibilityAction(recycler, state, action, args);
+        }
         return linearLayoutManager.performAccessibilityAction(recycler, state, action, args);
+
+    }
+
+
+    @Override
+    public void onInitializeAccessibilityNodeInfo(@NonNull RecyclerView.Recycler recycler, @NonNull RecyclerView.State state, @NonNull AccessibilityNodeInfoCompat info) {
+        if (linearLayoutManager != null) {
+            linearLayoutManager.onInitializeAccessibilityNodeInfo(recycler, state, info);
+        } else {
+            super.onInitializeAccessibilityNodeInfo(recycler, state, info);
+        }
     }
 
     @Override
-    public void onInitializeAccessibilityNodeInfo(@NonNull RecyclerView.Recycler recycler,
-                                                  @NonNull RecyclerView.State state, @NonNull AccessibilityNodeInfoCompat info) {
-        linearLayoutManager.onInitializeAccessibilityNodeInfo(recycler, state, info);
-    }
-
-    @Override
-    public boolean requestChildRectangleOnScreen(@NonNull RecyclerView parent,
-                                                 @NonNull View child, @NonNull Rect rect, boolean immediate,
-                                                 boolean focusedChildVisible) {
+    public boolean requestChildRectangleOnScreen(@NonNull RecyclerView parent, @NonNull View child, @NonNull Rect rect, boolean immediate, boolean focusedChildVisible) {
+        if (linearLayoutManager == null) {
+            return super.requestChildRectangleOnScreen(parent, child, rect, immediate);
+        }
         return linearLayoutManager.requestChildRectangleOnScreen(parent, child, rect, immediate);
     }
 
@@ -111,8 +122,7 @@ public class ProxyLayoutManger extends LinearLayoutManager {
     }
 
     @Override
-    protected void calculateExtraLayoutSpace(@NonNull RecyclerView.State state,
-                                             @NonNull int[] extraLayoutSpace) {
+    protected void calculateExtraLayoutSpace(@NonNull RecyclerView.State state, @NonNull int[] extraLayoutSpace) {
         int pageLimit = banner.getViewPager2().getOffscreenPageLimit();
         if (pageLimit == ViewPager2.OFFSCREEN_PAGE_LIMIT_DEFAULT) {
             super.calculateExtraLayoutSpace(state, extraLayoutSpace);

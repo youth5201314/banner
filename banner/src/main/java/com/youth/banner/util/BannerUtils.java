@@ -15,17 +15,22 @@ import androidx.annotation.NonNull;
 
 import com.youth.banner.Banner;
 import com.youth.banner.R;
+import com.youth.banner.config.BannerConfig;
 
 public class BannerUtils {
 
     /**
      * 获取真正的位置
      *
+     * @param isIncrease 首尾是否有增加
      * @param position  当前位置
      * @param realCount 真实数量
      * @return
      */
-    public static int getRealPosition(int position, int realCount) {
+    public static int getRealPosition(boolean isIncrease, int position, int realCount) {
+        if (!isIncrease) {
+            return position;
+        }
         int realPosition;
         if (position == 0) {
             realPosition = realCount - 1;
@@ -39,6 +44,7 @@ public class BannerUtils {
 
     /**
      * 将布局文件转成view，这里为了适配viewpager2中高宽必须为match_parent
+     *
      * @param parent
      * @param layoutId
      * @return
@@ -55,8 +61,8 @@ public class BannerUtils {
         return view;
     }
 
-    public static int getColor(Context context,Drawable drawable){
-        if (drawable==null) return -1;
+    public static int getColor(Context context, Drawable drawable) {
+        if (drawable == null) return -1;
         if (drawable instanceof ColorDrawable) {
             return ((ColorDrawable) drawable).getColor();
         }

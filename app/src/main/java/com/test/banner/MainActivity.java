@@ -23,6 +23,7 @@ import com.test.banner.adapter.TopLineAdapter;
 import com.test.banner.bean.DataBean;
 import com.test.banner.ui.ConstraintLayoutBannerActivity;
 import com.test.banner.ui.RecyclerViewBannerActivity;
+import com.test.banner.ui.VideoActivity;
 import com.test.banner.ui.Vp2FragmentRecyclerviewActivity;
 import com.youth.banner.Banner;
 import com.youth.banner.config.BannerConfig;
@@ -67,6 +68,7 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
         banner.addOnPageChangeListener(this);
         //圆角
         banner.setBannerRound(BannerUtils.dp2px(5));
+
 
         //添加画廊效果，可以参考我给的参数自己调试(不要和其他PageTransformer同时使用)
 //        banner.setBannerGalleryEffect(25, 40, 0.14f);
@@ -133,7 +135,8 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
     }
 
     @OnClick({R.id.style_image, R.id.style_image_title, R.id.style_image_title_num, R.id.style_multiple,
-            R.id.style_net_image, R.id.change_indicator, R.id.rv_banner, R.id.cl_banner, R.id.vp_banner})
+            R.id.style_net_image, R.id.change_indicator, R.id.rv_banner, R.id.cl_banner, R.id.vp_banner,
+            R.id.banner_video})
     public void click(View view) {
         indicator.setVisibility(View.GONE);
         switch (view.getId()) {
@@ -158,7 +161,7 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
                 break;
             case R.id.style_multiple:
                 refresh.setEnabled(true);
-                banner.setAdapter(new MultipleTypesAdapter(DataBean.getTestData()));
+                banner.setAdapter(new MultipleTypesAdapter(this, DataBean.getTestData()));
                 banner.setIndicator(new RectangleIndicator(this));
                 banner.setIndicatorNormalWidth((int) BannerUtils.dp2px(12));
                 banner.setIndicatorSpace((int) BannerUtils.dp2px(4));
@@ -172,8 +175,8 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
                 break;
             case R.id.change_indicator:
                 indicator.setVisibility(View.VISIBLE);
-                //推荐你在布局文件中定位好指示器的位置，如果想直接new，可以使用setIndicator方法
-                banner.setCustomIndicator(indicator);
+                //在布局文件中使用指示器，这样更灵活
+                banner.setIndicator(indicator,false);
                 banner.setIndicatorSelectedWidth((int) BannerUtils.dp2px(15));
                 break;
             case R.id.rv_banner:
@@ -184,6 +187,9 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
                 break;
             case R.id.vp_banner:
                 startActivity(new Intent(this, Vp2FragmentRecyclerviewActivity.class));
+                break;
+            case R.id.banner_video:
+                startActivity(new Intent(this, VideoActivity.class));
                 break;
         }
     }

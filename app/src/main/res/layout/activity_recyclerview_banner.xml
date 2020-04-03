@@ -11,7 +11,7 @@
         android:padding="10dp"
         android:gravity="center"/>
 
-    <com.test.banner.util.ParentRecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/net_rv"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

@@ -22,7 +22,7 @@ import butterknife.ButterKnife;
 public class BannerListFragment extends Fragment {
     private static int index;
     @BindView(R.id.net_rv)
-    ParentRecyclerView recyclerView;
+    RecyclerView recyclerView;
     @BindView(R.id.text)
     TextView text;
 

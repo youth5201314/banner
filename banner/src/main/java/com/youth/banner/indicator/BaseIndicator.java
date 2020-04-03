@@ -37,7 +37,7 @@ public class BaseIndicator extends View implements Indicator {
     @NonNull
     @Override
     public View getIndicatorView() {
-        if (config.isIncludeIndicator()) {
+        if (config.isAttachToBanner()) {
             FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(
                     ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             switch (config.getGravity()) {

@@ -145,6 +145,13 @@
                 android:textAllCaps="false"
                 android:text="viewpaer2+fragment+RecyclerView嵌套banner"
                 android:layout_below="@+id/cl_banner"/>
+            <Button
+                android:id="@+id/banner_video"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAllCaps="false"
+                android:text="仿淘宝商品详情banner，第一个放视频"
+                android:layout_below="@+id/vp_banner"/>
         </RelativeLayout>
     </ScrollView>
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

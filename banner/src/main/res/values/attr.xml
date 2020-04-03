@@ -3,6 +3,7 @@
     <declare-styleable name="Banner">
         <attr name="delay_time" format="integer" />
         <attr name="is_auto_loop" format="boolean" />
+        <attr name="is_infinite_loop" format="boolean" />
 
         <!--CircleIndicator-->
         <attr name="indicator_normal_width" format="dimension"/>

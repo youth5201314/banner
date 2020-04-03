@@ -29,6 +29,6 @@ public class ParentRecyclerView extends RecyclerView {
     //不拦截，继续分发下去
     @Override
     public boolean onInterceptTouchEvent(MotionEvent e) {
-        return false;
+        return true;
     }
 }

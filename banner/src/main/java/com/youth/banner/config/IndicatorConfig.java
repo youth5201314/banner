@@ -24,8 +24,8 @@ public class IndicatorConfig {
 
     private Margins margins;
 
-    //是否包含指示器
-    private boolean includeIndicator = true;
+    //是将指示器添加到banner上
+    private boolean attachToBanner = true;
 
     @IntDef({Direction.LEFT, Direction.CENTER, Direction.RIGHT})
     @Retention(RetentionPolicy.SOURCE)
@@ -141,12 +141,12 @@ public class IndicatorConfig {
         return this;
     }
 
-    public boolean isIncludeIndicator() {
-        return includeIndicator;
+    public boolean isAttachToBanner() {
+        return attachToBanner;
     }
 
-    public IndicatorConfig setIncludeIndicator(boolean includeIndicator) {
-        this.includeIndicator = includeIndicator;
+    public IndicatorConfig setAttachToBanner(boolean attachToBanner) {
+        this.attachToBanner = attachToBanner;
         return this;
     }
 

@@ -43,7 +43,6 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter {
             banner.setAdapter(new ImageNetAdapter(DataBean.getTestData3()));
             banner.setIndicator(new RoundLinesIndicator(context));
             banner.setIndicatorSelectedWidth((int) BannerUtils.dp2px(15));
-            banner.setOrientation(Banner.VERTICAL);
             banner.start();
         }
 

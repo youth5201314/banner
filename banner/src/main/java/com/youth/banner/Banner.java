@@ -7,6 +7,7 @@ import android.graphics.Path;
 import android.graphics.RectF;
 import android.graphics.Region;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -20,6 +21,7 @@ import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.widget.CompositePageTransformer;
@@ -53,10 +55,10 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout {
     private Indicator mIndicator;
     private CompositePageTransformer mCompositePageTransformer;
 
-    // 是否自动播放
+    // 是否允许无限轮播（即首尾直接切换）
+    private boolean mIsInfiniteLoop;
+    // 是否自动轮播
     private boolean mIsAutoLoop;
-    // 是否可以轮播
-    private boolean mIsLoop = false;
     // 轮播切换间隔时间
     private long mDelayTime;
     // 轮播切换时间
@@ -119,7 +121,10 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout {
         mViewPager2.setOffscreenPageLimit(1);
         mViewPager2.registerOnPageChangeCallback(new BannerOnPageChangeCallback());
         mViewPager2.setPageTransformer(mCompositePageTransformer);
-        ProxyLayoutManger.setScrollProxy(this);
+        RecyclerView recyclerView = (RecyclerView) getViewPager2().getChildAt(0);
+        recyclerView.setOverScrollMode(RecyclerView.OVER_SCROLL_NEVER);
+        ProxyLayoutManger manger = new ProxyLayoutManger(this, recyclerView, (LinearLayoutManager) recyclerView.getLayoutManager());
+        recyclerView.setLayoutManager(manger);
         addView(mViewPager2);
     }
 
@@ -128,6 +133,7 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout {
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.Banner);
         mDelayTime = a.getInt(R.styleable.Banner_delay_time, BannerConfig.LOOP_TIME);
         mIsAutoLoop = a.getBoolean(R.styleable.Banner_is_auto_loop, BannerConfig.IS_AUTO_LOOP);
+        mIsInfiniteLoop = a.getBoolean(R.styleable.Banner_is_infinite_loop, BannerConfig.IS_INFINITE_LOOP);
         normalWidth = a.getDimensionPixelSize(R.styleable.Banner_indicator_normal_width, BannerConfig.INDICATOR_NORMAL_WIDTH);
         selectedWidth = a.getDimensionPixelSize(R.styleable.Banner_indicator_selected_width, BannerConfig.INDICATOR_SELECTED_WIDTH);
         normalColor = a.getDrawable(R.styleable.Banner_indicator_normal_color);
@@ -143,6 +149,7 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout {
         indicatorRadius = a.getDimensionPixelSize(R.styleable.Banner_indicator_radius, BannerConfig.INDICATOR_RADIUS);
         int orientation = a.getInt(R.styleable.Banner_banner_orientation, HORIZONTAL);
         setOrientation(orientation);
+        setInfiniteLoop();
         a.recycle();
     }
 
@@ -201,9 +208,9 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout {
         if (action == MotionEvent.ACTION_UP
                 || action == MotionEvent.ACTION_CANCEL
                 || action == MotionEvent.ACTION_OUTSIDE) {
-            if (mIsAutoLoop) start();
+            start();
         } else if (action == MotionEvent.ACTION_DOWN) {
-            if (mIsAutoLoop && mIsLoop) stop();
+            stop();
         }
         return super.dispatchTouchEvent(ev);
     }
@@ -245,7 +252,11 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout {
             Path path = new Path();
             path.addRoundRect(new RectF(0, 0, getMeasuredWidth(), getMeasuredHeight()),
                     BannerUtils.dp2px(5), BannerUtils.dp2px(5), Path.Direction.CW);
-            canvas.clipPath(path, Region.Op.REPLACE);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                canvas.clipPath(path);
+            } else {
+                canvas.clipPath(path, Region.Op.REPLACE);
+            }
         }
         super.dispatchDraw(canvas);
     }
@@ -256,7 +267,7 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout {
 
         @Override
         public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-            int realPosition = BannerUtils.getRealPosition(position, getRealCount());
+            int realPosition = BannerUtils.getRealPosition(isInfiniteLoop(),position, getRealCount());
             if (mOnPageChangeListener != null) {
                 mOnPageChangeListener.onPageScrolled(realPosition, positionOffset, positionOffsetPixels);
             }
@@ -270,7 +281,7 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout {
         public void onPageSelected(int position) {
             if (isScrolled) {
                 mTempPosition = position;
-                int realPosition = BannerUtils.getRealPosition(position, getRealCount());
+                int realPosition = BannerUtils.getRealPosition(isInfiniteLoop(),position, getRealCount());
                 if (mOnPageChangeListener != null) {
                     mOnPageChangeListener.onPageSelected(realPosition);
                 }
@@ -284,12 +295,12 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout {
         @Override
         public void onPageScrollStateChanged(int state) {
             //手势滑动中,代码执行滑动中
-            if (state == ViewPager2.SCROLL_STATE_DRAGGING || (mIsLoop && state == ViewPager2.SCROLL_STATE_SETTLING)) {
+            if (state == ViewPager2.SCROLL_STATE_DRAGGING || state == ViewPager2.SCROLL_STATE_SETTLING) {
                 isScrolled = true;
             } else if (state == ViewPager2.SCROLL_STATE_IDLE) {
                 //滑动闲置或滑动结束
                 isScrolled = false;
-                if (mTempPosition != INVALID_VALUE) {
+                if (mTempPosition != INVALID_VALUE && mIsInfiniteLoop) {
                     if (mTempPosition == 0) {
                         setCurrentItem(getRealCount(), false);
                     } else if (mTempPosition == getItemCount() - 1) {
@@ -317,7 +328,7 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout {
         @Override
         public void run() {
             Banner banner = reference.get();
-            if (banner != null && banner.mIsAutoLoop && banner.mIsLoop) {
+            if (banner != null && banner.mIsAutoLoop) {
                 int count = banner.getItemCount();
                 if (count == 0) return;
                 int next = (banner.getCurrentItem() + 1) % count;
@@ -331,11 +342,11 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout {
         @Override
         public void onChanged() {
             if (getItemCount() <= 1) {
-                if (mIsLoop) stop();
+                stop();
             } else {
-                if (!mIsLoop) start();
+                start();
             }
-            int realPosition = BannerUtils.getRealPosition(getCurrentItem(), getRealCount());
+            int realPosition = BannerUtils.getRealPosition(isInfiniteLoop(),getCurrentItem(), getRealCount());
             if (mIndicator != null) {
                 mIndicator.onPageChanged(getRealCount(), realPosition);
             }
@@ -361,16 +372,25 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout {
     }
 
     private void initIndicator() {
-        if (mIndicator == null) return;
-        if (mIndicator.getIndicatorConfig().isIncludeIndicator()) {
+        if (mIndicator == null || getAdapter() == null) return;
+        if (mIndicator.getIndicatorConfig().isAttachToBanner()) {
             removeIndicator();
             addView(mIndicator.getIndicatorView());
         }
         initIndicatorAttr();
-        int realPosition = BannerUtils.getRealPosition(getCurrentItem(), getRealCount());
+        int realPosition = BannerUtils.getRealPosition(isInfiniteLoop(),getCurrentItem(), getRealCount());
         mIndicator.onPageChanged(getRealCount(), realPosition);
     }
 
+    private void setInfiniteLoop() {
+        // 当不支持无限循环时，要关闭自动轮播
+        this.mIsAutoLoop = isInfiniteLoop();
+        setStartPosition(isInfiniteLoop() ? 1 : 0);
+    }
+
+    public boolean isInfiniteLoop() {
+        return mIsInfiniteLoop;
+    }
 
     /**
      * **********************************************************************
@@ -425,6 +445,17 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout {
     }
 
     /**
+     * 设置开始的位置 (需要在setAdapter或者setDatas之前调用才有效哦)
+     *
+     * @param mStartPosition
+     * @return
+     */
+    public Banner setStartPosition(int mStartPosition) {
+        this.mStartPosition = mStartPosition;
+        return this;
+    }
+
+    /**
      * 禁止手动滑动
      *
      * @param enabled true 允许，false 禁止
@@ -467,26 +498,6 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout {
     }
 
     /**
-     * 重新设置banner数据，当然你也可以在你adapter中自己操作数据
-     *
-     * @param datas 数据集合，当传null或者datas没有数据时，banner会变成空白的，请做好占位UI处理
-     * @return
-     */
-    public Banner setDatas(@NonNull List<T> datas) {
-        if (getAdapter() != null) {
-            getAdapter().setDatas(datas);
-            getAdapter().notifyDataSetChanged();
-            setCurrentItem(mStartPosition);
-            if (mIndicator != null) {
-                int realPosition = BannerUtils.getRealPosition(getCurrentItem(), getRealCount());
-                mIndicator.onPageChanged(getRealCount(), realPosition);
-            }
-            start();
-        }
-        return this;
-    }
-
-    /**
      * 是否允许自动轮播
      *
      * @param isAutoLoop ture 允许，false 不允许
@@ -496,6 +507,7 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout {
         this.mIsAutoLoop = isAutoLoop;
         return this;
     }
+
 
     /**
      * 设置轮播间隔时间
@@ -524,9 +536,8 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout {
      * @return
      */
     public Banner start() {
-        if (mIsAutoLoop && !mIsLoop) {
+        if (mIsAutoLoop) {
             stop();
-            mIsLoop = true;
             postDelayed(mLoopTask, mDelayTime);
         }
         return this;
@@ -538,8 +549,9 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout {
      * @return
      */
     public Banner stop() {
-        mIsLoop = false;
-        removeCallbacks(mLoopTask);
+        if (mIsAutoLoop) {
+            removeCallbacks(mLoopTask);
+        }
         return this;
     }
 
@@ -554,10 +566,34 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout {
             throw new NullPointerException(getContext().getString(R.string.banner_adapter_null_error));
         }
         this.mAdapter = adapter;
-        adapter.registerAdapterDataObserver(mAdapterDataObserver);
+        if (!isInfiniteLoop()){
+            mAdapter.setIncreaseCount(0);
+        }
+        mAdapter.registerAdapterDataObserver(mAdapterDataObserver);
         mViewPager2.setAdapter(adapter);
         setCurrentItem(mStartPosition, false);
         initIndicator();
+        return this;
+    }
+
+
+    /**
+     * 重新设置banner数据，当然你也可以在你adapter中自己操作数据
+     *
+     * @param datas 数据集合，当传null或者datas没有数据时，banner会变成空白的，请做好占位UI处理
+     * @return
+     */
+    public Banner setDatas(@NonNull List<T> datas) {
+        if (getAdapter() != null) {
+            getAdapter().setDatas(datas);
+            getAdapter().notifyDataSetChanged();
+            setCurrentItem(mStartPosition, false);
+            if (mIndicator != null) {
+                int realPosition = BannerUtils.getRealPosition(isInfiniteLoop(),getCurrentItem(), getRealCount());
+                mIndicator.onPageChanged(getRealCount(), realPosition);
+            }
+            start();
+        }
         return this;
     }
 
@@ -629,42 +665,36 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout {
 
 
     /**
-     * 设置轮播指示器
-     *
-     * @param indicator
-     */
-    public Banner setIndicator(@NonNull Indicator indicator) {
-        if (mIndicator == indicator) return this;
-        removeIndicator();
-        this.mIndicator = indicator;
-        if (getAdapter() != null) {
-            initIndicator();
-        }
-        return this;
-    }
-
-
-    /**
      * **********************************************************************
      * ------------------------ 指示器相关设置 --------------------------------*
      * **********************************************************************
      */
 
     /**
-     * 设置自定义轮播指示器
-     * （如果想改变指示器或者位置，可以调用此方法配合布局文件自我发挥）
-     * <p>
-     * 注意：调用后，内置的 setIndicatorGravity()和setIndicatorMargins() 方法将失效。
-     * 想改变可以自己调用系统提供的属性设置
+     * 设置轮播指示器(显示在banner上)
      *
      * @param indicator
      */
-    public Banner setCustomIndicator(@NonNull Indicator indicator) {
-        if (mIndicator == indicator) return this;
-        indicator.getIndicatorConfig().setIncludeIndicator(false);
-        setIndicator(indicator);
+    public Banner setIndicator(@NonNull Indicator indicator) {
+        return setIndicator(indicator, true);
+    }
+
+    /**
+     * 设置轮播指示器(如果你的指示器写在布局文件中，attachToBanner传false)
+     *
+     * @param indicator
+     * @param attachToBanner 是否将指示器添加到banner中，false 代表你可以将指示器通过布局放在任何位置
+     *                       注意：设置为false后，内置的 setIndicatorGravity()和setIndicatorMargins() 方法将失效。
+     *                       想改变可以自己调用系统提供的属性在布局文件中进行设置。具体可以参照demo
+     */
+    public Banner setIndicator(@NonNull Indicator indicator, boolean attachToBanner) {
+        removeIndicator();
+        indicator.getIndicatorConfig().setAttachToBanner(attachToBanner);
+        this.mIndicator = indicator;
+        initIndicator();
         return this;
     }
+
 
     public Banner setIndicatorSelectedColor(@ColorInt int color) {
         if (mIndicator != null) {
@@ -691,7 +721,7 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout {
     }
 
     public Banner setIndicatorGravity(@IndicatorConfig.Direction int gravity) {
-        if (mIndicator != null && mIndicator.getIndicatorConfig().isIncludeIndicator()) {
+        if (mIndicator != null && mIndicator.getIndicatorConfig().isAttachToBanner()) {
             mIndicator.getIndicatorConfig().setGravity(gravity);
             mIndicator.getIndicatorView().postInvalidate();
         }
@@ -706,7 +736,7 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout {
     }
 
     public Banner setIndicatorMargins(IndicatorConfig.Margins margins) {
-        if (mIndicator != null && mIndicator.getIndicatorConfig().isIncludeIndicator()) {
+        if (mIndicator != null && mIndicator.getIndicatorConfig().isAttachToBanner()) {
             mIndicator.getIndicatorConfig().setMargins(margins);
             mIndicator.getIndicatorView().requestLayout();
         }
