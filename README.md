@@ -281,7 +281,14 @@ public void onViewAttachedToWindow(BaseViewHolder holder) {
 
   `banner本身不提供图片加载功能，首先确认banner本身使用是否正确，具体参考demo，
   然后请检查你的图片加载框架或者网络请求框架，服务端也可能加了https安全认证，是看下是否报有证书相关错误`
+  
+* 怎么实现视频轮播？
 
+  `demo中有实现类似淘宝商品详情的效果，第一个放视频，后面的放的是图片，并且可以设置首尾不能滑动，可以参考和修改。`
+
+* 我想指定轮播开始的位置？
+
+  `现在提供了setStartPosition()方法，在sheAdapter和setDatas直接调用一次就行了`
     
 ## Thanks
 
