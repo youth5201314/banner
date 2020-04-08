@@ -1,6 +1,9 @@
 
 ## 更新说明
 
+#### v2.0.3-2.0.4
+    banner 修复了几个紧急bug，圆角绘制引起的残影和焦点问题，替换layoutmanager为null的异常
+ 
 #### v2.0.2
     banner bug修复
  * 有朋友想要在引导页使用banner，所以增加了is_infinite_loop属性来控制是否能无限循环

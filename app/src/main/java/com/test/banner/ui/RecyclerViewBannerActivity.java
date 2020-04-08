@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.test.banner.R;
 import com.test.banner.adapter.MyRecyclerViewAdapter;
-import com.test.banner.util.ParentRecyclerView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

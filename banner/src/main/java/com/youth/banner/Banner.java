@@ -3,6 +3,7 @@ package com.youth.banner;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
+import android.graphics.Outline;
 import android.graphics.Path;
 import android.graphics.RectF;
 import android.graphics.Region;
@@ -11,8 +12,10 @@ import android.os.Build;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
+import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
+import android.view.ViewOutlineProvider;
 import android.widget.FrameLayout;
 
 import androidx.annotation.ColorInt;
@@ -20,8 +23,8 @@ import androidx.annotation.ColorRes;
 import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.widget.CompositePageTransformer;
@@ -36,7 +39,7 @@ import com.youth.banner.listener.OnBannerListener;
 import com.youth.banner.listener.OnPageChangeListener;
 import com.youth.banner.transformer.MultipleScaleTransformer;
 import com.youth.banner.util.BannerUtils;
-import com.youth.banner.util.ProxyLayoutManger;
+import com.youth.banner.util.ScrollSpeedManger;
 
 import java.lang.annotation.Retention;
 import java.lang.ref.WeakReference;
@@ -62,7 +65,7 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout {
     // 轮播切换间隔时间
     private long mDelayTime;
     // 轮播切换时间
-    private long mScrollTime = BannerConfig.SCROLL_TIME;
+    private int mScrollTime = BannerConfig.SCROLL_TIME;
     // 轮播开始位置
     private int mStartPosition = 1;
     // banner圆角半径
@@ -121,10 +124,7 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout {
         mViewPager2.setOffscreenPageLimit(1);
         mViewPager2.registerOnPageChangeCallback(new BannerOnPageChangeCallback());
         mViewPager2.setPageTransformer(mCompositePageTransformer);
-        RecyclerView recyclerView = (RecyclerView) getViewPager2().getChildAt(0);
-        recyclerView.setOverScrollMode(RecyclerView.OVER_SCROLL_NEVER);
-        ProxyLayoutManger manger = new ProxyLayoutManger(this, recyclerView, (LinearLayoutManager) recyclerView.getLayoutManager());
-        recyclerView.setLayoutManager(manger);
+        ScrollSpeedManger.reflectLayoutManager(this);
         addView(mViewPager2);
     }
 
@@ -252,11 +252,7 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout {
             Path path = new Path();
             path.addRoundRect(new RectF(0, 0, getMeasuredWidth(), getMeasuredHeight()),
                     BannerUtils.dp2px(5), BannerUtils.dp2px(5), Path.Direction.CW);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                canvas.clipPath(path);
-            } else {
-                canvas.clipPath(path, Region.Op.REPLACE);
-            }
+            canvas.clipPath(path);
         }
         super.dispatchDraw(canvas);
     }
@@ -267,7 +263,7 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout {
 
         @Override
         public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-            int realPosition = BannerUtils.getRealPosition(isInfiniteLoop(),position, getRealCount());
+            int realPosition = BannerUtils.getRealPosition(isInfiniteLoop(), position, getRealCount());
             if (mOnPageChangeListener != null) {
                 mOnPageChangeListener.onPageScrolled(realPosition, positionOffset, positionOffsetPixels);
             }
@@ -281,7 +277,7 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout {
         public void onPageSelected(int position) {
             if (isScrolled) {
                 mTempPosition = position;
-                int realPosition = BannerUtils.getRealPosition(isInfiniteLoop(),position, getRealCount());
+                int realPosition = BannerUtils.getRealPosition(isInfiniteLoop(), position, getRealCount());
                 if (mOnPageChangeListener != null) {
                     mOnPageChangeListener.onPageSelected(realPosition);
                 }
@@ -346,7 +342,7 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout {
             } else {
                 start();
             }
-            int realPosition = BannerUtils.getRealPosition(isInfiniteLoop(),getCurrentItem(), getRealCount());
+            int realPosition = BannerUtils.getRealPosition(isInfiniteLoop(), getCurrentItem(), getRealCount());
             if (mIndicator != null) {
                 mIndicator.onPageChanged(getRealCount(), realPosition);
             }
@@ -378,7 +374,7 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout {
             addView(mIndicator.getIndicatorView());
         }
         initIndicatorAttr();
-        int realPosition = BannerUtils.getRealPosition(isInfiniteLoop(),getCurrentItem(), getRealCount());
+        int realPosition = BannerUtils.getRealPosition(isInfiniteLoop(), getCurrentItem(), getRealCount());
         mIndicator.onPageChanged(getRealCount(), realPosition);
     }
 
@@ -392,6 +388,7 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout {
         return mIsInfiniteLoop;
     }
 
+
     /**
      * **********************************************************************
      * ------------------------ 对外公开API ---------------------------------*
@@ -404,7 +401,7 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout {
         }
     }
 
-    public long getScrollTime() {
+    public int getScrollTime() {
         return mScrollTime;
     }
 
@@ -525,7 +522,7 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout {
      *
      * @param scrollTime
      */
-    public Banner setScrollTime(long scrollTime) {
+    public Banner setScrollTime(int scrollTime) {
         this.mScrollTime = scrollTime;
         return this;
     }
@@ -566,7 +563,7 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout {
             throw new NullPointerException(getContext().getString(R.string.banner_adapter_null_error));
         }
         this.mAdapter = adapter;
-        if (!isInfiniteLoop()){
+        if (!isInfiniteLoop()) {
             mAdapter.setIncreaseCount(0);
         }
         mAdapter.registerAdapterDataObserver(mAdapterDataObserver);
@@ -589,7 +586,7 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout {
             getAdapter().notifyDataSetChanged();
             setCurrentItem(mStartPosition, false);
             if (mIndicator != null) {
-                int realPosition = BannerUtils.getRealPosition(isInfiniteLoop(),getCurrentItem(), getRealCount());
+                int realPosition = BannerUtils.getRealPosition(isInfiniteLoop(), getCurrentItem(), getRealCount());
                 mIndicator.onPageChanged(getRealCount(), realPosition);
             }
             start();
@@ -645,6 +642,23 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout {
      */
     public Banner setBannerRound(float radius) {
         mBannerRadius = radius;
+        return this;
+    }
+
+    /**
+     * 设置banner圆角(第二种方式，和上面的方法不要同时使用)，只支持5.0以上
+     * @param radius
+     * @return
+     */
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    public Banner setBannerRound2(float radius){
+        setOutlineProvider(new ViewOutlineProvider() {
+            @Override
+            public void getOutline(View view, Outline outline) {
+                outline.setRoundRect(0, 0, view.getWidth(), view.getHeight(), radius);
+            }
+        });
+        setClipToOutline(true);
         return this;
     }
 

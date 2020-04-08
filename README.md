@@ -77,7 +77,7 @@
 |setIndicatorSelectedWidth(int)|this|设置指示器选中的宽度
 |setIndicatorRadius(int)|this|设置指示器圆角，不要圆角可以设置为0
 |setIndicatorHeight(int)|this|设置指示器高度
-|setBannerRound(float)|this|设置banner圆角（裁剪方式，需要5.0以上）
+|setBannerRound(float)|this|设置banner圆角（还有一种setBannerRound2方法，需要5.0以上）
 |setBannerGalleryEffect(int,int,float)|this|画廊效果(可设置间距缩放)
 |setStartPosition(int)|this|设置开始的位置 (需要在setAdapter或者setDatas之前调用才有效哦)
 
@@ -113,7 +113,7 @@
 Gradle 
 ```groovy
 dependencies{
-    compile 'com.youth.banner:banner:2.0.2'  
+    compile 'com.youth.banner:banner:2.0.4'  
 }
 ```
 或者引用本地lib
@@ -205,14 +205,14 @@ public class BannerActivity extends AppCompatActivity {
         banner.setPageTransformer(new DepthPageTransformer());
         banner.setOnBannerListener(this);
         banner.addOnPageChangeListener(this);
+        banner.start();
         //还有更多方法自己使用哦！！！！！！
         
         //-----------------当然如果你想偷下懒也可以这么用--------------------
         //banner所有set方法都支持链式调用(以下列举了一些方法)
         banner.setAdapter(new BannerExampleAdapter(DataBean.getTestData()))
-                .setOrientation(Banner.VERTICAL)
                 .setIndicator(new CircleIndicator(this))
-                .setUserInputEnabled(false);
+                .start();
     }
 }
 ```
