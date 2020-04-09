@@ -152,6 +152,13 @@
                 android:textAllCaps="false"
                 android:text="仿淘宝商品详情banner，第一个放视频"
                 android:layout_below="@+id/vp_banner"/>
+            <Button
+                android:id="@+id/banner_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAllCaps="false"
+                android:text="测试在tv中，遥控切换banner"
+                android:layout_below="@+id/banner_video"/>
         </RelativeLayout>
     </androidx.core.widget.NestedScrollView>
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

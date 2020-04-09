@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.test.banner">
-    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
-
+        <activity android:name=".ui.TVActivity"></activity>
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name">
@@ -20,12 +19,12 @@
         </activity>
         <activity android:name=".ui.RecyclerViewBannerActivity" />
         <activity android:name=".ui.ConstraintLayoutBannerActivity" />
-        <activity android:name=".ui.VideoActivity"/>
+        <activity android:name=".ui.VideoActivity" />
         <activity
             android:name=".ui.Vp2FragmentRecyclerviewActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
     </application>
 
-
+    <uses-permission android:name="android.permission.INTERNET" />
 
 </manifest>

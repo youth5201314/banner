@@ -23,6 +23,7 @@ import com.test.banner.adapter.TopLineAdapter;
 import com.test.banner.bean.DataBean;
 import com.test.banner.ui.ConstraintLayoutBannerActivity;
 import com.test.banner.ui.RecyclerViewBannerActivity;
+import com.test.banner.ui.TVActivity;
 import com.test.banner.ui.VideoActivity;
 import com.test.banner.ui.Vp2FragmentRecyclerviewActivity;
 import com.youth.banner.Banner;
@@ -68,7 +69,6 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
         banner.addOnPageChangeListener(this);
         //圆角
         banner.setBannerRound(BannerUtils.dp2px(5));
-
 
         //添加画廊效果，可以参考我给的参数自己调试(不要和其他PageTransformer同时使用)
 //        banner.setBannerGalleryEffect(25, 40, 0.14f);
@@ -136,7 +136,7 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
 
     @OnClick({R.id.style_image, R.id.style_image_title, R.id.style_image_title_num, R.id.style_multiple,
             R.id.style_net_image, R.id.change_indicator, R.id.rv_banner, R.id.cl_banner, R.id.vp_banner,
-            R.id.banner_video})
+            R.id.banner_video,R.id.banner_tv})
     public void click(View view) {
         indicator.setVisibility(View.GONE);
         switch (view.getId()) {
@@ -190,6 +190,9 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
                 break;
             case R.id.banner_video:
                 startActivity(new Intent(this, VideoActivity.class));
+                break;
+            case R.id.banner_tv:
+                startActivity(new Intent(this, TVActivity.class));
                 break;
         }
     }

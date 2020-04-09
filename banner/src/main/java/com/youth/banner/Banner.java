@@ -349,19 +349,19 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout {
         }
     };
 
-    private void setCurrentItem(int position) {
+    public void setCurrentItem(int position) {
         setCurrentItem(position, true);
     }
 
-    private void setCurrentItem(int position, boolean smoothScroll) {
+    public void setCurrentItem(int position, boolean smoothScroll) {
         mViewPager2.setCurrentItem(position, smoothScroll);
     }
 
-    private int getCurrentItem() {
+    public int getCurrentItem() {
         return mViewPager2.getCurrentItem();
     }
 
-    private int getItemCount() {
+    public int getItemCount() {
         if (getAdapter() == null)
             return 0;
         return getAdapter().getItemCount();

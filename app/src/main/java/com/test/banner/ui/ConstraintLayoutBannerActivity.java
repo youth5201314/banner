@@ -1,6 +1,8 @@
 package com.test.banner.ui;
 
 import android.os.Bundle;
+import android.util.Log;
+import android.view.KeyEvent;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -14,6 +16,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class ConstraintLayoutBannerActivity extends AppCompatActivity {
+    private static final String TAG = "banner_log";
     @BindView(R.id.banner)
     Banner banner;
 
@@ -24,8 +27,8 @@ public class ConstraintLayoutBannerActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         banner.setAdapter(new ImageAdapter(DataBean.getTestData()));
         banner.setIndicator(new CircleIndicator(this));
+        banner.isAutoLoop(false);
     }
-
 
     @Override
     protected void onStart() {
