@@ -113,14 +113,9 @@
 Gradle 
 ```groovy
 dependencies{
-    compile 'com.youth.banner:banner:2.0.4'  
+    compile 'com.youth.banner:banner:2.0.5'  
 }
 ```
-或者引用本地lib
-```groovy
-compile project(':banner')
-```
-
 
 #### Step 2.添加权限到你的 AndroidManifest.xml
 ```xml
@@ -237,42 +232,6 @@ public class BannerActivity {
     }
 }
 ```
-
-#### Step 2.（可选）当RecyclerView嵌套Banner时，下面以Header举例
-
-**重写RecyclerView.Adapter里的方法，你也可以在销毁与创建时判断优化，下面采取的可见和不可见优化：**
-```java
-
-//当banner不可见时暂停
-@Override
-public void onViewDetachedFromWindow(@NonNull BaseViewHolder holder) {
-    super.onViewDetachedFromWindow(holder);
-    /**
-    * 下面的代码需要根据你的实际情况调整哦！
-    */
-    //定位你的header位置
-    if (holder.getAdapterPosition()==0) {
-        if (getHeaderLayoutCount() > 0) {
-            //这里是获取你banner放的位置，这个根据你自己实际位置来获取，我这里header只有一个所以这么获取
-            Banner banner = (Banner) getHeaderLayout().getChildAt(0);
-            banner.stop();
-        }
-    }
-}
-
-//当banner可见时继续
-@Override
-public void onViewAttachedToWindow(BaseViewHolder holder) {
-    super.onViewAttachedToWindow(holder);
-    if (holder.getAdapterPosition()==0) {
-        if (getHeaderLayoutCount() > 0) {
-            Banner banner = (Banner) getHeaderLayout().getChildAt(0);
-            banner.start();
-        }
-    }
-}
-```
-
 
 
 ## 常见问题（收录被反复询问的问题）

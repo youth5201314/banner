@@ -257,6 +257,18 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout {
         super.dispatchDraw(canvas);
     }
 
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        start();
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        stop();
+    }
+
     class BannerOnPageChangeCallback extends ViewPager2.OnPageChangeCallback {
         private int mTempPosition = INVALID_VALUE;
         private boolean isScrolled;
@@ -647,11 +659,12 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout {
 
     /**
      * 设置banner圆角(第二种方式，和上面的方法不要同时使用)，只支持5.0以上
+     *
      * @param radius
      * @return
      */
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    public Banner setBannerRound2(float radius){
+    public Banner setBannerRound2(float radius) {
         setOutlineProvider(new ViewOutlineProvider() {
             @Override
             public void getOutline(View view, Outline outline) {
