@@ -45,12 +45,15 @@ public class CircleIndicator extends BaseIndicator {
         super.onDraw(canvas);
         int count = config.getIndicatorSize();
         if (count <= 1) return;
+        mPaint.setColor(config.getNormalColor());
         for (int i = 0; i < count; i++) {
-            mPaint.setColor(config.getCurrentPosition() == i ? config.getSelectedColor() : config.getNormalColor());
-            float radius = config.getCurrentPosition() == i ? mSelectedRadius:mNormalRadius;
-            float x = maxRadius + (2 * mNormalRadius + config.getIndicatorSpace()) * i;
-            canvas.drawCircle(x, maxRadius, radius, mPaint);
+            float x = maxRadius + (config.getNormalWidth() + config.getIndicatorSpace()) * i;
+            canvas.drawCircle(x, maxRadius, mNormalRadius, mPaint);
         }
+        mPaint.setColor(config.getSelectedColor());
+        float x = maxRadius + (config.getNormalWidth() + config.getIndicatorSpace()) * config.getCurrentPosition();
+        canvas.drawCircle(x , maxRadius, mSelectedRadius, mPaint);
+
     }
 
 }

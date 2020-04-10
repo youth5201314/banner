@@ -41,4 +41,10 @@ public class ConstraintLayoutBannerActivity extends AppCompatActivity {
         super.onStop();
         banner.stop();
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        banner.destroy();
+    }
 }

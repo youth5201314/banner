@@ -61,15 +61,6 @@ public class BannerUtils {
         return view;
     }
 
-    public static int getColor(Context context, Drawable drawable) {
-        if (drawable == null) return -1;
-        if (drawable instanceof ColorDrawable) {
-            return ((ColorDrawable) drawable).getColor();
-        }
-        Log.e(Banner.TAG, context.getString(R.string.indicator_color_error));
-        return Banner.INVALID_VALUE;
-    }
-
     public static float dp2px(float dp) {
         return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, Resources.getSystem().getDisplayMetrics());
     }

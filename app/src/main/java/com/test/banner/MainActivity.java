@@ -134,6 +134,13 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
         banner2.stop();
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        banner.destroy();
+        banner2.destroy();
+    }
+
     @OnClick({R.id.style_image, R.id.style_image_title, R.id.style_image_title_num, R.id.style_multiple,
             R.id.style_net_image, R.id.change_indicator, R.id.rv_banner, R.id.cl_banner, R.id.vp_banner,
             R.id.banner_video,R.id.banner_tv})

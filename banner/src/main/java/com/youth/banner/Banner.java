@@ -6,7 +6,6 @@ import android.graphics.Canvas;
 import android.graphics.Outline;
 import android.graphics.Path;
 import android.graphics.RectF;
-import android.graphics.Region;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.util.AttributeSet;
@@ -57,6 +56,7 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout {
     private BA mAdapter;
     private Indicator mIndicator;
     private CompositePageTransformer mCompositePageTransformer;
+    private BannerOnPageChangeCallback mPageChangeCallback;
 
     // 是否允许无限轮播（即首尾直接切换）
     private boolean mIsInfiniteLoop;
@@ -74,8 +74,8 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout {
     // 指示器相关配置
     private int normalWidth;
     private int selectedWidth;
-    private Drawable normalColor;
-    private Drawable selectedColor;
+    private int normalColor;
+    private int selectedColor;
     private int indicatorGravity;
     private int indicatorSpace;
     private int indicatorMargin;
@@ -118,11 +118,12 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout {
     private void init(@NonNull Context context) {
         mTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
         mCompositePageTransformer = new CompositePageTransformer();
+        mPageChangeCallback = new BannerOnPageChangeCallback();
         mLoopTask = new AutoLoopTask(this);
         mViewPager2 = new ViewPager2(context);
         mViewPager2.setLayoutParams(new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         mViewPager2.setOffscreenPageLimit(1);
-        mViewPager2.registerOnPageChangeCallback(new BannerOnPageChangeCallback());
+        mViewPager2.registerOnPageChangeCallback(mPageChangeCallback);
         mViewPager2.setPageTransformer(mCompositePageTransformer);
         ScrollSpeedManger.reflectLayoutManager(this);
         addView(mViewPager2);
@@ -136,8 +137,8 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout {
         mIsInfiniteLoop = a.getBoolean(R.styleable.Banner_is_infinite_loop, BannerConfig.IS_INFINITE_LOOP);
         normalWidth = a.getDimensionPixelSize(R.styleable.Banner_indicator_normal_width, BannerConfig.INDICATOR_NORMAL_WIDTH);
         selectedWidth = a.getDimensionPixelSize(R.styleable.Banner_indicator_selected_width, BannerConfig.INDICATOR_SELECTED_WIDTH);
-        normalColor = a.getDrawable(R.styleable.Banner_indicator_normal_color);
-        selectedColor = a.getDrawable(R.styleable.Banner_indicator_selected_color);
+        normalColor = a.getColor(R.styleable.Banner_indicator_normal_color,BannerConfig.INDICATOR_NORMAL_COLOR);
+        selectedColor = a.getColor(R.styleable.Banner_indicator_selected_color,BannerConfig.INDICATOR_SELECTED_COLOR);
         indicatorGravity = a.getInt(R.styleable.Banner_indicator_gravity, IndicatorConfig.Direction.CENTER);
         indicatorSpace = a.getDimensionPixelSize(R.styleable.Banner_indicator_space, 0);
         indicatorMargin = a.getDimensionPixelSize(R.styleable.Banner_indicator_margin, 0);
@@ -172,17 +173,6 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout {
         if (indicatorGravity != IndicatorConfig.Direction.CENTER) {
             setIndicatorGravity(indicatorGravity);
         }
-
-        int nColor = BannerUtils.getColor(getContext(), normalColor);
-        if (nColor != INVALID_VALUE) {
-            setIndicatorNormalColor(nColor);
-        }
-
-        int sColor = BannerUtils.getColor(getContext(), selectedColor);
-        if (sColor != INVALID_VALUE) {
-            setIndicatorSelectedColor(sColor);
-        }
-
         if (normalWidth > 0) {
             setIndicatorNormalWidth(normalWidth);
         }
@@ -196,6 +186,8 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout {
         if (indicatorRadius > 0) {
             setIndicatorRadius(indicatorRadius);
         }
+        setIndicatorNormalColor(normalColor);
+        setIndicatorSelectedColor(selectedColor);
     }
 
     @Override
@@ -562,6 +554,22 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout {
             removeCallbacks(mLoopTask);
         }
         return this;
+    }
+
+    /**
+     * 移除一些引用
+     */
+    public void destroy() {
+        getViewPager2().unregisterOnPageChangeCallback(mPageChangeCallback);
+        removeCallbacks(mLoopTask);
+        mCompositePageTransformer = null;
+        mPageChangeCallback = null;
+        mOnPageChangeListener = null;
+        mLoopTask = null;
+        mIndicator = null;
+        mAdapterDataObserver = null;
+        mAdapter = null;
+        mViewPager2 = null;
     }
 
     /**
