@@ -116,7 +116,8 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout {
     }
 
     private void init(@NonNull Context context) {
-        mTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
+        //实际使用有点偏大
+        mTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop()/2;
         mCompositePageTransformer = new CompositePageTransformer();
         mPageChangeCallback = new BannerOnPageChangeCallback();
         mLoopTask = new AutoLoopTask(this);
@@ -137,8 +138,8 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout {
         mIsInfiniteLoop = a.getBoolean(R.styleable.Banner_is_infinite_loop, BannerConfig.IS_INFINITE_LOOP);
         normalWidth = a.getDimensionPixelSize(R.styleable.Banner_indicator_normal_width, BannerConfig.INDICATOR_NORMAL_WIDTH);
         selectedWidth = a.getDimensionPixelSize(R.styleable.Banner_indicator_selected_width, BannerConfig.INDICATOR_SELECTED_WIDTH);
-        normalColor = a.getColor(R.styleable.Banner_indicator_normal_color,BannerConfig.INDICATOR_NORMAL_COLOR);
-        selectedColor = a.getColor(R.styleable.Banner_indicator_selected_color,BannerConfig.INDICATOR_SELECTED_COLOR);
+        normalColor = a.getColor(R.styleable.Banner_indicator_normal_color, BannerConfig.INDICATOR_NORMAL_COLOR);
+        selectedColor = a.getColor(R.styleable.Banner_indicator_selected_color, BannerConfig.INDICATOR_SELECTED_COLOR);
         indicatorGravity = a.getInt(R.styleable.Banner_indicator_gravity, IndicatorConfig.Direction.CENTER);
         indicatorSpace = a.getDimensionPixelSize(R.styleable.Banner_indicator_space, 0);
         indicatorMargin = a.getDimensionPixelSize(R.styleable.Banner_indicator_margin, 0);
