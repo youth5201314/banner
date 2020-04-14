@@ -42,6 +42,5 @@ dependencies {
 
 
     implementation project(':banner')
-    implementation 'org.jetbrains:annotations:15.0'
 //    implementation 'com.youth.banner:banner:+'
 }

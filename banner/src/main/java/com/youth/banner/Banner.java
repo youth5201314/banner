@@ -244,7 +244,7 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout {
         if (mBannerRadius > 0) {
             Path path = new Path();
             path.addRoundRect(new RectF(0, 0, getMeasuredWidth(), getMeasuredHeight()),
-                    BannerUtils.dp2px(5), BannerUtils.dp2px(5), Path.Direction.CW);
+                    mBannerRadius,mBannerRadius, Path.Direction.CW);
             canvas.clipPath(path);
         }
         super.dispatchDraw(canvas);

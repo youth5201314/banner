@@ -248,6 +248,14 @@ public class BannerActivity {
 * 我想指定轮播开始的位置？
 
   `现在提供了setStartPosition()方法，在sheAdapter和setDatas直接调用一次就行了`
+
+* 父控件滑动时，banner切换会获取焦点，然后自动全部显示。不想让banner获取焦点可以给父控件加上：
+
+    ```
+        //banner也一定要用最新版哦！
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+    ```
     
 ## Thanks
 
