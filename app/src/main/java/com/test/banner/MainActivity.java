@@ -5,10 +5,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -33,6 +29,7 @@ import com.youth.banner.indicator.CircleIndicator;
 import com.youth.banner.indicator.RectangleIndicator;
 import com.youth.banner.indicator.RoundLinesIndicator;
 import com.youth.banner.listener.OnPageChangeListener;
+import com.youth.banner.transformer.AlphaPageTransformer;
 import com.youth.banner.transformer.ZoomOutPageTransformer;
 import com.youth.banner.util.BannerUtils;
 
@@ -58,7 +55,8 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
         ButterKnife.bind(this);
 
         //设置适配器
-        banner.setAdapter(new ImageAdapter(DataBean.getTestData()));
+        ImageAdapter adapter = new ImageAdapter(DataBean.getTestData());
+        banner.setAdapter(adapter);
         //设置指示器
         banner.setIndicator(new CircleIndicator(this));
         //设置点击事件
@@ -70,13 +68,7 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
         //圆角
         banner.setBannerRound(BannerUtils.dp2px(5));
 
-        //添加画廊效果，可以参考我给的参数自己调试(不要和其他PageTransformer同时使用)
-//        banner.setBannerGalleryEffect(25, 40, 0.14f);
-
-        //设置组合PageTransformer
-//        banner.addPageTransformer(new ZoomOutPageTransformer());
-//        banner.addPageTransformer(new DepthPageTransformer());
-
+        banner.setBannerGalleryMZ(20);
 
         //实现1号店和淘宝头条类似的效果
         banner2.setAdapter(new TopLineAdapter(DataBean.getTestData2()))
@@ -96,6 +88,8 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
                     refresh.setRefreshing(false);
                     //给banner重新设置数据
                     banner.setDatas(DataBean.getTestData2());
+                    //对setdatas不满意？你可以自己控制数据，可以参考setDatas()的实现修改
+//                    adapter.updateData(DataBean.getTestData2());
                 }
             }, 3000);
         });
@@ -143,7 +137,7 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
 
     @OnClick({R.id.style_image, R.id.style_image_title, R.id.style_image_title_num, R.id.style_multiple,
             R.id.style_net_image, R.id.change_indicator, R.id.rv_banner, R.id.cl_banner, R.id.vp_banner,
-            R.id.banner_video,R.id.banner_tv})
+            R.id.banner_video, R.id.banner_tv, R.id.gallery})
     public void click(View view) {
         indicator.setVisibility(View.GONE);
         switch (view.getId()) {
@@ -183,8 +177,17 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
             case R.id.change_indicator:
                 indicator.setVisibility(View.VISIBLE);
                 //在布局文件中使用指示器，这样更灵活
-                banner.setIndicator(indicator,false);
+                banner.setIndicator(indicator, false);
                 banner.setIndicatorSelectedWidth((int) BannerUtils.dp2px(15));
+                break;
+            case R.id.gallery:
+                refresh.setEnabled(false);
+                banner.setAdapter(new ImageNetAdapter(DataBean.getTestData3()));
+
+                //添加画廊效果(可以和其他PageTransformer组合使用，比如AlphaPageTransformer，注意但和其他带有缩放的PageTransformer会显示冲突)
+                banner.setBannerGalleryEffect(18,10);
+                //添加透明效果(画廊配合透明效果更棒)
+                banner.addPageTransformer(new AlphaPageTransformer());
                 break;
             case R.id.rv_banner:
                 startActivity(new Intent(this, RecyclerViewBannerActivity.class));

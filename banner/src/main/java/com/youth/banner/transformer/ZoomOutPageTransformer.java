@@ -4,13 +4,20 @@ import android.view.View;
 
 import androidx.viewpager2.widget.ViewPager2;
 
-/**
- * 下沉渐变效果
- * copy from: https://developer.android.com/training/animation/screen-slide-2
- */
-public class ZoomOutPageTransformer implements ViewPager2.PageTransformer {
-    private static final float MIN_SCALE = 0.85f;
-    private static final float MIN_ALPHA = 0.5f;
+
+public class ZoomOutPageTransformer extends BasePageTransformer {
+    private static final float DEFAULT_MIN_SCALE = 0.85f;
+    private static final float DEFAULT_MIN_ALPHA = 0.5f;
+    private float mMinScale = DEFAULT_MIN_SCALE;
+    private float mMinAlpha = DEFAULT_MIN_ALPHA;
+
+    public ZoomOutPageTransformer() {
+    }
+
+    public ZoomOutPageTransformer(float minScale,float minAlpha ) {
+        this.mMinScale = minScale;
+        this.mMinAlpha = minAlpha;
+    }
 
     public void transformPage(View view, float position) {
         int pageWidth = view.getWidth();
@@ -22,7 +29,7 @@ public class ZoomOutPageTransformer implements ViewPager2.PageTransformer {
 
         } else if (position <= 1) { // [-1,1]
             // Modify the default slide transition to shrink the page as well
-            float scaleFactor = Math.max(MIN_SCALE, 1 - Math.abs(position));
+            float scaleFactor = Math.max(mMinScale, 1 - Math.abs(position));
             float vertMargin = pageHeight * (1 - scaleFactor) / 2;
             float horzMargin = pageWidth * (1 - scaleFactor) / 2;
             if (position < 0) {
@@ -36,9 +43,9 @@ public class ZoomOutPageTransformer implements ViewPager2.PageTransformer {
             view.setScaleY(scaleFactor);
 
             // Fade the page relative to its size.
-            view.setAlpha(MIN_ALPHA +
-                    (scaleFactor - MIN_SCALE) /
-                            (1 - MIN_SCALE) * (1 - MIN_ALPHA));
+            view.setAlpha(mMinAlpha +
+                    (scaleFactor - mMinScale) /
+                            (1 - mMinScale) * (1 - mMinAlpha));
 
         } else { // (1,+Infinity]
             // This page is way off-screen to the right.

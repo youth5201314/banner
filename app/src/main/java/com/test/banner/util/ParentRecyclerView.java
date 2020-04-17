@@ -8,11 +8,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
-/**
- * 当你需要设置banner为垂直滚动时，类似于RecyclerView等滑动控件嵌套，可以不拦截，解决滑动冲突
- *
- * 如果是水平滚动，可以使用原生的，不用重写
- */
 public class ParentRecyclerView extends RecyclerView {
     public ParentRecyclerView(@NonNull Context context) {
         super(context);
@@ -26,9 +21,23 @@ public class ParentRecyclerView extends RecyclerView {
         super(context, attrs, defStyleAttr);
     }
 
-    //不拦截，继续分发下去
+    private float mStartX, mStartY;
+
     @Override
-    public boolean onInterceptTouchEvent(MotionEvent e) {
-        return true;
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        switch (ev.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                mStartX = ev.getX();
+                mStartY = ev.getY();
+                break;
+            case MotionEvent.ACTION_MOVE:
+                float endX = ev.getX();
+                float endY = ev.getY();
+                float distanceX = Math.abs(endX - mStartX);
+                float distanceY = Math.abs(endY - mStartY);
+                getParent().requestDisallowInterceptTouchEvent(!(distanceX > 4 && distanceX > distanceY));
+                break;
+        }
+        return super.dispatchTouchEvent(ev);
     }
 }

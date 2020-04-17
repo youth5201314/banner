@@ -3,18 +3,14 @@ package com.youth.banner;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
-import android.graphics.Outline;
 import android.graphics.Path;
 import android.graphics.RectF;
-import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
-import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
-import android.view.ViewOutlineProvider;
 import android.widget.FrameLayout;
 
 import androidx.annotation.ColorInt;
@@ -27,16 +23,17 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.widget.CompositePageTransformer;
+import androidx.viewpager2.widget.MarginPageTransformer;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.youth.banner.adapter.BannerAdapter;
 import com.youth.banner.config.BannerConfig;
 import com.youth.banner.config.IndicatorConfig;
 import com.youth.banner.indicator.Indicator;
-import com.youth.banner.itemdecoration.MarginDecoration;
 import com.youth.banner.listener.OnBannerListener;
 import com.youth.banner.listener.OnPageChangeListener;
-import com.youth.banner.transformer.MultipleScaleTransformer;
+import com.youth.banner.transformer.MZScaleInTransformer;
+import com.youth.banner.transformer.ScaleInTransformer;
 import com.youth.banner.util.BannerUtils;
 import com.youth.banner.util.ScrollSpeedManger;
 
@@ -116,8 +113,7 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout {
     }
 
     private void init(@NonNull Context context) {
-        //实际使用有点偏大
-        mTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop()/2;
+        mTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop() / 2;
         mCompositePageTransformer = new CompositePageTransformer();
         mPageChangeCallback = new BannerOnPageChangeCallback();
         mLoopTask = new AutoLoopTask(this);
@@ -244,7 +240,7 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout {
         if (mBannerRadius > 0) {
             Path path = new Path();
             path.addRoundRect(new RectF(0, 0, getMeasuredWidth(), getMeasuredHeight()),
-                    mBannerRadius,mBannerRadius, Path.Direction.CW);
+                    mBannerRadius, mBannerRadius, Path.Direction.CW);
             canvas.clipPath(path);
         }
         super.dispatchDraw(canvas);
@@ -347,10 +343,7 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout {
             } else {
                 start();
             }
-            int realPosition = BannerUtils.getRealPosition(isInfiniteLoop(), getCurrentItem(), getRealCount());
-            if (mIndicator != null) {
-                mIndicator.onPageChanged(getRealCount(), realPosition);
-            }
+            setIndicatorPageChange();
         }
     };
 
@@ -379,8 +372,7 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout {
             addView(mIndicator.getIndicatorView());
         }
         initIndicatorAttr();
-        int realPosition = BannerUtils.getRealPosition(isInfiniteLoop(), getCurrentItem(), getRealCount());
-        mIndicator.onPageChanged(getRealCount(), realPosition);
+        setIndicatorPageChange();
     }
 
     private void setInfiniteLoop() {
@@ -393,6 +385,23 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout {
         return mIsInfiniteLoop;
     }
 
+
+    public void setIndicatorPageChange() {
+        if (mIndicator != null) {
+            int realPosition = BannerUtils.getRealPosition(isInfiniteLoop(), getCurrentItem(), getRealCount());
+            mIndicator.onPageChanged(getRealCount(), realPosition);
+        }
+    }
+
+    private void setRecyclerViewPadding(int itemPadding) {
+        RecyclerView recyclerView = (RecyclerView) getViewPager2().getChildAt(0);
+        if (getViewPager2().getOrientation() == ViewPager2.ORIENTATION_VERTICAL) {
+            recyclerView.setPadding(0, itemPadding, 0, itemPadding);
+        } else {
+            recyclerView.setPadding(itemPadding, 0, itemPadding, 0);
+        }
+        recyclerView.setClipToPadding(false);
+    }
 
     /**
      * **********************************************************************
@@ -606,10 +615,7 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout {
             getAdapter().setDatas(datas);
             getAdapter().notifyDataSetChanged();
             setCurrentItem(mStartPosition, false);
-            if (mIndicator != null) {
-                int realPosition = BannerUtils.getRealPosition(isInfiniteLoop(), getCurrentItem(), getRealCount());
-                mIndicator.onPageChanged(getRealCount(), realPosition);
-            }
+            setIndicatorPageChange();
             start();
         }
         return this;
@@ -623,6 +629,17 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout {
      */
     public Banner setOrientation(@Orientation int orientation) {
         mViewPager2.setOrientation(orientation);
+        return this;
+    }
+
+    /**
+     * 改变最小滑动距离
+     *
+     * @param mTouchSlop
+     * @return
+     */
+    public Banner setTouchSlop(int mTouchSlop) {
+        this.mTouchSlop = mTouchSlop;
         return this;
     }
 
@@ -674,31 +691,61 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout {
      */
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public Banner setBannerRound2(float radius) {
-        setOutlineProvider(new ViewOutlineProvider() {
-            @Override
-            public void getOutline(View view, Outline outline) {
-                outline.setRoundRect(0, 0, view.getWidth(), view.getHeight(), radius);
-            }
-        });
-        setClipToOutline(true);
+        BannerUtils.setBannerRound(this, radius);
         return this;
     }
 
     /**
      * 为banner添加画廊效果
      *
-     * @param itemMargin item间距,单位dp,参考值25
-     * @param pageMargin 页面间距,单位dp,参考值40
-     * @param scale      缩放[0-1],参考值0.14f
+     * @param itemWidth  item左右展示的宽度,单位dp
+     * @param pageMargin 页面间距,单位dp
      * @return
      */
-    public Banner setBannerGalleryEffect(int itemMargin, int pageMargin, float scale) {
-        if (scale > 1 || scale < 0) scale = 0.14f;
-        addItemDecoration(new MarginDecoration((int) BannerUtils.dp2px(itemMargin)));
-        setPageTransformer(new MultipleScaleTransformer((int) BannerUtils.dp2px(pageMargin), scale));
+    public Banner setBannerGalleryEffect(int itemWidth, int pageMargin) {
+        return setBannerGalleryEffect(itemWidth, pageMargin, .85f);
+    }
+
+    /**
+     * 为banner添加画廊效果
+     *
+     * @param itemWidth  item左右展示的宽度,单位dp
+     * @param pageMargin 页面间距,单位dp
+     * @param scale      缩放[0-1],1代表不缩放
+     * @return
+     */
+    public Banner setBannerGalleryEffect(int itemWidth, int pageMargin, float scale) {
+        if (pageMargin > 0)
+            addPageTransformer(new MarginPageTransformer((int) BannerUtils.dp2px(pageMargin)));
+        if (scale < 1 && scale > 0)
+            addPageTransformer(new ScaleInTransformer(scale));
+        setRecyclerViewPadding((int) BannerUtils.dp2px(itemWidth + pageMargin));
         return this;
     }
 
+    /**
+     * 为banner添加魅族效果
+     *
+     * @param itemWidth item左右展示的宽度,单位dp
+     * @return
+     */
+    public Banner setBannerGalleryMZ(int itemWidth) {
+        return setBannerGalleryMZ(itemWidth,.88f);
+    }
+
+    /**
+     * 为banner添加魅族效果
+     *
+     * @param itemWidth item左右展示的宽度,单位dp
+     * @param scale     缩放[0-1],1代表不缩放
+     * @return
+     */
+    public Banner setBannerGalleryMZ(int itemWidth, float scale) {
+        if (scale < 1 && scale > 0)
+            addPageTransformer(new MZScaleInTransformer(scale));
+        setRecyclerViewPadding((int) BannerUtils.dp2px(itemWidth));
+        return this;
+    }
 
     /**
      * **********************************************************************

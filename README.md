@@ -7,17 +7,14 @@
 <a href="https://github.com/youth5201314/banner/tree/release-1.4.10" target="_blank">Banner 1.4.10(还想看老版本的可以点击这里)</a>
 
 ### 阔别已久，从新回归
-> 很长一段时间没有维护这个项目了，有很多人发邮件反馈，有好的，也有让人无语气氛的；特别是2017经常收到各种谩骂的邮件，所以我只能停止更新关闭邮件提醒。
-但是隔了这么长时间看突然发现有这么多人使用，又反馈了很多问题和意见，本着有始有终我决定重新开始重构下，能更好的解决大家的需求：
 
 * 首先我声明几点：
     * 这只是一个开源库，如果满意你可以使用、可以借鉴修改，希望对你们有所帮助。
-    * 如果不满意请友好的提出，注明错误的详细信息或者修改建议，亦可以直接提交，我会考虑合并。
+    * 如果不满意请友好的提出，注明错误的详细信息或者修改建议，好的想法和自定义的东西亦可以直接提交，大家都能来一起完善。
     * 如果你觉得实在是没用，也请你做一个有自我修养的人。
    
 ### 主要改进功能介绍
-最开始是想上传以前基于viewpager更新好的版本，但是看着viewpager2正式版已经出来了，就上新的吧，
-确实viewpager2确实比viewpager性能好很多，就是目前还没有找到合适方法来控制滑动切换的速度。
+最开始是想上传以前基于viewpager更新好的版本，但是看着viewpager2正式版已经出来了，就上新的吧，viewpager2确实比viewpager性能好很多。
 
 - [x] 使用了ViewPager2为基础控件  <a href="https://developer.android.google.cn/jetpack/androidx/releases/viewpager2" target="_blank">[ViewPager2介绍]</a>
 - [x] 支持了androidx兼容包
@@ -35,14 +32,29 @@
 
 ![画廊](images/banner_example2.gif)
 
+![魅族](images/banner_example1.gif)
+
 ![头条](images/banner_example3.gif)
 
-##### 内置了官方提供的2种PageTransformer效果
+##### 内置了多种PageTransformer效果
+
 ![DepthPageTransformer](images/DepthPageTransformer.gif)
 ![ZoomOutPageTransformer](images/ZoomOutPageTransformer.gif)
 
+|内置的PageTransformer|
+|---|
+|AlphaPageTransformer|
+|DepthPageTransformer|
+|RotateDownPageTransformer|
+|RotateUpPageTransformer|
+|RotateYTransformer|
+|ScaleInTransformer|
+|ZoomOutPageTransformer|
+ 也可以组合使用效果更佳
 
 ## 方法
+更多方法以实际使用为准，下面不一定全部列出了
+
 |方法名|返回类型|描述|
 |---|---|---|
 |getAdapter()|extends BannerAdapter|获取你设置的BannerAdapter
@@ -78,8 +90,12 @@
 |setIndicatorRadius(int)|this|设置指示器圆角，不要圆角可以设置为0
 |setIndicatorHeight(int)|this|设置指示器高度
 |setBannerRound(float)|this|设置banner圆角（还有一种setBannerRound2方法，需要5.0以上）
-|setBannerGalleryEffect(int,int,float)|this|画廊效果(可设置间距缩放)
+|setBannerGalleryEffect(int,int,float)|this|画廊效果
+|setBannerGalleryMZ(int,float)|this|魅族效果
 |setStartPosition(int)|this|设置开始的位置 (需要在setAdapter或者setDatas之前调用才有效哦)
+|setIndicatorPageChange()|this|设置指示器改变监听 (一般是为了配合数据操作使用，看情况自己发挥)
+|setCurrentItem()|this|设置当前位置，和原生使用效果一样
+
 
 ## Attributes属性
 >在banner布局文件中调用,如果你自定义了indicator请做好兼容处理。
@@ -113,7 +129,7 @@
 Gradle 
 ```groovy
 dependencies{
-    compile 'com.youth.banner:banner:2.0.6'  
+    compile 'com.youth.banner:banner:2.0.7'  
 }
 ```
 
@@ -259,7 +275,9 @@ public class BannerActivity {
     
 ## Thanks
 
-- [zguop的控制viewpager2的滑动时间方案](https://github.com/zguop/banner/blob/master/pager2banner/src/main/java/com/to/aboomy/pager2banner/Banner.java)
+- [MZBannerView](https://github.com/pinguo-zhouwei/MZBannerView)
+- [MagicViewPager](https://github.com/hongyangAndroid/MagicViewPager)
+- [zguop的viewpager2的滑动时间解决方案](https://github.com/zguop/banner/blob/master/pager2banner/src/main/java/com/to/aboomy/pager2banner/Banner.java)
 
 
 ### 联系方式  <a target="_blank" href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=KBkYGhAfGhEYEB5oWVkGS0dF" style="text-decoration:none;"><img src="images/mailme.png"/></a>

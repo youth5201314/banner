@@ -22,6 +22,7 @@ public class ImageAdapter extends BannerAdapter<DataBean, ImageHolder> {
     //更新数据
     public void updateData(List<DataBean> data) {
         //这里的代码自己发挥，比如如下的写法等等
+        mDatas.clear();
         mDatas.addAll(data);
         notifyDataSetChanged();
     }

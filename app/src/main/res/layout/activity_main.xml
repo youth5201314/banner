@@ -77,7 +77,14 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/style_image"
                 android:layout_toRightOf="@+id/style_net_image"
-                android:text="外部指示器用法"/>
+                android:text="外部指示器"/>
+            <Button
+                android:id="@+id/gallery"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/style_image"
+                android:layout_toRightOf="@+id/change_indicator"
+                android:text="画廊"/>
 
             <TextView
                 android:id="@+id/tip2"
