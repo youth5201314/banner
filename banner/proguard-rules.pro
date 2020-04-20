@@ -15,3 +15,11 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
+
+-dontwarn com.youth.banner.**
+-keep class com.youth.banner.** {*;}
+
+-dontwarn androidx.viewpager2.**
+-keep androidx.viewpager2.** {*;}
+-dontwarn androidx.recyclerview.widget.RecyclerView
+-keep class androidx.recyclerview.widget.RecyclerView{*;}

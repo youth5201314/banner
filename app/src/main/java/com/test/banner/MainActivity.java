@@ -68,7 +68,8 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
         //圆角
         banner.setBannerRound(BannerUtils.dp2px(5));
 
-        banner.setBannerGalleryMZ(20);
+        //魅族效果
+//        banner.setBannerGalleryMZ(20);
 
         //实现1号店和淘宝头条类似的效果
         banner2.setAdapter(new TopLineAdapter(DataBean.getTestData2()))

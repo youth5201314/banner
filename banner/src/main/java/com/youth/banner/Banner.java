@@ -377,7 +377,9 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout {
 
     private void setInfiniteLoop() {
         // 当不支持无限循环时，要关闭自动轮播
-        this.mIsAutoLoop = isInfiniteLoop();
+        if (!isInfiniteLoop()){
+            isAutoLoop(false);
+        }
         setStartPosition(isInfiniteLoop() ? 1 : 0);
     }
 
