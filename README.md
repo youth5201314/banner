@@ -19,8 +19,8 @@
 - [x] 使用了ViewPager2为基础控件  <a href="https://developer.android.google.cn/jetpack/androidx/releases/viewpager2" target="_blank">[ViewPager2介绍]</a>
 - [x] 支持了androidx兼容包
 - [x] 方便了UI、Indicator自定义
-- [x] 支持画廊效果
-- [x] 兼容了水平和垂直轮播，也可以实现类型淘宝头条的效果
+- [x] 支持画廊效果、魅族效果
+- [x] 兼容了水平和垂直轮播，也可以实现类似淘宝头条的效果
 - [x] 依赖包目前只需要导入了ViewPager2
 
 
@@ -95,6 +95,7 @@
 |setStartPosition(int)|this|设置开始的位置 (需要在setAdapter或者setDatas之前调用才有效哦)
 |setIndicatorPageChange()|this|设置指示器改变监听 (一般是为了配合数据操作使用，看情况自己发挥)
 |setCurrentItem()|this|设置当前位置，和原生使用效果一样
+|addBannerLifecycleObserver()|this|给banner添加生命周期观察者，内部自动管理banner的生命周期
 
 
 ## Attributes属性
@@ -129,7 +130,7 @@
 Gradle 
 ```groovy
 dependencies{
-    compile 'com.youth.banner:banner:2.0.8'  
+    compile 'com.youth.banner:banner:2.0.9'  
 }
 ```
 
@@ -198,32 +199,11 @@ public class ImageAdapter extends BannerAdapter<DataBean, ImageAdapter.BannerVie
 public class BannerActivity extends AppCompatActivity {
     public void useBanner() {
         //--------------------------简单使用-------------------------------
-        //创建（new banner()）或者布局文件中获取banner
-        Banner banner = (Banner) findViewById(R.id.banner);
-        //默认直接设置adapter就行了
-        banner.setAdapter(new BannerExampleAdapter(DataBean.getTestData()));
-        
-        //--------------------------详细使用-------------------------------
-        banner.setAdapter(new BannerExampleAdapter(DataBean.getTestData()));
-        banner.setIndicator(new CircleIndicator(this));
-        banner.setIndicatorSelectedColorRes(R.color.main_color);
-        banner.setIndicatorNormalColorRes(R.color.textColor);
-        banner.setIndicatorGravity(IndicatorConfig.Direction.LEFT);
-        banner.setIndicatorSpace(BannerUtils.dp2px(20));
-        banner.setIndicatorMargins(new IndicatorConfig.Margins((int) BannerUtils.dp2px(10)));
-        banner.setIndicatorWidth(10,20);
-        banner.addItemDecoration(new MarginItemDecoration((int) BannerUtils.dp2px(50)));
-        banner.setPageTransformer(new DepthPageTransformer());
-        banner.setOnBannerListener(this);
-        banner.addOnPageChangeListener(this);
-        banner.start();
-        //还有更多方法自己使用哦！！！！！！
-        
-        //-----------------当然如果你想偷下懒也可以这么用--------------------
-        //banner所有set方法都支持链式调用(以下列举了一些方法)
-        banner.setAdapter(new BannerExampleAdapter(DataBean.getTestData()))
+        banner.addBannerLifecycleObserver(this)//添加生命周期观察者
+                .setAdapter(new BannerExampleAdapter(DataBean.getTestData()))
                 .setIndicator(new CircleIndicator(this))
                 .start();
+        //更多使用方法仔细阅读文档，或者查看demo
     }
 }
 ```
@@ -233,6 +213,9 @@ public class BannerActivity extends AppCompatActivity {
 #### Step 1.（可选）生命周期改变时
 ```java
 public class BannerActivity {
+  
+    //方法一：自己控制banner的生命周期
+    
     @Override
     protected void onStart() {
         super.onStart();
@@ -243,8 +226,22 @@ public class BannerActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        //结束轮播
+        //停止轮播
         banner.stop();
+    }
+    
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        //销毁
+        banner.destroy();
+    }
+    
+    //方法二：调用banner的addBannerLifecycleObserver()方法，让banner自己控制
+   
+    protected void onCreate(Bundle savedInstanceState) {
+         //添加生命周期观察者
+        banner.addBannerLifecycleObserver(this);
     }
 }
 ```
@@ -259,11 +256,12 @@ public class BannerActivity {
   
 * 怎么实现视频轮播？
 
-  `demo中有实现类似淘宝商品详情的效果，第一个放视频，后面的放的是图片，并且可以设置首尾不能滑动，可以参考和修改。`
+  `demo中有实现类似淘宝商品详情的效果，第一个放视频，后面的放的是图片，并且可以设置首尾不能滑动。
+  因为大家使用的播放器不一样业务环境也不同，具体情况自己把握，demo就是给一个思路哈！可以参考和修改`
 
 * 我想指定轮播开始的位置？
 
-  `现在提供了setStartPosition()方法，在sheAdapter和setDatas直接调用一次就行了`
+  `现在提供了setStartPosition()方法，在sheAdapter和setDatas直接调用一次就行了，当然setAdapter后通过setCurrentItem设置也行`
 
 * 父控件滑动时，banner切换会获取焦点，然后自动全部显示。不想让banner获取焦点可以给父控件加上：
 
@@ -272,6 +270,7 @@ public class BannerActivity {
         android:focusable="true"
         android:focusableInTouchMode="true"
     ```
+
     
 ## Thanks
 

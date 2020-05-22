@@ -1,1 +1,2 @@
 include ':app',':banner'
+include ':usekotlin'

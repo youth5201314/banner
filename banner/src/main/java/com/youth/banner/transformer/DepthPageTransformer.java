@@ -30,6 +30,8 @@ public class DepthPageTransformer extends BasePageTransformer {
             view.setScaleY(1f);
 
         } else if (position <= 1) { // (0,1]
+            //进入页面时
+            view.setVisibility(View.VISIBLE);
             // Fade the page out.
             view.setAlpha(1 - position);
 
@@ -41,6 +43,10 @@ public class DepthPageTransformer extends BasePageTransformer {
                     + (1 - mMinScale) * (1 - Math.abs(position));
             view.setScaleX(scaleFactor);
             view.setScaleY(scaleFactor);
+            //退出页面时
+            if(position ==1){
+                view.setVisibility(View.INVISIBLE);
+            }
 
         } else { // (1,+Infinity]
             // This page is way off-screen to the right.

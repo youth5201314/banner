@@ -30,15 +30,16 @@ import com.youth.banner.indicator.RectangleIndicator;
 import com.youth.banner.indicator.RoundLinesIndicator;
 import com.youth.banner.listener.OnPageChangeListener;
 import com.youth.banner.transformer.AlphaPageTransformer;
+import com.youth.banner.transformer.RotateYTransformer;
 import com.youth.banner.transformer.ZoomOutPageTransformer;
 import com.youth.banner.util.BannerUtils;
+import com.youth.banner.util.LogUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class MainActivity extends AppCompatActivity implements OnPageChangeListener {
-    private static final String TAG = "banner_log";
     @BindView(R.id.banner)
     Banner banner;
     @BindView(R.id.indicator)
@@ -54,30 +55,35 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        //设置适配器
         ImageAdapter adapter = new ImageAdapter(DataBean.getTestData());
-        banner.setAdapter(adapter);
-        //设置指示器
-        banner.setIndicator(new CircleIndicator(this));
-        //设置点击事件
-        banner.setOnBannerListener((data, position) -> {
-            Snackbar.make(banner, ((DataBean) data).title, Snackbar.LENGTH_SHORT).show();
-        });
-        //添加切换监听
-        banner.addOnPageChangeListener(this);
-        //圆角
-        banner.setBannerRound(BannerUtils.dp2px(5));
 
+
+        banner.setAdapter(adapter)//设置适配器
+//              .setCurrentItem(3,false)
+              .addBannerLifecycleObserver(this)//添加生命周期观察者
+              .setBannerRound(BannerUtils.dp2px(5))//圆角
+//              .addPageTransformer(new RotateYTransformer())//添加切换效果
+              .setIndicator(new CircleIndicator(this))//设置指示器
+              .addOnPageChangeListener(this)//添加切换监听
+              .setOnBannerListener((data, position) -> {
+                  Snackbar.make(banner, ((DataBean) data).title, Snackbar.LENGTH_SHORT).show();
+                  LogUtils.d("position：" + position);
+              });//设置点击事件,传this也行
+
+
+        //添加间距(如果使用了画廊效果就不要添加间距了，因为内部已经添加过了)
+//        banner.addPageTransformer(new MarginPageTransformer((int) BannerUtils.dp2px(10)));
         //魅族效果
 //        banner.setBannerGalleryMZ(20);
 
         //实现1号店和淘宝头条类似的效果
         banner2.setAdapter(new TopLineAdapter(DataBean.getTestData2()))
-                .setOrientation(Banner.VERTICAL)
-                .setPageTransformer(new ZoomOutPageTransformer())
-                .setOnBannerListener((data, position) -> {
-                    Snackbar.make(banner, ((DataBean) data).title, Snackbar.LENGTH_SHORT).show();
-                });
+               .setOrientation(Banner.VERTICAL)
+               .setPageTransformer(new ZoomOutPageTransformer())
+               .setOnBannerListener((data, position) -> {
+                   Snackbar.make(banner, ((DataBean) data).title, Snackbar.LENGTH_SHORT).show();
+                   LogUtils.d("position：" + position);
+               });
 
 
         //和下拉刷新配套使用
@@ -104,7 +110,7 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
 
     @Override
     public void onPageSelected(int position) {
-        Log.e(TAG, "onPageSelected:" + position);
+        LogUtils.d("onPageSelected:" + position);
     }
 
     @Override
@@ -112,31 +118,7 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
     }
 
 
-    /**
-     * 如果你需要考虑更好的体验，可以这么操作
-     */
-    @Override
-    protected void onStart() {
-        super.onStart();
-        banner.start();
-        banner2.start();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        banner.stop();
-        banner2.stop();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        banner.destroy();
-        banner2.destroy();
-    }
-
-    @OnClick({R.id.style_image, R.id.style_image_title, R.id.style_image_title_num, R.id.style_multiple,
+    @OnClick( {R.id.style_image, R.id.style_image_title, R.id.style_image_title_num, R.id.style_multiple,
             R.id.style_net_image, R.id.change_indicator, R.id.rv_banner, R.id.cl_banner, R.id.vp_banner,
             R.id.banner_video, R.id.banner_tv, R.id.gallery})
     public void click(View view) {
@@ -186,7 +168,7 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
                 banner.setAdapter(new ImageNetAdapter(DataBean.getTestData3()));
 
                 //添加画廊效果(可以和其他PageTransformer组合使用，比如AlphaPageTransformer，注意但和其他带有缩放的PageTransformer会显示冲突)
-                banner.setBannerGalleryEffect(18,10);
+                banner.setBannerGalleryEffect(18, 10);
                 //添加透明效果(画廊配合透明效果更棒)
                 banner.addPageTransformer(new AlphaPageTransformer());
                 break;

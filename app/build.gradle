@@ -9,6 +9,7 @@ android {
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
+        consumerProguardFiles 'proguard-rules.pro'
     }
     buildTypes {
         debug {
@@ -22,8 +23,8 @@ android {
         }
     }
     compileOptions {
-        targetCompatibility = 1.8
-        sourceCompatibility = 1.8
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 }
 

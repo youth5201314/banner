@@ -20,6 +20,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.widget.CompositePageTransformer;
@@ -34,7 +35,10 @@ import com.youth.banner.listener.OnBannerListener;
 import com.youth.banner.listener.OnPageChangeListener;
 import com.youth.banner.transformer.MZScaleInTransformer;
 import com.youth.banner.transformer.ScaleInTransformer;
+import com.youth.banner.util.BannerLifecycleObserverAdapter;
 import com.youth.banner.util.BannerUtils;
+import com.youth.banner.util.BannerLifecycleObserver;
+import com.youth.banner.util.LogUtils;
 import com.youth.banner.util.ScrollSpeedManger;
 
 import java.lang.annotation.Retention;
@@ -44,8 +48,7 @@ import java.util.List;
 import static java.lang.annotation.RetentionPolicy.SOURCE;
 
 
-public class Banner<T, BA extends BannerAdapter> extends FrameLayout {
-    public static final String TAG = "banner_log";
+public class Banner<T, BA extends BannerAdapter> extends FrameLayout implements BannerLifecycleObserver {
     public static final int INVALID_VALUE = -1;
     private ViewPager2 mViewPager2;
     private AutoLoopTask mLoopTask;
@@ -94,7 +97,7 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout {
     private boolean mIsViewPager2Drag;
 
     @Retention(SOURCE)
-    @IntDef({HORIZONTAL, VERTICAL})
+    @IntDef( {HORIZONTAL, VERTICAL})
     public @interface Orientation {
     }
 
@@ -127,7 +130,9 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout {
     }
 
     private void initTypedArray(@NonNull Context context, @NonNull AttributeSet attrs) {
-        if (attrs == null) return;
+        if (attrs == null) {
+            return;
+        }
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.Banner);
         mDelayTime = a.getInt(R.styleable.Banner_delay_time, BannerConfig.LOOP_TIME);
         mIsAutoLoop = a.getBoolean(R.styleable.Banner_is_auto_loop, BannerConfig.IS_AUTO_LOOP);
@@ -327,7 +332,9 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout {
             Banner banner = reference.get();
             if (banner != null && banner.mIsAutoLoop) {
                 int count = banner.getItemCount();
-                if (count == 0) return;
+                if (count == 0) {
+                    return;
+                }
                 int next = (banner.getCurrentItem() + 1) % count;
                 banner.setCurrentItem(next);
                 banner.postDelayed(banner.mLoopTask, banner.mDelayTime);
@@ -347,26 +354,10 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout {
         }
     };
 
-    public void setCurrentItem(int position) {
-        setCurrentItem(position, true);
-    }
-
-    public void setCurrentItem(int position, boolean smoothScroll) {
-        mViewPager2.setCurrentItem(position, smoothScroll);
-    }
-
-    public int getCurrentItem() {
-        return mViewPager2.getCurrentItem();
-    }
-
-    public int getItemCount() {
-        if (getAdapter() == null)
-            return 0;
-        return getAdapter().getItemCount();
-    }
-
     private void initIndicator() {
-        if (mIndicator == null || getAdapter() == null) return;
+        if (mIndicator == null || getAdapter() == null) {
+            return;
+        }
         if (mIndicator.getIndicatorConfig().isAttachToBanner()) {
             removeIndicator();
             addView(mIndicator.getIndicatorView());
@@ -377,22 +368,10 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout {
 
     private void setInfiniteLoop() {
         // 当不支持无限循环时，要关闭自动轮播
-        if (!isInfiniteLoop()){
+        if (!isInfiniteLoop()) {
             isAutoLoop(false);
         }
         setStartPosition(isInfiniteLoop() ? 1 : 0);
-    }
-
-    public boolean isInfiniteLoop() {
-        return mIsInfiniteLoop;
-    }
-
-
-    public void setIndicatorPageChange() {
-        if (mIndicator != null) {
-            int realPosition = BannerUtils.getRealPosition(isInfiniteLoop(), getCurrentItem(), getRealCount());
-            mIndicator.onPageChanged(getRealCount(), realPosition);
-        }
     }
 
     private void setRecyclerViewPadding(int itemPadding) {
@@ -411,20 +390,29 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout {
      * **********************************************************************
      */
 
-    public void removeIndicator() {
-        if (mIndicator != null) {
-            removeView(mIndicator.getIndicatorView());
+    public int getCurrentItem() {
+        return mViewPager2.getCurrentItem();
+    }
+
+    public int getItemCount() {
+        if (getAdapter() == null) {
+            return 0;
         }
+        return getAdapter().getItemCount();
     }
 
     public int getScrollTime() {
         return mScrollTime;
     }
 
+    public boolean isInfiniteLoop() {
+        return mIsInfiniteLoop;
+    }
+
     @NonNull
     public BA getAdapter() {
         if (mAdapter == null) {
-            Log.e(TAG, getContext().getString(R.string.banner_adapter_use_error));
+            LogUtils.e(getContext().getString(R.string.banner_adapter_use_error));
         }
         return mAdapter;
     }
@@ -436,7 +424,7 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout {
 
     public Indicator getIndicator() {
         if (mIndicator == null) {
-            Log.e(TAG, getContext().getString(R.string.indicator_null_error));
+            LogUtils.e(getContext().getString(R.string.indicator_null_error));
         }
         return mIndicator;
     }
@@ -450,18 +438,41 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout {
 
     /**
      * 返回banner真实总数
-     *
-     * @return
      */
     public int getRealCount() {
         return getAdapter().getRealCount();
     }
 
+    //-----------------------------------------------------------------------------------------
+
+
+    public Banner setCurrentItem(int position) {
+        return setCurrentItem(position, true);
+    }
+
+    public Banner setCurrentItem(int position, boolean smoothScroll) {
+        mViewPager2.setCurrentItem(position, smoothScroll);
+        return this;
+    }
+
+    public Banner setIndicatorPageChange() {
+        if (mIndicator != null) {
+            int realPosition = BannerUtils.getRealPosition(isInfiniteLoop(), getCurrentItem(), getRealCount());
+            mIndicator.onPageChanged(getRealCount(), realPosition);
+        }
+        return this;
+    }
+
+    public Banner removeIndicator() {
+        if (mIndicator != null) {
+            removeView(mIndicator.getIndicatorView());
+        }
+        return this;
+    }
+
+
     /**
      * 设置开始的位置 (需要在setAdapter或者setDatas之前调用才有效哦)
-     *
-     * @param mStartPosition
-     * @return
      */
     public Banner setStartPosition(int mStartPosition) {
         this.mStartPosition = mStartPosition;
@@ -472,7 +483,6 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout {
      * 禁止手动滑动
      *
      * @param enabled true 允许，false 禁止
-     * @return
      */
     public Banner setUserInputEnabled(boolean enabled) {
         getViewPager2().setUserInputEnabled(enabled);
@@ -482,8 +492,6 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout {
     /**
      * {@link ViewPager2.PageTransformer}
      * 如果找不到请导入implementation "androidx.viewpager2:viewpager2:1.0.0"
-     *
-     * @param transformer
      */
     public Banner addPageTransformer(@Nullable ViewPager2.PageTransformer transformer) {
         mCompositePageTransformer.addTransformer(transformer);
@@ -514,7 +522,6 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout {
      * 是否允许自动轮播
      *
      * @param isAutoLoop ture 允许，false 不允许
-     * @return
      */
     public Banner isAutoLoop(boolean isAutoLoop) {
         this.mIsAutoLoop = isAutoLoop;
@@ -526,7 +533,6 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout {
      * 设置轮播间隔时间
      *
      * @param delayTime 时间（毫秒）
-     * @return
      */
     public Banner setDelayTime(long delayTime) {
         this.mDelayTime = delayTime;
@@ -535,8 +541,6 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout {
 
     /**
      * 设置轮播滑动过程的时间
-     *
-     * @param scrollTime
      */
     public Banner setScrollTime(int scrollTime) {
         this.mScrollTime = scrollTime;
@@ -545,8 +549,6 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout {
 
     /**
      * 开始轮播
-     *
-     * @return
      */
     public Banner start() {
         if (mIsAutoLoop) {
@@ -558,8 +560,6 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout {
 
     /**
      * 停止轮播
-     *
-     * @return
      */
     public Banner stop() {
         if (mIsAutoLoop) {
@@ -586,11 +586,8 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout {
 
     /**
      * 设置banner的适配器
-     *
-     * @param adapter
-     * @return
      */
-    public Banner setAdapter(@NonNull BA adapter) {
+    public Banner setAdapter(BA adapter) {
         if (adapter == null) {
             throw new NullPointerException(getContext().getString(R.string.banner_adapter_null_error));
         }
@@ -610,7 +607,6 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout {
      * 重新设置banner数据，当然你也可以在你adapter中自己操作数据
      *
      * @param datas 数据集合，当传null或者datas没有数据时，banner会变成空白的，请做好占位UI处理
-     * @return
      */
     public Banner setDatas(@NonNull List<T> datas) {
         if (getAdapter() != null) {
@@ -627,7 +623,6 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout {
      * 设置banner轮播方向
      *
      * @param orientation {@link Orientation}
-     * @return
      */
     public Banner setOrientation(@Orientation int orientation) {
         mViewPager2.setOrientation(orientation);
@@ -636,9 +631,6 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout {
 
     /**
      * 改变最小滑动距离
-     *
-     * @param mTouchSlop
-     * @return
      */
     public Banner setTouchSlop(int mTouchSlop) {
         this.mTouchSlop = mTouchSlop;
@@ -647,9 +639,6 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout {
 
     /**
      * 设置点击事件
-     *
-     * @param listener
-     * @return
      */
     public Banner setOnBannerListener(@NonNull OnBannerListener listener) {
         if (getAdapter() != null) {
@@ -664,8 +653,6 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout {
      * 在viewpager2中切换事件{@link ViewPager2.OnPageChangeCallback}是一个抽象类，
      * 为了方便使用习惯这里用的是和viewpager一样的{@link ViewPager.OnPageChangeListener}接口
      * </p>
-     *
-     * @param pageListener
      */
     public Banner addOnPageChangeListener(@NonNull OnPageChangeListener pageListener) {
         this.mOnPageChangeListener = pageListener;
@@ -678,7 +665,6 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout {
      * 默认没有圆角，需要取消圆角把半径设置为0即可
      *
      * @param radius 圆角半径
-     * @return
      */
     public Banner setBannerRound(float radius) {
         mBannerRadius = radius;
@@ -687,9 +673,6 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout {
 
     /**
      * 设置banner圆角(第二种方式，和上面的方法不要同时使用)，只支持5.0以上
-     *
-     * @param radius
-     * @return
      */
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public Banner setBannerRound2(float radius) {
@@ -702,7 +685,6 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout {
      *
      * @param itemWidth  item左右展示的宽度,单位dp
      * @param pageMargin 页面间距,单位dp
-     * @return
      */
     public Banner setBannerGalleryEffect(int itemWidth, int pageMargin) {
         return setBannerGalleryEffect(itemWidth, pageMargin, .85f);
@@ -714,13 +696,14 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout {
      * @param itemWidth  item左右展示的宽度,单位dp
      * @param pageMargin 页面间距,单位dp
      * @param scale      缩放[0-1],1代表不缩放
-     * @return
      */
     public Banner setBannerGalleryEffect(int itemWidth, int pageMargin, float scale) {
-        if (pageMargin > 0)
+        if (pageMargin > 0) {
             addPageTransformer(new MarginPageTransformer((int) BannerUtils.dp2px(pageMargin)));
-        if (scale < 1 && scale > 0)
+        }
+        if (scale < 1 && scale > 0) {
             addPageTransformer(new ScaleInTransformer(scale));
+        }
         setRecyclerViewPadding((int) BannerUtils.dp2px(itemWidth + pageMargin));
         return this;
     }
@@ -729,10 +712,9 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout {
      * 为banner添加魅族效果
      *
      * @param itemWidth item左右展示的宽度,单位dp
-     * @return
      */
     public Banner setBannerGalleryMZ(int itemWidth) {
-        return setBannerGalleryMZ(itemWidth,.88f);
+        return setBannerGalleryMZ(itemWidth, .88f);
     }
 
     /**
@@ -740,11 +722,11 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout {
      *
      * @param itemWidth item左右展示的宽度,单位dp
      * @param scale     缩放[0-1],1代表不缩放
-     * @return
      */
     public Banner setBannerGalleryMZ(int itemWidth, float scale) {
-        if (scale < 1 && scale > 0)
+        if (scale < 1 && scale > 0) {
             addPageTransformer(new MZScaleInTransformer(scale));
+        }
         setRecyclerViewPadding((int) BannerUtils.dp2px(itemWidth));
         return this;
     }
@@ -757,8 +739,6 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout {
 
     /**
      * 设置轮播指示器(显示在banner上)
-     *
-     * @param indicator
      */
     public Banner setIndicator(@NonNull Indicator indicator) {
         return setIndicator(indicator, true);
@@ -767,7 +747,6 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout {
     /**
      * 设置轮播指示器(如果你的指示器写在布局文件中，attachToBanner传false)
      *
-     * @param indicator
      * @param attachToBanner 是否将指示器添加到banner中，false 代表你可以将指示器通过布局放在任何位置
      *                       注意：设置为false后，内置的 setIndicatorGravity()和setIndicatorMargins() 方法将失效。
      *                       想改变可以自己调用系统提供的属性在布局文件中进行设置。具体可以参照demo
@@ -864,5 +843,32 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout {
         return this;
     }
 
+    /**
+     * **********************************************************************
+     * ------------------------ 生命周期控制 --------------------------------*
+     * **********************************************************************
+     */
+
+    public Banner addBannerLifecycleObserver(LifecycleOwner owner) {
+        if (owner != null) {
+            owner.getLifecycle().addObserver(new BannerLifecycleObserverAdapter(owner, this));
+        }
+        return this;
+    }
+
+    @Override
+    public void onStart(LifecycleOwner owner) {
+        start();
+    }
+
+    @Override
+    public void onStop(LifecycleOwner owner) {
+        stop();
+    }
+
+    @Override
+    public void onDestroy(LifecycleOwner owner) {
+        destroy();
+    }
 
 }

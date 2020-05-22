@@ -38,7 +38,8 @@ public class VideoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_video);
         ButterKnife.bind(this);
 
-        banner.setAdapter(new MultipleTypesAdapter(this, DataBean.getTestDataVideo()))
+        banner.addBannerLifecycleObserver(this)
+                .setAdapter(new MultipleTypesAdapter(this, DataBean.getTestDataVideo()))
                 .setIndicator(new NumIndicator(this))
                 .setIndicatorGravity(IndicatorConfig.Direction.RIGHT)
                 .addOnPageChangeListener(new OnPageChangeListener() {

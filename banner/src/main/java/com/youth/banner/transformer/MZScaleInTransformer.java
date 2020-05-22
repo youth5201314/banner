@@ -7,6 +7,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
+/**
+ * 内部实现魅族效果使用的，单独使用可能效果不一定好，自己可以尝试下看看是否满意，推荐使用ScaleInTransformer
+ */
 public class MZScaleInTransformer extends BasePageTransformer {
     private static final float DEFAULT_MIN_SCALE = 0.85f;
     private float mMinScale = DEFAULT_MIN_SCALE;
