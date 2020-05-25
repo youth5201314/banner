@@ -25,6 +25,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="180dp"
                 android:layout_margin="10dp"
+                banner:banner_radius="5dp"
                 banner:indicator_normal_color="@android:color/white"
                 banner:indicator_selected_color="@color/colorPrimary" />
 
