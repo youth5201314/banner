@@ -26,12 +26,10 @@
                 android:layout_height="180dp"
                 android:orientation="vertical">
 
-                <ImageView
-                    android:id="@+id/discover_img"
+                <com.youth.banner.Banner
+                    android:id="@+id/banner"
                     android:layout_width="match_parent"
-                    android:layout_height="180dp"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/image7" />
+                    android:layout_height="180dp"/>
 
             </LinearLayout>
 

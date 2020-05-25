@@ -1,5 +1,4 @@
 <resources>
-    <string name="app_name">Banner Example</string>
-    <string name="situationOne">ScrollView嵌套banner</string>
+    <string name="app_name">Banner</string>
 
 </resources>

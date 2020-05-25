@@ -95,6 +95,8 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout implements 
     private float mStartX, mStartY;
     // 记录viewpager2是否被拖动
     private boolean mIsViewPager2Drag;
+    // 是否要拦截事件
+    private boolean isIntercept = true;
 
     @Retention(SOURCE)
     @IntDef( {HORIZONTAL, VERTICAL})
@@ -211,7 +213,7 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout implements 
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent event) {
-        if (!getViewPager2().isUserInputEnabled()) {
+        if (!getViewPager2().isUserInputEnabled() || !isIntercept) {
             return super.onInterceptTouchEvent(event);
         }
         switch (event.getAction()) {
@@ -445,6 +447,11 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout implements 
 
     //-----------------------------------------------------------------------------------------
 
+
+    public Banner setIntercept(boolean intercept) {
+        isIntercept = intercept;
+        return this;
+    }
 
     public Banner setCurrentItem(int position) {
         return setCurrentItem(position, true);

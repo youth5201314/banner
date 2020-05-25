@@ -130,7 +130,7 @@
 Gradle 
 ```groovy
 dependencies{
-    compile 'com.youth.banner:banner:2.0.9'  
+    compile 'com.youth.banner:banner:2.0.10'  
 }
 ```
 
