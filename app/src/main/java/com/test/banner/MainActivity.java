@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
         banner.setAdapter(adapter)//设置适配器
 //              .setCurrentItem(3,false)
               .addBannerLifecycleObserver(this)//添加生命周期观察者
-              .setBannerRound(BannerUtils.dp2px(5))//圆角
+//              .setBannerRound(BannerUtils.dp2px(5))//圆角
 //              .addPageTransformer(new RotateYTransformer())//添加切换效果
               .setIndicator(new CircleIndicator(this))//设置指示器
               .addOnPageChangeListener(this)//添加切换监听
