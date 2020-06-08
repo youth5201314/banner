@@ -136,6 +136,7 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout implements 
             return;
         }
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.Banner);
+        mBannerRadius = a.getDimensionPixelSize(R.styleable.Banner_banner_radius, 0);
         mDelayTime = a.getInt(R.styleable.Banner_delay_time, BannerConfig.LOOP_TIME);
         mIsAutoLoop = a.getBoolean(R.styleable.Banner_is_auto_loop, BannerConfig.IS_AUTO_LOOP);
         mIsInfiniteLoop = a.getBoolean(R.styleable.Banner_is_infinite_loop, BannerConfig.IS_INFINITE_LOOP);
