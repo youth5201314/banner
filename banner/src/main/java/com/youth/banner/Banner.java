@@ -411,7 +411,6 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout implements 
         return mIsInfiniteLoop;
     }
 
-    @NonNull
     public BA getAdapter() {
         if (mAdapter == null) {
             LogUtils.e(getContext().getString(R.string.banner_adapter_use_error));
@@ -419,7 +418,6 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout implements 
         return mAdapter;
     }
 
-    @NonNull
     public ViewPager2 getViewPager2() {
         return mViewPager2;
     }
@@ -497,6 +495,7 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout implements 
     }
 
     /**
+     * 添加PageTransformer，可以组合效果
      * {@link ViewPager2.PageTransformer}
      * 如果找不到请导入implementation "androidx.viewpager2:viewpager2:1.0.0"
      */
@@ -505,6 +504,11 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout implements 
         return this;
     }
 
+    /**
+     * 设置PageTransformer，和addPageTransformer不同，这个只支持一种transformer
+     * @param transformer
+     * @return
+     */
     public Banner setPageTransformer(@Nullable ViewPager2.PageTransformer transformer) {
         getViewPager2().setPageTransformer(transformer);
         return this;
@@ -515,6 +519,11 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout implements 
         return this;
     }
 
+    /**
+     * 添加 ItemDecoration
+     * @param decor
+     * @return
+     */
     public Banner addItemDecoration(@NonNull RecyclerView.ItemDecoration decor) {
         getViewPager2().addItemDecoration(decor);
         return this;
@@ -579,7 +588,9 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout implements 
      * 移除一些引用
      */
     public void destroy() {
-        getViewPager2().unregisterOnPageChangeCallback(mPageChangeCallback);
+        if (mViewPager2 != null && mPageChangeCallback != null) {
+            mViewPager2.unregisterOnPageChangeCallback(mPageChangeCallback);
+        }
         removeCallbacks(mLoopTask);
         mCompositePageTransformer = null;
         mPageChangeCallback = null;
@@ -611,7 +622,7 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout implements 
 
 
     /**
-     * 重新设置banner数据，当然你也可以在你adapter中自己操作数据
+     * 重新设置banner数据，当然你也可以在你adapter中自己操作数据,不要过于局限在这个方法，举一反三哈
      *
      * @param datas 数据集合，当传null或者datas没有数据时，banner会变成空白的，请做好占位UI处理
      */
