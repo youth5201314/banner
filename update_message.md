@@ -1,6 +1,9 @@
 
 ## 更新说明
 
+#### v2.0.11
+   * 合并了lvshaojun朋友提交的代码
+    
 #### v2.0.9
    * 增加了addBannerLifecycleObserver()方法，给banner添加生命周期观察者，将生命周期交给banner自己处理，
      你也可以不使用这种方式自己象以前的方式自己控制，具体可以参考文档和demo

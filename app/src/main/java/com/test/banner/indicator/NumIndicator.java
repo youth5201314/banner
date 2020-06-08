@@ -48,11 +48,14 @@ public class NumIndicator extends BaseIndicator {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+        int count = config.getIndicatorSize();
+        if (count <= 1) return;
+
         RectF rectF = new RectF(0, 0, width, height);
         mPaint.setColor(Color.parseColor("#70000000"));
         canvas.drawRoundRect(rectF, radius, radius, mPaint);
 
-        String text = (config.getCurrentPosition() + 1) + "/" + config.getIndicatorSize();
+        String text = (count + 1) + "/" + config.getIndicatorSize();
         mPaint.setColor(Color.WHITE);
         canvas.drawText(text, width / 2, (float) (height * 0.7), mPaint);
 

@@ -108,6 +108,7 @@
 |is_auto_loop|boolean|是否自动轮播，默认true
 |is_infinite_loop|boolean|是否支持无限循环（即首尾直接过渡），默认true
 |banner_orientation|enum|轮播方向：horizontal（默认） or vertical
+|banner_radius|dimension|banner圆角半径
 |indicator_normal_width|dimension|指示器默认的宽度，默认5dp （对RoundLinesIndicator无效）
 |indicator_selected_width|dimension|指示器选中的宽度，默认7dp （对RectangleIndicator无效）
 |indicator_normal_color|color|指示器默认颜色，默认0x88ffffff
@@ -130,7 +131,7 @@
 Gradle 
 ```groovy
 dependencies{
-    compile 'com.youth.banner:banner:2.0.10'  
+    compile 'com.youth.banner:banner:2.0.11'  
 }
 ```
 
