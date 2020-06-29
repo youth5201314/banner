@@ -11,7 +11,7 @@ import com.youth.banner.indicator.BaseIndicator;
 import com.youth.banner.util.BannerUtils;
 
 /**
- * 自定义数字指示器demo，比较简单，具体的自己优化
+ * 自定义数字指示器demo，比较简单，具体的自己发挥
  *
  * 这里没有用的自定义属性的参数，可以考虑加上
  */
@@ -41,7 +41,9 @@ public class NumIndicator extends BaseIndicator {
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         int count = config.getIndicatorSize();
-        if (count <= 1) return;
+        if (count <= 1) {
+            return;
+        }
         setMeasuredDimension(width, height);
     }
 
@@ -49,13 +51,15 @@ public class NumIndicator extends BaseIndicator {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         int count = config.getIndicatorSize();
-        if (count <= 1) return;
+        if (count <= 1) {
+            return;
+        }
 
         RectF rectF = new RectF(0, 0, width, height);
         mPaint.setColor(Color.parseColor("#70000000"));
         canvas.drawRoundRect(rectF, radius, radius, mPaint);
 
-        String text = (count + 1) + "/" + config.getIndicatorSize();
+        String text = config.getCurrentPosition() + 1 + "/" + count;
         mPaint.setColor(Color.WHITE);
         canvas.drawText(text, width / 2, (float) (height * 0.7), mPaint);
 

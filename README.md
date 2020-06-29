@@ -70,6 +70,7 @@
 |start()|this|开始轮播(主要配合生命周期使用)，或者你手动暂停再次启动
 |stop()|this|停止轮播(主要配合生命周期使用)，或者你需要手动暂停
 |setAdapter(T extends BannerAdapter)|this|设置banner的适配器
+|setAdapter(T extends BannerAdapter,boolean)|this|设置banner的适配器,是否支持无限循环
 |setOrientation(@Orientation)|this|设置banner轮播方向(垂直or水平)
 |setOnBannerListener(this)|this|设置点击事件，下标是从0开始
 |addOnPageChangeListener(this)|this|添加viewpager2的滑动监听
@@ -131,7 +132,7 @@
 Gradle 
 ```groovy
 dependencies{
-    compile 'com.youth.banner:banner:2.0.11'  
+    compile 'com.youth.banner:banner:2.0.12'  
 }
 ```
 

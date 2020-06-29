@@ -5,16 +5,15 @@
         <attr name="is_auto_loop" format="boolean" />
         <attr name="is_infinite_loop" format="boolean" />
 
-        <!--CircleIndicator-->
-        <attr name="indicator_normal_width" format="dimension"/>
-        <attr name="indicator_space" format="dimension"/>
-
         <!--RoundLinesIndicator、RectangleIndicator-->
         <attr name="indicator_height" format="dimension"/>
         <attr name="indicator_radius" format="dimension"/>
 
         <!-- 以下为公用属性 -->
         <attr name="indicator_selected_width" format="dimension"/>
+        <!--CircleIndicator-->
+        <attr name="indicator_normal_width" format="dimension"/>
+        <attr name="indicator_space" format="dimension"/>
 
         <attr name="indicator_normal_color" format="reference|color"/>
         <attr name="indicator_selected_color" format="reference|color"/>

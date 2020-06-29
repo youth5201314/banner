@@ -44,7 +44,7 @@ public class RoundLinesIndicator extends BaseIndicator {
         canvas.drawRoundRect(oval, config.getRadius(), config.getRadius(), mPaint);
 
         mPaint.setColor(config.getSelectedColor());
-        int left = (int) (config.getCurrentPosition() * config.getSelectedWidth());
+        int left = config.getCurrentPosition() * config.getSelectedWidth();
         RectF rectF = new RectF(left, 0, left + config.getSelectedWidth(), config.getHeight());
         canvas.drawRoundRect(rectF, config.getRadius(), config.getRadius(), mPaint);
     }

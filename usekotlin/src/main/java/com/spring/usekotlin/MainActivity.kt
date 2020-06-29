@@ -30,6 +30,8 @@ class MainActivity : AppCompatActivity() {
             it.setBannerRound(20f)
             it.adapter = adapter
         }
+
+
     }
 
 

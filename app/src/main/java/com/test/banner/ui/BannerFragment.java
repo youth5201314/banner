@@ -41,7 +41,6 @@ public class BannerFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         banner.setAdapter(new ImageNetAdapter(DataBean.getTestData3()));
         banner.setIndicator(new RectangleIndicator(getActivity()));
-        banner.setIndicatorNormalWidth((int) BannerUtils.dp2px(12));
         banner.setIndicatorSpace((int) BannerUtils.dp2px(4));
         banner.setIndicatorRadius(0);
     }

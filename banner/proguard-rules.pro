@@ -4,3 +4,4 @@
 -keep class androidx.recyclerview.widget.RecyclerView{*;}
 -dontwarn com.youth.banner.**
 -keep class com.youth.banner.** {*;}
+

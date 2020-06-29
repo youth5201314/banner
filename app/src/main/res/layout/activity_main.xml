@@ -6,6 +6,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <RelativeLayout
+            android:id="@+id/rl_main"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="#f5f5f5"

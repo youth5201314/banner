@@ -6,17 +6,20 @@ import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.DecelerateInterpolator;
+import android.view.animation.Interpolator;
 import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.youth.banner.config.IndicatorConfig;
+import com.youth.banner.util.LogUtils;
 
 public class BaseIndicator extends View implements Indicator {
     protected IndicatorConfig config;
     protected Paint mPaint;
-    protected float positionOffset;
+    protected float offset;
 
     public BaseIndicator(Context context) {
         this(context, null);
@@ -74,13 +77,15 @@ public class BaseIndicator extends View implements Indicator {
 
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-        this.positionOffset=positionOffset;
+        offset = positionOffset;
+        invalidate();
+
     }
 
     @Override
     public void onPageSelected(int position) {
         config.setCurrentPosition(position);
-        postInvalidate();
+        invalidate();
     }
 
     @Override

@@ -16,7 +16,7 @@ import java.lang.reflect.Field;
 public class ScrollSpeedManger extends LinearLayoutManager {
     private Banner banner;
 
-    public ScrollSpeedManger(Banner banner, RecyclerView recyclerView, LinearLayoutManager linearLayoutManager) {
+    public ScrollSpeedManger(Banner banner, LinearLayoutManager linearLayoutManager) {
         super(banner.getContext(), linearLayoutManager.getOrientation(), false);
         this.banner = banner;
     }
@@ -39,13 +39,10 @@ public class ScrollSpeedManger extends LinearLayoutManager {
             ViewPager2 viewPager2 = banner.getViewPager2();
             RecyclerView recyclerView = (RecyclerView) viewPager2.getChildAt(0);
             recyclerView.setOverScrollMode(RecyclerView.OVER_SCROLL_NEVER);
-            LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
-            ScrollSpeedManger speedManger = new ScrollSpeedManger(banner, recyclerView, linearLayoutManager);
+
+            ScrollSpeedManger speedManger = new ScrollSpeedManger(banner, (LinearLayoutManager) recyclerView.getLayoutManager());
             recyclerView.setLayoutManager(speedManger);
 
-            Field mRecyclerView = RecyclerView.LayoutManager.class.getDeclaredField("mRecyclerView");
-            mRecyclerView.setAccessible(true);
-            mRecyclerView.set(linearLayoutManager, recyclerView);
 
             Field LayoutMangerField = ViewPager2.class.getDeclaredField("mLayoutManager");
             LayoutMangerField.setAccessible(true);
@@ -69,9 +66,7 @@ public class ScrollSpeedManger extends LinearLayoutManager {
                 layoutManager.setAccessible(true);
                 layoutManager.set(mScrollEventAdapter, speedManger);
             }
-        } catch (NoSuchFieldException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

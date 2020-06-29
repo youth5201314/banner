@@ -96,7 +96,7 @@ public class IndicatorConfig {
         return this;
     }
 
-    public float getIndicatorSpace() {
+    public int getIndicatorSpace() {
         return indicatorSpace;
     }
 
@@ -114,7 +114,7 @@ public class IndicatorConfig {
         return this;
     }
 
-    public float getNormalWidth() {
+    public int getNormalWidth() {
         return normalWidth;
     }
 
@@ -123,7 +123,7 @@ public class IndicatorConfig {
         return this;
     }
 
-    public float getSelectedWidth() {
+    public int getSelectedWidth() {
         return selectedWidth;
     }
 

@@ -39,7 +39,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class MainActivity extends AppCompatActivity implements OnPageChangeListener {
+public class MainActivity extends AppCompatActivity {
     @BindView(R.id.banner)
     Banner banner;
     @BindView(R.id.indicator)
@@ -55,8 +55,7 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        ImageAdapter adapter = new ImageAdapter(DataBean.getTestData());
-
+        ImageAdapter adapter = new ImageAdapter(DataBean.getTestData2());
 
         banner.setAdapter(adapter)//设置适配器
 //              .setCurrentItem(3,false)
@@ -64,7 +63,6 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
 //              .setBannerRound(BannerUtils.dp2px(5))//圆角
 //              .addPageTransformer(new RotateYTransformer())//添加切换效果
               .setIndicator(new CircleIndicator(this))//设置指示器
-              .addOnPageChangeListener(this)//添加切换监听
               .setOnBannerListener((data, position) -> {
                   Snackbar.make(banner, ((DataBean) data).title, Snackbar.LENGTH_SHORT).show();
                   LogUtils.d("position：" + position);
@@ -94,7 +92,7 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
                 public void run() {
                     refresh.setRefreshing(false);
                     //给banner重新设置数据
-                    banner.setDatas(DataBean.getTestData2());
+                    banner.setDatas(DataBean.getTestData());
                     //对setdatas不满意？你可以自己控制数据，可以参考setDatas()的实现修改
 //                    adapter.updateData(DataBean.getTestData2());
                 }
@@ -103,19 +101,6 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
 
     }
 
-
-    @Override
-    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-    }
-
-    @Override
-    public void onPageSelected(int position) {
-        LogUtils.d("onPageSelected:" + position);
-    }
-
-    @Override
-    public void onPageScrollStateChanged(int state) {
-    }
 
 
     @OnClick( {R.id.style_image, R.id.style_image_title, R.id.style_image_title_num, R.id.style_multiple,
@@ -142,6 +127,7 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
                 refresh.setEnabled(true);
                 banner.setAdapter(new ImageTitleNumAdapter(DataBean.getTestData()));
                 banner.removeIndicator();
+                //这里是将数字指示器和title都放在adapter中的，如果不想这样你也可以直接设置自定义的数字指示器
                 break;
             case R.id.style_multiple:
                 refresh.setEnabled(true);

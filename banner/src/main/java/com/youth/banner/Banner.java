@@ -59,11 +59,11 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout implements 
     private BannerOnPageChangeCallback mPageChangeCallback;
 
     // 是否允许无限轮播（即首尾直接切换）
-    private boolean mIsInfiniteLoop;
+    private boolean mIsInfiniteLoop = BannerConfig.IS_INFINITE_LOOP;
     // 是否自动轮播
-    private boolean mIsAutoLoop;
+    private boolean mIsAutoLoop = BannerConfig.IS_AUTO_LOOP;
     // 轮播切换间隔时间
-    private long mDelayTime;
+    private long mDelayTime = BannerConfig.LOOP_TIME;
     // 轮播切换时间
     private int mScrollTime = BannerConfig.SCROLL_TIME;
     // 轮播开始位置
@@ -72,19 +72,19 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout implements 
     private float mBannerRadius = 0;
 
     // 指示器相关配置
-    private int normalWidth;
-    private int selectedWidth;
-    private int normalColor;
-    private int selectedColor;
-    private int indicatorGravity;
+    private int normalWidth = BannerConfig.INDICATOR_NORMAL_WIDTH;
+    private int selectedWidth = BannerConfig.INDICATOR_SELECTED_WIDTH;
+    private int normalColor = BannerConfig.INDICATOR_NORMAL_COLOR;
+    private int selectedColor = BannerConfig.INDICATOR_SELECTED_COLOR;
+    private int indicatorGravity = IndicatorConfig.Direction.CENTER;
     private int indicatorSpace;
     private int indicatorMargin;
     private int indicatorMarginLeft;
     private int indicatorMarginTop;
     private int indicatorMarginRight;
     private int indicatorMarginBottom;
-    private int indicatorHeight;
-    private int indicatorRadius;
+    private int indicatorHeight = BannerConfig.INDICATOR_HEIGHT;
+    private int indicatorRadius = BannerConfig.INDICATOR_RADIUS;
 
     public static final int HORIZONTAL = 0;
     public static final int VERTICAL = 1;
@@ -103,21 +103,21 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout implements 
     public @interface Orientation {
     }
 
-    public Banner(@NonNull Context context) {
+    public Banner(Context context) {
         this(context, null);
     }
 
-    public Banner(@NonNull Context context, @NonNull AttributeSet attrs) {
+    public Banner(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public Banner(@NonNull Context context, @NonNull AttributeSet attrs, int defStyleAttr) {
+    public Banner(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init(context);
         initTypedArray(context, attrs);
     }
 
-    private void init(@NonNull Context context) {
+    private void init(Context context) {
         mTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop() / 2;
         mCompositePageTransformer = new CompositePageTransformer();
         mPageChangeCallback = new BannerOnPageChangeCallback();
@@ -131,7 +131,7 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout implements 
         addView(mViewPager2);
     }
 
-    private void initTypedArray(@NonNull Context context, @NonNull AttributeSet attrs) {
+    private void initTypedArray(Context context, AttributeSet attrs) {
         if (attrs == null) {
             return;
         }
@@ -394,7 +394,7 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout implements 
      */
 
     public int getCurrentItem() {
-        return mViewPager2.getCurrentItem();
+        return getViewPager2().getCurrentItem();
     }
 
     public int getItemCount() {
@@ -446,7 +446,11 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout implements 
 
     //-----------------------------------------------------------------------------------------
 
-
+    /**
+     * 是否要拦截事件
+     * @param intercept
+     * @return
+     */
     public Banner setIntercept(boolean intercept) {
         isIntercept = intercept;
         return this;
@@ -457,7 +461,7 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout implements 
     }
 
     public Banner setCurrentItem(int position, boolean smoothScroll) {
-        mViewPager2.setCurrentItem(position, smoothScroll);
+        getViewPager2().setCurrentItem(position, smoothScroll);
         return this;
     }
 
@@ -507,8 +511,6 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout implements 
 
     /**
      * 设置PageTransformer，和addPageTransformer不同，这个只支持一种transformer
-     * @param transformer
-     * @return
      */
     public Banner setPageTransformer(@Nullable ViewPager2.PageTransformer transformer) {
         getViewPager2().setPageTransformer(transformer);
@@ -522,15 +524,13 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout implements 
 
     /**
      * 添加 ItemDecoration
-     * @param decor
-     * @return
      */
-    public Banner addItemDecoration(@NonNull RecyclerView.ItemDecoration decor) {
+    public Banner addItemDecoration(RecyclerView.ItemDecoration decor) {
         getViewPager2().addItemDecoration(decor);
         return this;
     }
 
-    public Banner addItemDecoration(@NonNull RecyclerView.ItemDecoration decor, int index) {
+    public Banner addItemDecoration(RecyclerView.ItemDecoration decor, int index) {
         getViewPager2().addItemDecoration(decor, index);
         return this;
     }
@@ -589,18 +589,11 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout implements 
      * 移除一些引用
      */
     public void destroy() {
-        if (mViewPager2 != null && mPageChangeCallback != null) {
-            mViewPager2.unregisterOnPageChangeCallback(mPageChangeCallback);
+        if (getViewPager2() != null && mPageChangeCallback != null) {
+            getViewPager2().unregisterOnPageChangeCallback(mPageChangeCallback);
+            mPageChangeCallback = null;
         }
-        removeCallbacks(mLoopTask);
-        mCompositePageTransformer = null;
-        mPageChangeCallback = null;
-        mOnPageChangeListener = null;
-        mLoopTask = null;
-        mIndicator = null;
-        mAdapterDataObserver = null;
-        mAdapter = null;
-        mViewPager2 = null;
+        stop();
     }
 
     /**
@@ -621,13 +614,26 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout implements 
         return this;
     }
 
+    /**
+     * 设置banner的适配器
+     * @param adapter
+     * @param isInfiniteLoop 是否支持无限循环
+     * @return
+     */
+    public Banner setAdapter(BA adapter,boolean isInfiniteLoop) {
+        mIsInfiniteLoop=isInfiniteLoop;
+        setInfiniteLoop();
+        setAdapter(adapter);
+        return this;
+    }
+
 
     /**
      * 重新设置banner数据，当然你也可以在你adapter中自己操作数据,不要过于局限在这个方法，举一反三哈
      *
      * @param datas 数据集合，当传null或者datas没有数据时，banner会变成空白的，请做好占位UI处理
      */
-    public Banner setDatas(@NonNull List<T> datas) {
+    public Banner setDatas(List<T> datas) {
         if (getAdapter() != null) {
             getAdapter().setDatas(datas);
             getAdapter().notifyDataSetChanged();
@@ -644,7 +650,7 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout implements 
      * @param orientation {@link Orientation}
      */
     public Banner setOrientation(@Orientation int orientation) {
-        mViewPager2.setOrientation(orientation);
+        getViewPager2().setOrientation(orientation);
         return this;
     }
 
@@ -659,7 +665,7 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout implements 
     /**
      * 设置点击事件
      */
-    public Banner setOnBannerListener(@NonNull OnBannerListener listener) {
+    public Banner setOnBannerListener(OnBannerListener listener) {
         if (getAdapter() != null) {
             getAdapter().setOnBannerListener(listener);
         }
@@ -673,7 +679,7 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout implements 
      * 为了方便使用习惯这里用的是和viewpager一样的{@link ViewPager.OnPageChangeListener}接口
      * </p>
      */
-    public Banner addOnPageChangeListener(@NonNull OnPageChangeListener pageListener) {
+    public Banner addOnPageChangeListener(OnPageChangeListener pageListener) {
         this.mOnPageChangeListener = pageListener;
         return this;
     }
@@ -759,7 +765,7 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout implements 
     /**
      * 设置轮播指示器(显示在banner上)
      */
-    public Banner setIndicator(@NonNull Indicator indicator) {
+    public Banner setIndicator(Indicator indicator) {
         return setIndicator(indicator, true);
     }
 
@@ -770,7 +776,7 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout implements 
      *                       注意：设置为false后，内置的 setIndicatorGravity()和setIndicatorMargins() 方法将失效。
      *                       想改变可以自己调用系统提供的属性在布局文件中进行设置。具体可以参照demo
      */
-    public Banner setIndicator(@NonNull Indicator indicator, boolean attachToBanner) {
+    public Banner setIndicator(Indicator indicator, boolean attachToBanner) {
         removeIndicator();
         indicator.getIndicatorConfig().setAttachToBanner(attachToBanner);
         this.mIndicator = indicator;
