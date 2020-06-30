@@ -3,7 +3,11 @@ package com.youth.banner;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
 import android.graphics.RectF;
 import android.os.Build;
 import android.util.AttributeSet;
@@ -98,6 +102,9 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout implements 
     // 是否要拦截事件
     private boolean isIntercept = true;
 
+    private Paint mRoundPaint;
+    private Paint mImagePaint;
+
     @Retention(SOURCE)
     @IntDef( {HORIZONTAL, VERTICAL})
     public @interface Orientation {
@@ -129,6 +136,14 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout implements 
         mViewPager2.setPageTransformer(mCompositePageTransformer);
         ScrollSpeedManger.reflectLayoutManager(this);
         addView(mViewPager2);
+
+        mRoundPaint = new Paint();
+        mRoundPaint.setColor(Color.WHITE);
+        mRoundPaint.setAntiAlias(true);
+        mRoundPaint.setStyle(Paint.Style.FILL);
+        mRoundPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_OUT));
+        mImagePaint = new Paint();
+        mImagePaint.setXfermode(null);
     }
 
     private void initTypedArray(Context context, AttributeSet attrs) {
@@ -243,15 +258,79 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout implements 
         return super.onInterceptTouchEvent(event);
     }
 
+//    @Override
+//    protected void dispatchDraw(Canvas canvas) {
+//        if (mBannerRadius > 0) {
+//            Path path = new Path();
+//            path.addRoundRect(new RectF(0, 0, getMeasuredWidth(), getMeasuredHeight()),
+//                    mBannerRadius, mBannerRadius, Path.Direction.CW);
+//            canvas.clipPath(path);
+//        }
+//        super.dispatchDraw(canvas);
+//    }
+
     @Override
     protected void dispatchDraw(Canvas canvas) {
         if (mBannerRadius > 0) {
-            Path path = new Path();
-            path.addRoundRect(new RectF(0, 0, getMeasuredWidth(), getMeasuredHeight()),
-                    mBannerRadius, mBannerRadius, Path.Direction.CW);
-            canvas.clipPath(path);
+            canvas.saveLayer(new RectF(0, 0, canvas.getWidth(), canvas.getHeight()), mImagePaint, Canvas.ALL_SAVE_FLAG);
+            super.dispatchDraw(canvas);
+            //绘制外圆环边框圆环
+            drawTopLeft(canvas);
+            drawTopRight(canvas);
+            drawBottomLeft(canvas);
+            drawBottomRight(canvas);
+            canvas.restore();
+        } else {
+            super.dispatchDraw(canvas);
         }
-        super.dispatchDraw(canvas);
+    }
+
+    private void drawTopLeft(Canvas canvas) {
+        Path path = new Path();
+        path.moveTo(0, mBannerRadius);
+        path.lineTo(0, 0);
+        path.lineTo(mBannerRadius, 0);
+        path.arcTo(new RectF(0, 0, mBannerRadius * 2, mBannerRadius * 2),
+                -90, -90);
+        path.close();
+        canvas.drawPath(path, mRoundPaint);
+    }
+
+    private void drawTopRight(Canvas canvas) {
+        int width = getWidth();
+        Path path = new Path();
+        path.moveTo(width - mBannerRadius, 0);
+        path.lineTo(width, 0);
+        path.lineTo(width, mBannerRadius);
+        path.arcTo(new RectF(width - 2 * mBannerRadius, 0, width,
+                mBannerRadius * 2), 0, -90);
+        path.close();
+        canvas.drawPath(path, mRoundPaint);
+    }
+
+    private void drawBottomLeft(Canvas canvas) {
+        int height = getHeight();
+        Path path = new Path();
+        path.moveTo(0, height - mBannerRadius);
+        path.lineTo(0, height);
+        path.lineTo(mBannerRadius, height);
+        path.arcTo(new RectF(0, height - 2 * mBannerRadius,
+                mBannerRadius * 2, height), 90, 90);
+        path.close();
+        canvas.drawPath(path, mRoundPaint);
+    }
+
+    private void drawBottomRight(Canvas canvas) {
+        int height = getHeight();
+        int width = getWidth();
+        Path path = new Path();
+        path.moveTo(width - mBannerRadius, height);
+        path.lineTo(width, height);
+        path.lineTo(width, height - mBannerRadius);
+        path.arcTo(new RectF(width - 2 * mBannerRadius, height - 2
+                * mBannerRadius, width, height), 0, 90);
+        path.close();
+        canvas.drawPath(path, mRoundPaint);
     }
 
     @Override
