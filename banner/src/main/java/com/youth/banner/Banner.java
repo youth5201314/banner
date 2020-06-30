@@ -457,11 +457,15 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout implements 
     }
 
     private void setRecyclerViewPadding(int itemPadding) {
+        setRecyclerViewPadding(itemPadding, itemPadding);
+    }
+
+    private void setRecyclerViewPadding(int leftItemPadding, int rightItemPadding) {
         RecyclerView recyclerView = (RecyclerView) getViewPager2().getChildAt(0);
         if (getViewPager2().getOrientation() == ViewPager2.ORIENTATION_VERTICAL) {
-            recyclerView.setPadding(0, itemPadding, 0, itemPadding);
+            recyclerView.setPadding(0, leftItemPadding, 0, rightItemPadding);
         } else {
-            recyclerView.setPadding(itemPadding, 0, itemPadding, 0);
+            recyclerView.setPadding(leftItemPadding, 0, rightItemPadding, 0);
         }
         recyclerView.setClipToPadding(false);
     }
@@ -797,18 +801,42 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout implements 
     /**
      * 为banner添加画廊效果
      *
+     * @param leftItemWidth  item左展示的宽度,单位dp
+     * @param rightItemWidth  item右展示的宽度,单位dp
+     * @param pageMargin 页面间距,单位dp
+     */
+    public Banner setBannerGalleryEffect(int leftItemWidth, int rightItemWidth, int pageMargin) {
+        return setBannerGalleryEffect(leftItemWidth,rightItemWidth, pageMargin, .85f);
+    }
+
+    /**
+     * 为banner添加画廊效果
+     *
      * @param itemWidth  item左右展示的宽度,单位dp
      * @param pageMargin 页面间距,单位dp
      * @param scale      缩放[0-1],1代表不缩放
      */
     public Banner setBannerGalleryEffect(int itemWidth, int pageMargin, float scale) {
+        return setBannerGalleryEffect(itemWidth, itemWidth, pageMargin, scale);
+    }
+
+    /**
+     * 为banner添加画廊效果
+     *
+     * @param leftItemWidth  item左展示的宽度,单位dp
+     * @param rightItemWidth  item右展示的宽度,单位dp
+     * @param pageMargin 页面间距,单位dp
+     * @param scale      缩放[0-1],1代表不缩放
+     */
+    public Banner setBannerGalleryEffect(int leftItemWidth, int rightItemWidth, int pageMargin, float scale) {
         if (pageMargin > 0) {
             addPageTransformer(new MarginPageTransformer((int) BannerUtils.dp2px(pageMargin)));
         }
         if (scale < 1 && scale > 0) {
             addPageTransformer(new ScaleInTransformer(scale));
         }
-        setRecyclerViewPadding((int) BannerUtils.dp2px(itemWidth + pageMargin));
+        setRecyclerViewPadding(leftItemWidth > 0 ? (int) BannerUtils.dp2px(leftItemWidth + pageMargin) : 0,
+                rightItemWidth > 0 ? (int) BannerUtils.dp2px(rightItemWidth + pageMargin) : 0);
         return this;
     }
 
