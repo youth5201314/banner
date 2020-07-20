@@ -21,7 +21,7 @@
         android:id="@+id/banner"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:indicator_selected_color="@color/colorPrimary"
+        app:banner_indicator_selected_color="@color/colorPrimary"
         app:layout_constraintDimensionRatio="3:1"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"

@@ -48,5 +48,5 @@ dependencies {
 
 
     implementation project(':banner')
-//    implementation 'com.youth.banner:banner:+'
+//    implementation 'com.youth.banner:banner:2.0.10'
 }

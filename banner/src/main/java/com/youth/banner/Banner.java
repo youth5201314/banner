@@ -5,13 +5,13 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.PaintFlagsDrawFilter;
 import android.graphics.Path;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.RectF;
 import android.os.Build;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
@@ -20,7 +20,6 @@ import android.widget.FrameLayout;
 import androidx.annotation.ColorInt;
 import androidx.annotation.ColorRes;
 import androidx.annotation.IntDef;
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
@@ -67,7 +66,7 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout implements 
     // 是否自动轮播
     private boolean mIsAutoLoop = BannerConfig.IS_AUTO_LOOP;
     // 轮播切换间隔时间
-    private long mDelayTime = BannerConfig.LOOP_TIME;
+    private long mLoopTime = BannerConfig.LOOP_TIME;
     // 轮播切换时间
     private int mScrollTime = BannerConfig.SCROLL_TIME;
     // 轮播开始位置
@@ -102,6 +101,7 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout implements 
     // 是否要拦截事件
     private boolean isIntercept = true;
 
+    //绘制圆角视图
     private Paint mRoundPaint;
     private Paint mImagePaint;
 
@@ -152,22 +152,22 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout implements 
         }
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.Banner);
         mBannerRadius = a.getDimensionPixelSize(R.styleable.Banner_banner_radius, 0);
-        mDelayTime = a.getInt(R.styleable.Banner_delay_time, BannerConfig.LOOP_TIME);
-        mIsAutoLoop = a.getBoolean(R.styleable.Banner_is_auto_loop, BannerConfig.IS_AUTO_LOOP);
-        mIsInfiniteLoop = a.getBoolean(R.styleable.Banner_is_infinite_loop, BannerConfig.IS_INFINITE_LOOP);
-        normalWidth = a.getDimensionPixelSize(R.styleable.Banner_indicator_normal_width, BannerConfig.INDICATOR_NORMAL_WIDTH);
-        selectedWidth = a.getDimensionPixelSize(R.styleable.Banner_indicator_selected_width, BannerConfig.INDICATOR_SELECTED_WIDTH);
-        normalColor = a.getColor(R.styleable.Banner_indicator_normal_color, BannerConfig.INDICATOR_NORMAL_COLOR);
-        selectedColor = a.getColor(R.styleable.Banner_indicator_selected_color, BannerConfig.INDICATOR_SELECTED_COLOR);
-        indicatorGravity = a.getInt(R.styleable.Banner_indicator_gravity, IndicatorConfig.Direction.CENTER);
-        indicatorSpace = a.getDimensionPixelSize(R.styleable.Banner_indicator_space, 0);
-        indicatorMargin = a.getDimensionPixelSize(R.styleable.Banner_indicator_margin, 0);
-        indicatorMarginLeft = a.getDimensionPixelSize(R.styleable.Banner_indicator_marginLeft, 0);
-        indicatorMarginTop = a.getDimensionPixelSize(R.styleable.Banner_indicator_marginTop, 0);
-        indicatorMarginRight = a.getDimensionPixelSize(R.styleable.Banner_indicator_marginRight, 0);
-        indicatorMarginBottom = a.getDimensionPixelSize(R.styleable.Banner_indicator_marginBottom, 0);
-        indicatorHeight = a.getDimensionPixelSize(R.styleable.Banner_indicator_height, BannerConfig.INDICATOR_HEIGHT);
-        indicatorRadius = a.getDimensionPixelSize(R.styleable.Banner_indicator_radius, BannerConfig.INDICATOR_RADIUS);
+        mLoopTime = a.getInt(R.styleable.Banner_banner_loop_time, BannerConfig.LOOP_TIME);
+        mIsAutoLoop = a.getBoolean(R.styleable.Banner_banner_auto_loop, BannerConfig.IS_AUTO_LOOP);
+        mIsInfiniteLoop = a.getBoolean(R.styleable.Banner_banner_infinite_loop, BannerConfig.IS_INFINITE_LOOP);
+        normalWidth = a.getDimensionPixelSize(R.styleable.Banner_banner_indicator_normal_width, BannerConfig.INDICATOR_NORMAL_WIDTH);
+        selectedWidth = a.getDimensionPixelSize(R.styleable.Banner_banner_indicator_selected_width, BannerConfig.INDICATOR_SELECTED_WIDTH);
+        normalColor = a.getColor(R.styleable.Banner_banner_indicator_normal_color, BannerConfig.INDICATOR_NORMAL_COLOR);
+        selectedColor = a.getColor(R.styleable.Banner_banner_indicator_selected_color, BannerConfig.INDICATOR_SELECTED_COLOR);
+        indicatorGravity = a.getInt(R.styleable.Banner_banner_indicator_gravity, IndicatorConfig.Direction.CENTER);
+        indicatorSpace = a.getDimensionPixelSize(R.styleable.Banner_banner_indicator_space, 0);
+        indicatorMargin = a.getDimensionPixelSize(R.styleable.Banner_banner_indicator_margin, 0);
+        indicatorMarginLeft = a.getDimensionPixelSize(R.styleable.Banner_banner_indicator_marginLeft, 0);
+        indicatorMarginTop = a.getDimensionPixelSize(R.styleable.Banner_banner_indicator_marginTop, 0);
+        indicatorMarginRight = a.getDimensionPixelSize(R.styleable.Banner_banner_indicator_marginRight, 0);
+        indicatorMarginBottom = a.getDimensionPixelSize(R.styleable.Banner_banner_indicator_marginBottom, 0);
+        indicatorHeight = a.getDimensionPixelSize(R.styleable.Banner_banner_indicator_height, BannerConfig.INDICATOR_HEIGHT);
+        indicatorRadius = a.getDimensionPixelSize(R.styleable.Banner_banner_indicator_radius, BannerConfig.INDICATOR_RADIUS);
         int orientation = a.getInt(R.styleable.Banner_banner_orientation, HORIZONTAL);
         setOrientation(orientation);
         setInfiniteLoop();
@@ -257,17 +257,6 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout implements 
         }
         return super.onInterceptTouchEvent(event);
     }
-
-//    @Override
-//    protected void dispatchDraw(Canvas canvas) {
-//        if (mBannerRadius > 0) {
-//            Path path = new Path();
-//            path.addRoundRect(new RectF(0, 0, getMeasuredWidth(), getMeasuredHeight()),
-//                    mBannerRadius, mBannerRadius, Path.Direction.CW);
-//            canvas.clipPath(path);
-//        }
-//        super.dispatchDraw(canvas);
-//    }
 
     @Override
     protected void dispatchDraw(Canvas canvas) {
@@ -360,7 +349,6 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout implements 
             }
         }
 
-
         @Override
         public void onPageSelected(int position) {
             if (isScrolled) {
@@ -374,7 +362,6 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout implements 
                 }
             }
         }
-
 
         @Override
         public void onPageScrollStateChanged(int state) {
@@ -419,7 +406,7 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout implements 
                 }
                 int next = (banner.getCurrentItem() + 1) % count;
                 banner.setCurrentItem(next);
-                banner.postDelayed(banner.mLoopTask, banner.mDelayTime);
+                banner.postDelayed(banner.mLoopTask, banner.mLoopTime);
             }
         }
     }
@@ -539,10 +526,21 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout implements 
         return this;
     }
 
+    /**
+     * 跳转到指定位置（最好在设置了数据后在调用，不然没有意义）
+     * @param position
+     * @return
+     */
     public Banner setCurrentItem(int position) {
         return setCurrentItem(position, true);
     }
 
+    /**
+     * 跳转到指定位置（最好在设置了数据后在调用，不然没有意义）
+     * @param position
+     * @param smoothScroll
+     * @return
+     */
     public Banner setCurrentItem(int position, boolean smoothScroll) {
         getViewPager2().setCurrentItem(position, smoothScroll);
         return this;
@@ -632,10 +630,10 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout implements 
     /**
      * 设置轮播间隔时间
      *
-     * @param delayTime 时间（毫秒）
+     * @param loopTime 时间（毫秒）
      */
-    public Banner setDelayTime(long delayTime) {
-        this.mDelayTime = delayTime;
+    public Banner setLoopTime(long loopTime) {
+        this.mLoopTime = loopTime;
         return this;
     }
 
@@ -653,7 +651,7 @@ public class Banner<T, BA extends BannerAdapter> extends FrameLayout implements 
     public Banner start() {
         if (mIsAutoLoop) {
             stop();
-            postDelayed(mLoopTask, mDelayTime);
+            postDelayed(mLoopTask, mLoopTime);
         }
         return this;
     }

@@ -10,7 +10,7 @@
         android:id="@+id/banner"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        app:is_infinite_loop="false"
+        app:banner_infinite_loop="false"
         app:layout_constraintTop_toTopOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

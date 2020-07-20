@@ -1,5 +1,7 @@
 package com.test.banner.adapter;
 
+import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import com.test.banner.bean.DataBean;
@@ -22,7 +24,7 @@ public class ImageTitleAdapter extends BannerAdapter<DataBean, ImageTitleHolder>
 
     @Override
     public ImageTitleHolder onCreateHolder(ViewGroup parent, int viewType) {
-        return new ImageTitleHolder(BannerUtils.getView(parent,R.layout.banner_image_title));
+        return new ImageTitleHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.banner_image_title, parent, false));
     }
 
     @Override
@@ -30,7 +32,5 @@ public class ImageTitleAdapter extends BannerAdapter<DataBean, ImageTitleHolder>
         holder.imageView.setImageResource(data.imageRes);
         holder.title.setText(data.title);
     }
-
-
 
 }

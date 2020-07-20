@@ -5,8 +5,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.youth.banner.Banner;
-import com.youth.banner.config.BannerConfig;
+import com.youth.banner.holder.IViewHolder;
 import com.youth.banner.util.BannerUtils;
 import com.youth.banner.listener.OnBannerListener;
 

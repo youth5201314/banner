@@ -105,24 +105,25 @@
 
 |Attributes|format|describe
 |---|---|---|
-|delay_time|integer|轮播间隔时间，默认3000
-|is_auto_loop|boolean|是否自动轮播，默认true
-|is_infinite_loop|boolean|是否支持无限循环（即首尾直接过渡），默认true
+|banner_loop_time|integer|轮播间隔时间，默认3000
+|banner_auto_loop|boolean|是否自动轮播，默认true
+|banner_infinite_loop|boolean|是否支持无限循环（即首尾直接过渡），默认true
 |banner_orientation|enum|轮播方向：horizontal（默认） or vertical
 |banner_radius|dimension|banner圆角半径
-|indicator_normal_width|dimension|指示器默认的宽度，默认5dp （对RoundLinesIndicator无效）
-|indicator_selected_width|dimension|指示器选中的宽度，默认7dp （对RectangleIndicator无效）
-|indicator_normal_color|color|指示器默认颜色，默认0x88ffffff
-|indicator_selected_color|color|指示器选中颜色，默认0x88000000
-|indicator_space|dimension|指示器之间的间距，默认5dp （对RoundLinesIndicator无效）
-|indicator_gravity|dimension|指示器位置，默认center
-|indicator_margin|dimension|指示器的margin,默认5dp，不能和下面的同时使用
-|indicator_marginLeft|dimension|指示器左边的margin
-|indicator_marginTop|dimension|指示器上边的margin
-|indicator_marginRight|dimension|指示器右边的margin
-|indicator_marginBottom|dimension|指示器下边的margin
-|indicator_height|dimension|指示器高度（对CircleIndicator无效）
-|indicator_radius|dimension|指示器圆角（对CircleIndicator无效）
+|banner_indicator_normal_width|dimension|指示器默认的宽度，默认5dp （对RoundLinesIndicator无效）
+|banner_indicator_selected_width|dimension|指示器选中的宽度，默认7dp （对RectangleIndicator无效）
+|banner_indicator_normal_color|color|指示器默认颜色，默认0x88ffffff
+|banner_indicator_selected_color|color|指示器选中颜色，默认0x88000000
+|banner_indicator_space|dimension|指示器之间的间距，默认5dp （对RoundLinesIndicator无效）
+|banner_indicator_gravity|dimension|指示器位置，默认center
+|banner_indicator_margin|dimension|指示器的margin,默认5dp，不能和下面的同时使用
+|banner_indicator_marginLeft|dimension|指示器左边的margin
+|banner_indicator_marginTop|dimension|指示器上边的margin
+|banner_indicator_marginRight|dimension|指示器右边的margin
+|banner_indicator_marginBottom|dimension|指示器下边的margin
+|banner_indicator_height|dimension|指示器高度（对CircleIndicator无效）
+|banner_indicator_radius|dimension|指示器圆角（对CircleIndicator无效）
+
 
 
 ## 使用步骤
@@ -132,7 +133,7 @@
 Gradle 
 ```groovy
 dependencies{
-    compile 'com.youth.banner:banner:2.0.12'  
+    compile 'com.youth.banner:banner:2.1.0'  
 }
 ```
 
@@ -153,7 +154,8 @@ dependencies{
     android:layout_height="高度自己设置" />
 ```
 
-#### Step 4.继承BannerAdapter，和RecyclerView的Adapter一样
+#### Step 4.继承BannerAdapter，和RecyclerView的Adapter一样（如果你只是图片轮播也可以使用默认的）
+！！！此步骤可以省略，图片轮播提供有默认适配器，其他的没有提供是因为大家的可变性要求不确定，所以直接自定义的比较好。
 ```java
 
 /**
@@ -203,8 +205,21 @@ public class BannerActivity extends AppCompatActivity {
         //--------------------------简单使用-------------------------------
         banner.addBannerLifecycleObserver(this)//添加生命周期观察者
                 .setAdapter(new BannerExampleAdapter(DataBean.getTestData()))
-                .setIndicator(new CircleIndicator(this))
-                .start();
+                .setIndicator(new CircleIndicator(this));
+        
+        //—————————————————————————如果你想偷懒，而又只是图片轮播————————————————————————
+         banner.setAdapter(new BannerImageAdapter<DataBean>(DataBean.getTestData3()) {
+                    @Override
+                    public void onBindView(BannerImageHolder holder, DataBean data, int position, int size) {
+                        //图片加载自己实现
+                        Glide.with(holder.itemView)
+                             .load(data.imageUrl)
+                             .apply(RequestOptions.bitmapTransform(new RoundedCorners(30)))
+                             .into(holder.imageView);
+                    }
+                })
+                .addBannerLifecycleObserver(this)//添加生命周期观察者
+                .setIndicator(new CircleIndicator(this));
         //更多使用方法仔细阅读文档，或者查看demo
     }
 }

@@ -45,7 +45,7 @@ public class BlankFragment extends Fragment {
 
         //通过new的方式创建banner
         Banner banner = new Banner(getActivity());
-        banner.setAdapter(new ImageNetAdapter(DataBean.getTestData3()),false);
+        banner.setAdapter(new ImageNetAdapter(DataBean.getTestData3()));
         banner.addBannerLifecycleObserver(this);
         banner.setIndicator(new CircleIndicator(getActivity()));
 
