@@ -111,7 +111,7 @@
 |banner_orientation|enum|轮播方向：horizontal（默认） or vertical
 |banner_radius|dimension|banner圆角半径
 |banner_indicator_normal_width|dimension|指示器默认的宽度，默认5dp （对RoundLinesIndicator无效）
-|banner_indicator_selected_width|dimension|指示器选中的宽度，默认7dp （对RectangleIndicator无效）
+|banner_indicator_selected_width|dimension|指示器选中的宽度，默认7dp 
 |banner_indicator_normal_color|color|指示器默认颜色，默认0x88ffffff
 |banner_indicator_selected_color|color|指示器选中颜色，默认0x88000000
 |banner_indicator_space|dimension|指示器之间的间距，默认5dp （对RoundLinesIndicator无效）
