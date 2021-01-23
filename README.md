@@ -65,7 +65,7 @@
 |setUserInputEnabled(boolean)|this|禁止手动滑动Banner;true 允许，false 禁止
 |setDatas(List<T>)|this|重新设置banner数据
 |isAutoLoop(boolean)|this|是否允许自动轮播
-|setDelayTime(long)|this|设置轮播间隔时间（默认3000毫秒）
+|setLoopTime(long)|this|设置轮播间隔时间（默认3000毫秒）
 |setScrollTime(long)|this|设置轮播滑动的时间（默认800毫秒）
 |start()|this|开始轮播(主要配合生命周期使用)，或者你手动暂停再次启动
 |stop()|this|停止轮播(主要配合生命周期使用)，或者你需要手动暂停
