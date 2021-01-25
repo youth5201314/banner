@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="banner_data_key" type="id"/>
+    <item name="banner_pos_key" type="id"/>
+</resources>
