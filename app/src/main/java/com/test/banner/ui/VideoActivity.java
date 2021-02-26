@@ -50,9 +50,9 @@ public class VideoActivity extends AppCompatActivity {
 
                     @Override
                     public void onPageSelected(int position) {
-                        Log.e("--","position:"+position);
+                        RecyclerView.ViewHolder viewHolder = ((MultipleTypesAdapter) banner.getAdapter()).getVHMap().get(position);
+                        Log.e("--","position:"+position + "VH Type is " + viewHolder.getClass().getCanonicalName());
                         if (player == null) {
-                            RecyclerView.ViewHolder viewHolder = banner.getAdapter().getViewHolder();
                             if (viewHolder instanceof VideoHolder) {
                                 VideoHolder holder = (VideoHolder) viewHolder;
                                 player = holder.player;
