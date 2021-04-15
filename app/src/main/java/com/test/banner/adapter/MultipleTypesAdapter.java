@@ -2,6 +2,7 @@ package com.test.banner.adapter;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.util.SparseArray;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -23,6 +24,7 @@ import java.util.List;
  */
 public class MultipleTypesAdapter extends BannerAdapter<DataBean, RecyclerView.ViewHolder> {
     private Context context;
+    private SparseArray<RecyclerView.ViewHolder> mVHMap = new SparseArray<>();
 
     public MultipleTypesAdapter(Context context, List<DataBean> mDatas) {
         super(mDatas);
@@ -53,10 +55,12 @@ public class MultipleTypesAdapter extends BannerAdapter<DataBean, RecyclerView.V
         switch (viewType) {
             case 1:
                 ImageHolder imageHolder = (ImageHolder) holder;
+                mVHMap.append(position,imageHolder);
                 imageHolder.imageView.setImageResource(data.imageRes);
                 break;
             case 2:
                 VideoHolder videoHolder = (VideoHolder) holder;
+                mVHMap.append(position,videoHolder);
                 videoHolder.player.setUp(data.imageUrl, true, null);
                 videoHolder.player.getBackButton().setVisibility(View.GONE);
                 //增加封面
@@ -68,10 +72,15 @@ public class MultipleTypesAdapter extends BannerAdapter<DataBean, RecyclerView.V
                 break;
             case 3:
                 TitleHolder titleHolder = (TitleHolder) holder;
+                mVHMap.append(position,titleHolder);
                 titleHolder.title.setText(data.title);
                 titleHolder.title.setBackgroundColor(Color.parseColor(DataBean.getRandColor()));
                 break;
         }
+    }
+
+    public SparseArray<RecyclerView.ViewHolder> getVHMap() {
+        return mVHMap;
     }
 
 
