@@ -33,7 +33,19 @@
             <enum name="horizontal" value="0" />
             <enum name="vertical" value="1" />
         </attr>
+
         <attr name="banner_radius" format="dimension"/>
 
+        <!--设置需要圆角的方向，不设置默认全部设置-->
+        <attr name="banner_round_top_left" format="boolean"/>
+        <attr name="banner_round_top_right" format="boolean"/>
+        <attr name="banner_round_bottom_left" format="boolean"/>
+        <attr name="banner_round_bottom_right" format="boolean"/>
+
+    </declare-styleable>
+
+    <declare-styleable name="DrawableIndicator">
+        <attr name="normal_drawable" format="reference"/>
+        <attr name="selected_drawable" format="reference"/>
     </declare-styleable>
 </resources>

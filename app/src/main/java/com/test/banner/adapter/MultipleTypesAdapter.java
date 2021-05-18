@@ -44,7 +44,12 @@ public class MultipleTypesAdapter extends BannerAdapter<DataBean, RecyclerView.V
 
     @Override
     public int getItemViewType(int position) {
-        return getData(getRealPosition(position)).viewType;
+        //先取得真实的position,在获取实体
+//        return getData(getRealPosition(position)).viewType;
+        //直接获取真实的实体
+        return getRealData(position).viewType;
+        //或者自己直接去操作集合
+//        return mDatas.get(getRealPosition(position)).viewType;
     }
 
     @Override

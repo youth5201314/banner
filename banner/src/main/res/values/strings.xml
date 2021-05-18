@@ -1,7 +1,5 @@
 <resources>
     <string name="indicator_color_error">指示器的颜色只能设置成“@color/colorID or #000000”</string>
-    <string name="indicator_null_error">请先调用setIndicator()方法来设置指示器</string>
-    <string name="banner_adapter_null_error">Banner setAdapter() 参数不能为空</string>
-    <string name="banner_adapter_use_error">你还没有调用 setAdapter() 方法</string>
+    <string name="banner_adapter_null_error">Adapter为空！请检查下参数</string>
 
 </resources>

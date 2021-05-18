@@ -16,7 +16,7 @@
 ### 主要改进功能介绍
 最开始是想上传以前基于viewpager更新好的版本，但是看着viewpager2正式版已经出来了，就上新的吧，viewpager2确实比viewpager性能好很多。
 
-- [x] 使用了ViewPager2为基础控件  <a href="https://developer.android.google.cn/jetpack/androidx/releases/viewpager2" target="_blank">[ViewPager2介绍]</a>
+- [x] 使用了ViewPager2为基础控件  <a href="https://developer.android.google.cn/jetpack/androidx/releases/viewpager2" target="_blank">ViewPager2介绍</a>
 - [x] 支持了androidx兼容包
 - [x] 方便了UI、Indicator自定义
 - [x] 支持画廊效果、魅族效果
@@ -65,7 +65,7 @@
 |setUserInputEnabled(boolean)|this|禁止手动滑动Banner;true 允许，false 禁止
 |setDatas(List<T>)|this|重新设置banner数据
 |isAutoLoop(boolean)|this|是否允许自动轮播
-|setDelayTime(long)|this|设置轮播间隔时间（默认3000毫秒）
+|setLoopTime(long)|this|设置轮播间隔时间（默认3000毫秒）
 |setScrollTime(long)|this|设置轮播滑动的时间（默认800毫秒）
 |start()|this|开始轮播(主要配合生命周期使用)，或者你手动暂停再次启动
 |stop()|this|停止轮播(主要配合生命周期使用)，或者你需要手动暂停
@@ -109,7 +109,7 @@
 |banner_auto_loop|boolean|是否自动轮播，默认true
 |banner_infinite_loop|boolean|是否支持无限循环（即首尾直接过渡），默认true
 |banner_orientation|enum|轮播方向：horizontal（默认） or vertical
-|banner_radius|dimension|banner圆角半径
+|banner_radius|dimension|banner圆角半径，默认0（不绘制圆角）
 |banner_indicator_normal_width|dimension|指示器默认的宽度，默认5dp （对RoundLinesIndicator无效）
 |banner_indicator_selected_width|dimension|指示器选中的宽度，默认7dp 
 |banner_indicator_normal_color|color|指示器默认颜色，默认0x88ffffff
@@ -123,6 +123,10 @@
 |banner_indicator_marginBottom|dimension|指示器下边的margin
 |banner_indicator_height|dimension|指示器高度（对CircleIndicator无效）
 |banner_indicator_radius|dimension|指示器圆角（对CircleIndicator无效）
+|banner_round_top_left|boolean|设置要绘制的banner圆角方向（如果都不设置默认全部）
+|banner_round_top_right|boolean|设置要绘制的banner圆角方向（如果都不设置默认全部）
+|banner_round_bottom_left|boolean|设置要绘制的banner圆角方向（如果都不设置默认全部）
+|banner_round_bottom_right|boolean|设置要绘制的banner圆角方向（如果都不设置默认全部）
 
 
 
@@ -132,8 +136,17 @@
 #### Step 1.依赖banner
 Gradle 
 ```groovy
+配置jitpack仓库
+repositories {
+    maven { url 'https://jitpack.io' }
+}
+
 dependencies{
-    compile 'com.youth.banner:banner:2.1.0'  
+    //2.1.0以前jcenter的依赖
+    //implementation 'com.youth.banner:banner:2.1.0'
+    //现在jitpack的依赖（1.4.10和2.1.0及以后）
+    implementation 'com.github.youth5201314:banner:2.2.0'
+
 }
 ```
 
@@ -287,7 +300,10 @@ public class BannerActivity {
         android:focusable="true"
         android:focusableInTouchMode="true"
     ```
-
+* 怎么设置圆角？
+  1、调用提供的方法或者自定义属性进行设置，这里设置的是banner本身的圆角，不是轮播内view的圆角
+  2、在adapter中对自定义的view进行自己实现，就拿图片举例：可以自己定义一个圆角的ImageView控件，或者使用glide渲染都行。请举一反三，view都自定义了还有什么不能改的？
+  
     
 ## Thanks
 

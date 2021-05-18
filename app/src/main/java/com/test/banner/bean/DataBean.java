@@ -70,6 +70,18 @@ public class DataBean {
         return list;
     }
 
+    public static List<DataBean> getVideos() {
+        List<DataBean> list = new ArrayList<>();
+        list.add(new DataBean("http://vfx.mtime.cn/Video/2019/03/21/mp4/190321153853126488.mp4", null, 0));
+        list.add(new DataBean("http://vfx.mtime.cn/Video/2019/03/18/mp4/190318231014076505.mp4", null, 0));
+        list.add(new DataBean("http://vfx.mtime.cn/Video/2019/03/18/mp4/190318214226685784.mp4", null, 0));
+        list.add(new DataBean("http://vfx.mtime.cn/Video/2019/03/19/mp4/190319125415785691.mp4", null, 0));
+        list.add(new DataBean("http://vfx.mtime.cn/Video/2019/03/14/mp4/190314223540373995.mp4", null, 0));
+        list.add(new DataBean("http://vfx.mtime.cn/Video/2019/03/14/mp4/190314102306987969.mp4", null, 0));
+        return list;
+    }
+
+
     public static List<String> getColors(int size) {
         List<String> list = new ArrayList<>();
         for(int i = 0; i < size; i++) {

@@ -3,9 +3,6 @@ package com.test.banner.ui;
 import android.os.Bundle;
 import android.util.Log;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.RecyclerView;
-
 import com.shuyu.gsyvideoplayer.GSYVideoManager;
 import com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer;
 import com.test.banner.R;
@@ -15,17 +12,15 @@ import com.test.banner.indicator.NumIndicator;
 import com.test.banner.viewholder.VideoHolder;
 import com.youth.banner.Banner;
 import com.youth.banner.config.IndicatorConfig;
-import com.youth.banner.indicator.CircleIndicator;
-import com.youth.banner.indicator.RoundLinesIndicator;
 import com.youth.banner.listener.OnPageChangeListener;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
  * 仿淘宝商品详情，banner第一个放视频,然后首尾不能自己滑动，加上自定义数字指示器
- * 视频地址：
- * https://www.jianshu.com/p/9db0fd1579b6
  */
 public class VideoActivity extends AppCompatActivity {
     @BindView(R.id.banner)
@@ -45,23 +40,13 @@ public class VideoActivity extends AppCompatActivity {
                 .addOnPageChangeListener(new OnPageChangeListener() {
                     @Override
                     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
+                        stopVideo(position);
                     }
 
                     @Override
                     public void onPageSelected(int position) {
                         Log.e("--","position:"+position);
-                        if (player == null) {
-                            RecyclerView.ViewHolder viewHolder = banner.getAdapter().getViewHolder();
-                            if (viewHolder instanceof VideoHolder) {
-                                VideoHolder holder = (VideoHolder) viewHolder;
-                                player = holder.player;
-                            }
-                            return;
-                        }
-                        if (position != 0) {
-                            player.onVideoReset();
-                        }
+                        stopVideo(position);
                     }
 
                     @Override
@@ -69,6 +54,23 @@ public class VideoActivity extends AppCompatActivity {
 
                     }
                 });
+    }
+
+    private void stopVideo(int position) {
+        if (player == null) {
+            RecyclerView.ViewHolder viewHolder = banner.getAdapter().getViewHolder();
+            if (viewHolder instanceof VideoHolder) {
+                VideoHolder holder = (VideoHolder) viewHolder;
+                player = holder.player;
+                if (position != 0) {
+                    player.onVideoPause();
+                }
+            }
+        }else {
+            if (position != 0) {
+                player.onVideoPause();
+            }
+        }
     }
 
     @Override
