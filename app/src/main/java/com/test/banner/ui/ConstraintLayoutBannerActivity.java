@@ -32,6 +32,7 @@ public class ConstraintLayoutBannerActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         banner.setAdapter(new ImageTitleAdapter(DataBean.getTestData()));
         banner.setIndicator(new CircleIndicator(this));
+        banner.setIndicatorSelectedColorRes(R.color.main_color);
         banner.setIndicatorGravity(IndicatorConfig.Direction.RIGHT);
         banner.setIndicatorMargins(new IndicatorConfig.Margins(0, 0,
                 BannerConfig.INDICATOR_MARGIN, (int) BannerUtils.dp2px(12)));

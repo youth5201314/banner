@@ -1,4 +1,5 @@
 <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+    xmlns:banner="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/swipeRefresh"
     android:layout_width="match_parent"
@@ -10,38 +11,42 @@
         android:background="#f5f5f5"
         android:scrollbars="none">
 
-        <TextView
-            android:id="@+id/tip"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/indicator"
-            android:layout_marginTop="5dp"
-            android:gravity="center"
-            android:text="下拉刷新重新设置数据数据，点击按钮改变使用场景" />
 
         <com.youth.banner.Banner
-            xmlns:banner="http://schemas.android.com/apk/res-auto"
             android:id="@+id/banner"
             android:layout_width="match_parent"
-            android:layout_height="150dp"
+            android:layout_height="180dp"
             android:layout_margin="10dp"
             banner:banner_radius="5dp"
             banner:banner_indicator_normal_color="@android:color/white"
             banner:banner_indicator_selected_color="@color/colorPrimary" />
-
-        <com.youth.banner.indicator.RoundLinesIndicator
-            android:id="@+id/indicator"
-            android:layout_width="wrap_content"
-            android:layout_height="20dp"
+        <LinearLayout
+            android:id="@+id/ll_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
             android:layout_below="@+id/banner"
-            android:layout_centerHorizontal="true"
-            android:visibility="gone" />
+            android:orientation="vertical">
+            <com.youth.banner.indicator.RoundLinesIndicator
+                android:id="@+id/indicator"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:visibility="gone" />
+
+            <com.youth.banner.indicator.DrawableIndicator
+                android:id="@+id/indicator2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                banner:normal_drawable="@drawable/indicator_normal"
+                banner:selected_drawable="@drawable/indicator_selected"
+                android:visibility="gone" />
+        </LinearLayout>
 
         <androidx.core.widget.NestedScrollView
             android:id="@+id/scroll"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@+id/tip">
+            android:layout_below="@+id/ll_view">
 
             <RelativeLayout
                 android:id="@+id/rl_main"
@@ -139,7 +144,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/vp_banner"
-                    android:text="仿淘宝商品详情banner，第一个放视频"
+                    android:text="仿淘宝商品详情banner"
                     android:textAllCaps="false" />
 
                 <Button

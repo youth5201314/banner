@@ -1,12 +1,8 @@
 package com.youth.banner.util;
 
-import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Outline;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Build;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,10 +12,6 @@ import android.view.ViewOutlineProvider;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
-
-import com.youth.banner.Banner;
-import com.youth.banner.R;
-import com.youth.banner.config.BannerConfig;
 
 public class BannerUtils {
 
@@ -65,8 +57,8 @@ public class BannerUtils {
         return view;
     }
 
-    public static float dp2px(float dp) {
-        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, Resources.getSystem().getDisplayMetrics());
+    public static int dp2px(float dp) {
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, Resources.getSystem().getDisplayMetrics());
     }
 
     /**
