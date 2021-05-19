@@ -2,14 +2,27 @@ apply plugin: 'com.android.library'
 apply plugin: 'com.github.dcendents.android-maven'
 group = 'com.github.youth5201314'
 
-version = "2.2.0"
+version = '2.2.0'
+
+afterEvaluate {
+    publishing {
+        publications {
+            release(MavenPublication) {
+                from components.release
+                groupId = 'com.youth.banner'
+                artifactId = 'banner'
+                version = version
+            }
+        }
+    }
+}
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 30
 
     defaultConfig {
         minSdkVersion 14
-        targetSdkVersion 29
+        targetSdkVersion 30
         versionCode 202000
         versionName version
         consumerProguardFiles 'proguard-rules.pro'
@@ -28,3 +41,6 @@ android {
 dependencies {
     implementation "androidx.viewpager2:viewpager2:1.0.0"
 }
+
+
+
