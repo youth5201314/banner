@@ -136,16 +136,16 @@
 #### Step 1.依赖banner
 Gradle 
 ```groovy
-配置jitpack仓库
+
 repositories {
-    maven { url 'https://jitpack.io' }
+    maven { url "https://s01.oss.sonatype.org/content/groups/public" }
 }
 
 dependencies{
     //2.1.0以前jcenter的依赖
     //implementation 'com.youth.banner:banner:2.1.0'
-    //现在jitpack的依赖（1.4.10和2.1.0及以后）
-    implementation 'com.github.youth5201314:banner:2.2.0'
+    //现在Maven Central
+    implementation 'io.github.youth5201314:banner:2.2.1'
 
 }
 ```

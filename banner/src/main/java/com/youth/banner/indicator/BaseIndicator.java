@@ -1,6 +1,7 @@
 package com.youth.banner.indicator;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.Gravity;
@@ -34,6 +35,7 @@ public class BaseIndicator extends View implements Indicator {
         config = new IndicatorConfig();
         mPaint = new Paint();
         mPaint.setAntiAlias(true);
+        mPaint.setColor(Color.TRANSPARENT);
         mPaint.setColor(config.getNormalColor());
     }
 

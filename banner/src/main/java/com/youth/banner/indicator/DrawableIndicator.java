@@ -6,6 +6,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 
 import androidx.annotation.DrawableRes;
@@ -43,13 +45,12 @@ public class DrawableIndicator extends BaseIndicator {
 
     public DrawableIndicator(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        mPaint.setColor(Color.TRANSPARENT);
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.DrawableIndicator);
         if (a != null) {
-            int normalResId = a.getResourceId(R.styleable.DrawableIndicator_normal_drawable, -1);
-            int selectedResId = a.getResourceId(R.styleable.DrawableIndicator_selected_drawable, -1);
-            normalBitmap = BitmapFactory.decodeResource(getResources(), normalResId);
-            selectedBitmap = BitmapFactory.decodeResource(getResources(), selectedResId);
+            BitmapDrawable normal = (BitmapDrawable) a.getDrawable(R.styleable.DrawableIndicator_normal_drawable);
+            BitmapDrawable selected = (BitmapDrawable) a.getDrawable(R.styleable.DrawableIndicator_selected_drawable);
+            normalBitmap = normal.getBitmap();
+            selectedBitmap = selected.getBitmap();
         }
     }
 
@@ -78,5 +79,6 @@ public class DrawableIndicator extends BaseIndicator {
             left += normalBitmap.getWidth() + config.getIndicatorSpace();
         }
     }
+
 
 }

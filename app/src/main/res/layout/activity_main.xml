@@ -1,6 +1,6 @@
 <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-    xmlns:banner="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:banner="http://schemas.android.com/apk/res-auto"
     android:id="@+id/swipeRefresh"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -8,45 +8,31 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#f5f5f5"
-        android:scrollbars="none">
-
+        android:background="#f5f5f5">
 
         <com.youth.banner.Banner
             android:id="@+id/banner"
             android:layout_width="match_parent"
             android:layout_height="180dp"
             android:layout_margin="10dp"
-            banner:banner_radius="5dp"
             banner:banner_indicator_normal_color="@android:color/white"
-            banner:banner_indicator_selected_color="@color/colorPrimary" />
-        <LinearLayout
-            android:id="@+id/ll_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:layout_below="@+id/banner"
-            android:orientation="vertical">
-            <com.youth.banner.indicator.RoundLinesIndicator
-                android:id="@+id/indicator"
-                android:layout_width="wrap_content"
-                android:layout_height="20dp"
-                android:visibility="gone" />
+            banner:banner_indicator_selected_color="@color/colorPrimary"
+            banner:banner_radius="5dp" />
 
-            <com.youth.banner.indicator.DrawableIndicator
-                android:id="@+id/indicator2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                banner:normal_drawable="@drawable/indicator_normal"
-                banner:selected_drawable="@drawable/indicator_selected"
-                android:visibility="gone" />
-        </LinearLayout>
+        <com.youth.banner.indicator.RoundLinesIndicator
+            android:id="@+id/indicator"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_below="@+id/banner"
+            android:layout_centerHorizontal="true"
+            android:visibility="gone" />
 
         <androidx.core.widget.NestedScrollView
             android:id="@+id/scroll"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@+id/ll_view">
+            android:layout_below="@+id/banner"
+            android:layout_marginTop="20dp">
 
             <RelativeLayout
                 android:id="@+id/rl_main"
@@ -80,7 +66,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/style_image"
-                    android:text="多类型UI" />
+                    android:text="多类型UI（Drawable指示器）"
+                    android:textAllCaps="false" />
 
                 <Button
                     android:id="@+id/style_net_image"
@@ -94,18 +81,17 @@
                     android:id="@+id/change_indicator"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/style_image"
-                    android:layout_toRightOf="@+id/style_net_image"
+                    android:layout_below="@+id/style_net_image"
                     android:text="外部指示器" />
 
 
                 <Button
                     android:id="@+id/gallery"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/style_image"
-                    android:layout_toRightOf="@+id/change_indicator"
-                    android:text="画廊,魅族效果" />
+                    android:layout_below="@+id/change_indicator"
+                    android:text="画廊,魅族效果,Drawable指示器"
+                    android:textAllCaps="false" />
 
                 <Button
                     android:id="@+id/topLine"

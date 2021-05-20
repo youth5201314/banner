@@ -45,8 +45,6 @@ public class MainActivity extends AppCompatActivity {
     Banner banner;
     @BindView(R.id.indicator)
     RoundLinesIndicator indicator;
-    @BindView(R.id.indicator2)
-    DrawableIndicator indicator2;
     @BindView(R.id.swipeRefresh)
     SwipeRefreshLayout refresh;
 
@@ -57,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         //自定义的图片适配器，也可以使用默认的BannerImageAdapter
-        ImageAdapter adapter = new ImageAdapter(null);
+        ImageAdapter adapter = new ImageAdapter(DataBean.getTestData2());
 
         banner.setAdapter(adapter)
 //              .setCurrentItem(0,false)
@@ -94,7 +92,6 @@ public class MainActivity extends AppCompatActivity {
             R.id.banner_video, R.id.banner_tv, R.id.gallery, R.id.topLine})
     public void click(View view) {
         indicator.setVisibility(View.GONE);
-        indicator2.setVisibility(View.GONE);
         switch (view.getId()) {
             case R.id.style_image:
                 refresh.setEnabled(true);
@@ -118,9 +115,8 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.style_multiple:
                 refresh.setEnabled(true);
-                indicator2.setVisibility(View.VISIBLE);
+                banner.setIndicator(new DrawableIndicator(this,R.drawable.indicator_normal,R.drawable.indicator_selected));
                 banner.setAdapter(new MultipleTypesAdapter(this, DataBean.getTestData()));
-                banner.setIndicator(indicator2, false);
                 break;
             case R.id.style_net_image:
                 refresh.setEnabled(false);

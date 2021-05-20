@@ -9,6 +9,7 @@ import com.test.banner.adapter.ImageNetAdapter;
 import com.test.banner.bean.DataBean;
 import com.youth.banner.Banner;
 import com.youth.banner.indicator.CircleIndicator;
+import com.youth.banner.indicator.DrawableIndicator;
 import com.youth.banner.transformer.AlphaPageTransformer;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,6 +23,8 @@ public class GalleryActivity extends AppCompatActivity {
     Banner mBanner1;
     @BindView(R.id.banner2)
     Banner mBanner2;
+    @BindView(R.id.indicator)
+    DrawableIndicator indicator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +48,7 @@ public class GalleryActivity extends AppCompatActivity {
          * 魅族效果
          */
         mBanner2.setAdapter(new ImageAdapter(DataBean.getTestData()));
-        mBanner2.setIndicator(new CircleIndicator(this));
+        mBanner2.setIndicator(indicator,false);
         //添加魅族效果
         mBanner2.setBannerGalleryMZ(20);
 

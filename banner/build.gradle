@@ -1,15 +1,16 @@
 apply plugin: 'com.android.library'
-apply plugin: 'com.github.dcendents.android-maven'
-group = "com.youth.banner"
-version = "2.2.0"
+apply plugin: 'maven-publish'
+apply plugin: 'signing'
+
+version = '2.2.1'
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 30
 
     defaultConfig {
         minSdkVersion 14
-        targetSdkVersion 29
-        versionCode 202000
+        targetSdkVersion 30
+        versionCode 202001
         versionName version
         consumerProguardFiles 'proguard-rules.pro'
     }
@@ -27,3 +28,72 @@ android {
 dependencies {
     implementation "androidx.viewpager2:viewpager2:1.0.0"
 }
+
+task androidSourcesJar(type: Jar) {
+    archiveClassifier.set("sources")
+    from android.sourceSets.main.java.source
+    exclude "**/R.class"
+    exclude "**/BuildConfig.class"
+}
+
+publishing {
+    publications {
+        release(MavenPublication) {
+            // group id，发布后引用的依赖的 group id
+            groupId 'io.github.youth5201314'
+            // 发布后引用的依赖的 artifact id
+            artifactId 'banner'
+            // 发布的版本
+            version version
+            // 发布的 arr 的文件和源码文件
+            artifact("$buildDir/outputs/aar/${project.getName()}-release.aar")
+            artifact androidSourcesJar
+            pom {
+                // 构件名称，可以自定义
+                name = 'banner'
+                // 构件描述
+                description = 'Android Banner 2.0 全新轮播控件，采用viewpager2为基础控件，支持AndroidX'
+                // 构件主页
+                url = 'https://github.com/youth5201314/banner'
+                // 许可证名称和地址
+                licenses {
+                    license {
+                        name = 'The Apache License, Version 2.0'
+                        url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+                // 开发者信息
+                developers {
+                    developer {
+                        name = '王兴春'
+                        email = '1028729086@qq.com'
+                    }
+                }
+                // 版本控制仓库地址
+                scm {
+                    url = 'https://github.com/youth5201314/banner'
+                    connection = 'scm:git:github.com/youth5201314/banner.git'
+                    developerConnection = 'scm:git:ssh://git@github.com/youth5201314/banner.git'
+                }
+            }
+        }
+    }
+    repositories {
+        maven {
+            // 发布的位置，这里根据发布的版本区分了 SNAPSHOT 和最终版本两种情况
+            def releasesRepoUrl = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
+            def snapshotsRepoUrl = "https://s01.oss.sonatype.org/content/repositories/snapshots/"
+            url = version.endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
+            credentials {
+                // 这里就是之前在 issues.sonatype.org 注册的账号
+                username sonatypeUsername
+                password sonatypePassword
+            }
+        }
+    }
+}
+
+signing {
+    sign publishing.publications
+}
+
