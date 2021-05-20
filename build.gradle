@@ -4,6 +4,8 @@ buildscript {
         kotlin_version = '1.3.61'
     }
     repositories {
+        maven { url 'https://jitpack.io' }
+        maven { url "https://s01.oss.sonatype.org/content/groups/public" }
         jcenter()
         google()
     }
@@ -18,9 +20,10 @@ buildscript {
 
 allprojects {
     repositories {
+        maven { url 'https://jitpack.io' }
+        maven { url "https://s01.oss.sonatype.org/content/groups/public" }
         jcenter()
         google()
-        maven { url 'https://jitpack.io' }
 
     }
 }

@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:banner="http://schemas.android.com/apk/res-auto"    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-    <com.youth.banner.Banner xmlns:banner="http://schemas.android.com/apk/res-auto"
+    <com.youth.banner.Banner
         android:id="@+id/banner1"
         android:layout_width="match_parent"
         android:layout_height="140dp"
@@ -15,7 +14,7 @@
         banner:banner_indicator_normal_color="@android:color/white"
         banner:banner_indicator_selected_color="@color/colorPrimary" />
 
-    <com.youth.banner.Banner xmlns:banner="http://schemas.android.com/apk/res-auto"
+    <com.youth.banner.Banner
         android:id="@+id/banner2"
         android:layout_width="match_parent"
         android:layout_height="140dp"
@@ -23,4 +22,12 @@
         banner:banner_radius="5dp"
         banner:banner_indicator_normal_color="@android:color/white"
         banner:banner_indicator_selected_color="@color/colorPrimary" />
+
+    <com.youth.banner.indicator.DrawableIndicator
+        android:id="@+id/indicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        banner:normal_drawable="@drawable/indicator_normal"
+        banner:selected_drawable="@drawable/indicator_selected"/>
 </LinearLayout>
