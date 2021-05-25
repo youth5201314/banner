@@ -9,12 +9,14 @@ import com.bumptech.glide.Glide
 import com.youth.banner.adapter.BannerAdapter
 import com.youth.banner.util.BannerUtils
 
-class BannerImageAdapter(imageUrls: List<String>) : BannerAdapter<String, BannerImageAdapter.ImageHolder>(imageUrls) {
+class BannerImageAdapter(imageUrls: List<String>) :
+    BannerAdapter<String, BannerImageAdapter.ImageHolder>(imageUrls) {
 
 
     override fun onCreateHolder(parent: ViewGroup?, viewType: Int): ImageHolder {
         val imageView = ImageView(parent!!.context)
-        val params = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+        val params = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.MATCH_PARENT)
         imageView.layoutParams = params
         imageView.scaleType = ImageView.ScaleType.CENTER_CROP
         //通过裁剪实现圆角
@@ -24,19 +26,16 @@ class BannerImageAdapter(imageUrls: List<String>) : BannerAdapter<String, Banner
         return ImageHolder(imageView)
     }
 
-    override fun onBindView(holder: ImageHolder?, data: String?, position: Int, size: Int) {
-        Glide.with(holder!!.itemView)
-                .load(data)
-                .into(holder.imageView)
+    override fun onBindView(holder: ImageHolder, data: String, position: Int, size: Int) {
+        Glide.with(holder.imageView)
+            .load(data)
+            .into(holder.imageView)
     }
 
 
     class ImageHolder(view: View) : RecyclerView.ViewHolder(view) {
-        var imageView: ImageView
+        var imageView: ImageView = view as ImageView
 
-        init {
-            imageView = view as ImageView
-        }
     }
 
 }
