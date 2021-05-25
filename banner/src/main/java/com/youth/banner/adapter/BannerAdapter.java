@@ -40,6 +40,7 @@ public abstract class BannerAdapter<T, VH extends RecyclerView.ViewHolder>
             datas = new ArrayList<>();
         }
         mDatas = datas;
+        notifyDataSetChanged();
     }
 
     /**
