@@ -17,7 +17,7 @@
             android:layout_margin="10dp"
             banner:banner_indicator_normal_color="@android:color/white"
             banner:banner_indicator_selected_color="@color/colorPrimary"
-            banner:banner_radius="5dp" />
+            banner:banner_radius="5dp"/>
 
         <com.youth.banner.indicator.RoundLinesIndicator
             android:id="@+id/indicator"
@@ -66,7 +66,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/style_image"
-                    android:text="多类型UI（Drawable指示器）"
+                    android:text="多类型UI"
                     android:textAllCaps="false" />
 
                 <Button
@@ -81,7 +81,8 @@
                     android:id="@+id/change_indicator"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/style_net_image"
+                    android:layout_toRightOf="@+id/style_net_image"
+                    android:layout_below="@+id/style_image_title_num"
                     android:text="外部指示器" />
 
 

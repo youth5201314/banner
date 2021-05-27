@@ -72,15 +72,17 @@ public class MainActivity extends AppCompatActivity {
         //和下拉刷新配套使用
         refresh.setOnRefreshListener(() -> {
             //模拟网络请求需要3秒，请求完成，设置setRefreshing 为false
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    refresh.setRefreshing(false);
-                    //给banner重新设置数据
-                    banner.setDatas(DataBean.getTestData());
-                    //对setdatas不满意？你可以自己在adapter控制数据，可以参考setDatas()的实现修改
-//                    adapter.updateData(DataBean.getTestData2());
-                }
+            new Handler().postDelayed(() -> {
+                refresh.setRefreshing(false);
+
+                //给banner重新设置数据
+                banner.setDatas(DataBean.getTestData());
+
+                //对setDatas()方法不满意？你可以自己在adapter控制数据，参考setDatas()的实现修改
+//                adapter.updateData(DataBean.getTestData());
+//                banner.setCurrentItem(banner.getStartPosition(), false);
+//                banner.setIndicatorPageChange();
+
             }, 3000);
         });
 
@@ -115,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.style_multiple:
                 refresh.setEnabled(true);
-                banner.setIndicator(new DrawableIndicator(this,R.drawable.indicator_normal,R.drawable.indicator_selected));
+                banner.setIndicator(new CircleIndicator(this));
                 banner.setAdapter(new MultipleTypesAdapter(this, DataBean.getTestData()));
                 break;
             case R.id.style_net_image:

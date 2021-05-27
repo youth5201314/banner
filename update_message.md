@@ -1,5 +1,12 @@
 
 ## 更新说明
+#### v2.2.1-2.2.2
+   * 对kotlin使用的兼容支持
+   * 对kotlin使用demo进行了修改
+   * 新版本都将迁移至MavenCentral
+   * 更新viewpager2到1.1.0-alpha01
+   * 修改bug
+   
 #### v2.2.0
    * 自定义属性中增加可选择设置banner圆角的具体方向
    * 增加DrawableIndicator指示器,支持直接设置图片了，可以通过构造方法或者自定义属性设置
