@@ -8,9 +8,16 @@
     android:padding="10dp">
 
     <com.youth.banner.Banner
-        android:id="@+id/bannerLayout"
+        android:id="@+id/bannerLayout1"
         android:layout_width="match_parent"
         android:layout_height="180dp"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <com.youth.banner.Banner
+        android:id="@+id/bannerLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintTop_toBottomOf="@+id/bannerLayout1"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
