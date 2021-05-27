@@ -145,7 +145,7 @@ dependencies{
     //2.1.0以前jcenter的依赖
     //implementation 'com.youth.banner:banner:2.1.0'
     //现在Maven Central
-    implementation 'io.github.youth5201314:banner:2.2.1'
+    implementation 'io.github.youth5201314:banner:2.2.2'
 
 }
 ```

@@ -1,38 +1,39 @@
 package com.spring.usekotlin
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.recyclerview.widget.RecyclerView
+import androidx.appcompat.app.AppCompatActivity
+import com.bumptech.glide.Glide
 import com.youth.banner.Banner
-import com.youth.banner.adapter.BannerAdapter
+import com.youth.banner.adapter.BannerImageAdapter
+import com.youth.banner.holder.BannerImageHolder
 import com.youth.banner.indicator.CircleIndicator
-import com.youth.banner.transformer.RotateYTransformer
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
     var imageUrls = listOf(
-            "https://img.zcool.cn/community/011ad05e27a173a801216518a5c505.jpg",
-            "https://img.zcool.cn/community/0148fc5e27a173a8012165184aad81.jpg",
-            "https://img.zcool.cn/community/013c7d5e27a174a80121651816e521.jpg",
-            "https://img.zcool.cn/community/01b8ac5e27a173a80120a895be4d85.jpg",
-            "https://img.zcool.cn/community/01a85d5e27a174a80120a895111b2c.jpg",
-            "https://img.zcool.cn/community/01085d5e27a174a80120a8958791c4.jpg"
+            "https://img.zcool.cn/community/01b72057a7e0790000018c1bf4fce0.png",
+            "https://img.zcool.cn/community/016a2256fb63006ac7257948f83349.jpg",
+            "https://img.zcool.cn/community/01233056fb62fe32f875a9447400e1.jpg",
+            "https://img.zcool.cn/community/01700557a7f42f0000018c1bd6eb23.jpg"
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        var adapter = BannerImageAdapter(imageUrls)
-        banner?.let {
-            it.addBannerLifecycleObserver(this)
-            it.setIndicator(CircleIndicator(this))
-            it.setBannerRound(20f)
-            it.adapter = adapter
+        var banner = (bannerLayout as Banner<String, BannerImageAdapter<String>>)
+        banner.apply {
+            addBannerLifecycleObserver(this@MainActivity)
+            setBannerRound(20f)
+            indicator = CircleIndicator(this@MainActivity)
+            setAdapter(object : BannerImageAdapter<String>(imageUrls) {
+                override fun onBindView(holder: BannerImageHolder, data: String, position: Int, size: Int) {
+                    Glide.with(this@MainActivity)
+                            .load(data)
+                            .into(holder.imageView)
+                }
+            })
         }
-
-
-
     }
 
 

@@ -18,9 +18,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 
-public abstract class BannerAdapter<T, VH extends RecyclerView.ViewHolder>
-        extends RecyclerView.Adapter<VH>
-        implements IViewHolder<T, VH> {
+public abstract class BannerAdapter<T, VH extends RecyclerView.ViewHolder> extends RecyclerView.Adapter<VH> implements IViewHolder<T, VH> {
     protected List<T> mDatas = new ArrayList<>();
     private OnBannerListener<T> mOnBannerListener;
     private VH mViewHolder;
@@ -40,6 +38,7 @@ public abstract class BannerAdapter<T, VH extends RecyclerView.ViewHolder>
             datas = new ArrayList<>();
         }
         mDatas = datas;
+        notifyDataSetChanged();
     }
 
     /**
