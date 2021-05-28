@@ -5,7 +5,6 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.PaintFlagsDrawFilter;
 import android.graphics.Path;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
@@ -38,10 +37,9 @@ import com.youth.banner.listener.OnBannerListener;
 import com.youth.banner.listener.OnPageChangeListener;
 import com.youth.banner.transformer.MZScaleInTransformer;
 import com.youth.banner.transformer.ScaleInTransformer;
+import com.youth.banner.util.BannerLifecycleObserver;
 import com.youth.banner.util.BannerLifecycleObserverAdapter;
 import com.youth.banner.util.BannerUtils;
-import com.youth.banner.util.BannerLifecycleObserver;
-import com.youth.banner.util.LogUtils;
 import com.youth.banner.util.ScrollSpeedManger;
 
 import java.lang.annotation.Retention;
@@ -90,6 +88,7 @@ public class Banner<T, BA extends BannerAdapter<T, ? extends RecyclerView.ViewHo
     private int indicatorMarginBottom;
     private int indicatorHeight = BannerConfig.INDICATOR_HEIGHT;
     private int indicatorRadius = BannerConfig.INDICATOR_RADIUS;
+    private int increaseCount = BannerConfig.INCREASE_COUNT;
 
     public static final int HORIZONTAL = 0;
     public static final int VERTICAL = 1;
@@ -109,7 +108,7 @@ public class Banner<T, BA extends BannerAdapter<T, ? extends RecyclerView.ViewHo
     private Paint mImagePaint;
 
     @Retention(SOURCE)
-    @IntDef( {HORIZONTAL, VERTICAL})
+    @IntDef({HORIZONTAL, VERTICAL})
     public @interface Orientation {
     }
 
@@ -391,10 +390,11 @@ public class Banner<T, BA extends BannerAdapter<T, ? extends RecyclerView.ViewHo
                 //滑动闲置或滑动结束
                 isScrolled = false;
                 if (mTempPosition != INVALID_VALUE && mIsInfiniteLoop) {
-                    if (mTempPosition == 0) {
-                        setCurrentItem(getRealCount(), false);
-                    } else if (mTempPosition == getItemCount() - 1) {
-                        setCurrentItem(1, false);
+                    int increaseCountHalf = increaseCount / 2;
+                    if (mTempPosition <= increaseCountHalf - 1) {
+                        setCurrentItem(getRealCount() + mTempPosition, false);
+                    } else if (mTempPosition >= getRealCount() + increaseCountHalf) {
+                        setCurrentItem(increaseCountHalf, false);
                     }
                 }
             }
@@ -462,7 +462,7 @@ public class Banner<T, BA extends BannerAdapter<T, ? extends RecyclerView.ViewHo
         setStartPosition(isInfiniteLoop() ? mStartPosition : 0);
     }
 
-    private void setRecyclerViewPadding(int itemPadding) {
+    public void setRecyclerViewPadding(int itemPadding) {
         setRecyclerViewPadding(itemPadding, itemPadding);
     }
 
@@ -537,6 +537,7 @@ public class Banner<T, BA extends BannerAdapter<T, ? extends RecyclerView.ViewHo
 
     /**
      * 是否要拦截事件
+     *
      * @param intercept
      * @return
      */
@@ -547,6 +548,7 @@ public class Banner<T, BA extends BannerAdapter<T, ? extends RecyclerView.ViewHo
 
     /**
      * 跳转到指定位置（最好在设置了数据后在调用，不然没有意义）
+     *
      * @param position
      * @return
      */
@@ -556,6 +558,7 @@ public class Banner<T, BA extends BannerAdapter<T, ? extends RecyclerView.ViewHo
 
     /**
      * 跳转到指定位置（最好在设置了数据后在调用，不然没有意义）
+     *
      * @param position
      * @param smoothScroll
      * @return
@@ -600,6 +603,25 @@ public class Banner<T, BA extends BannerAdapter<T, ? extends RecyclerView.ViewHo
      */
     public Banner setUserInputEnabled(boolean enabled) {
         getViewPager2().setUserInputEnabled(enabled);
+        return this;
+    }
+
+    public int getIncreaseCount() {
+        return increaseCount;
+    }
+
+    /**
+     * 设置增加的数量，适合一屏多页无限轮播
+     *
+     * @param increaseCount
+     */
+    public Banner setIncreaseCount(int increaseCount) {
+        if (increaseCount % 2 == 0) {
+            this.increaseCount = increaseCount;
+            if (getAdapter() != null) {
+                getAdapter().setIncreaseCount(increaseCount);
+            }
+        }
         return this;
     }
 
@@ -720,12 +742,13 @@ public class Banner<T, BA extends BannerAdapter<T, ? extends RecyclerView.ViewHo
 
     /**
      * 设置banner的适配器
+     *
      * @param adapter
      * @param isInfiniteLoop 是否支持无限循环
      * @return
      */
-    public Banner setAdapter(BA adapter,boolean isInfiniteLoop) {
-        mIsInfiniteLoop=isInfiniteLoop;
+    public Banner setAdapter(BA adapter, boolean isInfiniteLoop) {
+        mIsInfiniteLoop = isInfiniteLoop;
         setInfiniteLoop();
         setAdapter(adapter);
         return this;
@@ -825,7 +848,7 @@ public class Banner<T, BA extends BannerAdapter<T, ? extends RecyclerView.ViewHo
      * @param pageMargin     页面间距,单位dp
      */
     public Banner setBannerGalleryEffect(int leftItemWidth, int rightItemWidth, int pageMargin) {
-        return setBannerGalleryEffect(leftItemWidth,rightItemWidth, pageMargin, .85f);
+        return setBannerGalleryEffect(leftItemWidth, rightItemWidth, pageMargin, .85f);
     }
 
     /**

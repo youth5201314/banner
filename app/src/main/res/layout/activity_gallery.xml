@@ -30,4 +30,13 @@
         android:layout_gravity="center_horizontal"
         banner:normal_drawable="@drawable/indicator_normal"
         banner:selected_drawable="@drawable/indicator_selected"/>
+
+    <com.youth.banner.Banner
+        android:id="@+id/banner3"
+        android:layout_width="match_parent"
+        android:layout_height="140dp"
+        android:layout_margin="10dp"
+        banner:banner_radius="5dp"
+        banner:banner_indicator_normal_color="@android:color/white"
+        banner:banner_indicator_selected_color="@color/colorPrimary" />
 </LinearLayout>

@@ -19,21 +19,17 @@ public class BannerUtils {
      * 获取真正的位置
      *
      * @param isIncrease 首尾是否有增加
-     * @param position  当前位置
-     * @param realCount 真实数量
+     * @param position   当前位置
+     * @param realCount  真实数量
      * @return
      */
     public static int getRealPosition(boolean isIncrease, int position, int realCount) {
-        if (!isIncrease) {
+        if (!isIncrease || realCount == 0) {
             return position;
         }
-        int realPosition;
-        if (position == 0) {
+        int realPosition = position % realCount - 1;
+        if (realPosition < 0) {
             realPosition = realCount - 1;
-        } else if (position == realCount + 1) {
-            realPosition = 0;
-        } else {
-            realPosition = position - 1;
         }
         return realPosition;
     }
@@ -68,7 +64,7 @@ public class BannerUtils {
      * @return
      */
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    public static void setBannerRound(View view,float radius) {
+    public static void setBannerRound(View view, float radius) {
         view.setOutlineProvider(new ViewOutlineProvider() {
             @Override
             public void getOutline(View view, Outline outline) {
