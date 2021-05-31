@@ -14,6 +14,9 @@ import com.youth.banner.util.BannerUtils;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
 
 public abstract class BannerAdapter<T, VH extends RecyclerView.ViewHolder> extends RecyclerView.Adapter<VH> implements IViewHolder<T, VH> {
     protected List<T> mDatas = new ArrayList<>();
@@ -97,7 +100,7 @@ public abstract class BannerAdapter<T, VH extends RecyclerView.ViewHolder> exten
     }
 
     public int getRealPosition(int position) {
-        return BannerUtils.getRealPosition(mIncreaseCount >= 2, position, getRealCount());
+        return BannerUtils.getRealPosition(mIncreaseCount == BannerConfig.INCREASE_COUNT, position, getRealCount());
     }
 
     public void setOnBannerListener(OnBannerListener<T> listener) {
