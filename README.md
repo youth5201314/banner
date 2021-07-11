@@ -1,6 +1,8 @@
 <!--# 今年最后一天Banner全新升级，祝大家新年快乐-->
 <!--<img src="images/mouse_year.png" width="1080"/>-->
 
+[![Maintainability](https://cloud.quality-gate.com/dashboard/api/badge?projectName=zeebe-io_zeebe&branchName=develop)](https://cloud.quality-gate.com/dashboard/branches/26431#overview)
+
 ## Banner 2.0 全新升级
 > 只做一个可以自定义的轮播容器，不侵入UI ———— Banner 2.0
 
