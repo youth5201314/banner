@@ -741,6 +741,10 @@ public class Banner<T, BA extends BannerAdapter<T, ? extends RecyclerView.ViewHo
             getAdapter().setDatas(datas);
             setCurrentItem(mStartPosition, false);
             setIndicatorPageChange();
+            //解决重新设置数据之后，PageTransform不生效的问题
+            post(() -> {
+                getViewPager2().requestTransform();
+            });
             start();
         }
         return this;
