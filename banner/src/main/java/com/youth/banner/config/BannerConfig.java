@@ -40,4 +40,13 @@ public class BannerConfig {
     public static final int INDICATOR_HEIGHT = (int) BannerUtils.dp2px(3);
     public static final int INDICATOR_RADIUS = (int) BannerUtils.dp2px(3);
 
+    public static  boolean IS_USE_BANERDATA=false;
+
+    public static boolean isIsUseBanerdata() {
+        return IS_USE_BANERDATA;
+    }
+
+    public static void setIsUseBanerdata(boolean isUseBanerdata) {
+        IS_USE_BANERDATA = isUseBanerdata;
+    }
 }
