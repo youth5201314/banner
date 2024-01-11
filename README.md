@@ -1,8 +1,12 @@
-<!--# 今年最后一天Banner全新升级，祝大家新年快乐-->
-<!--<img src="images/mouse_year.png" width="1080"/>-->
 
 ## Banner 2.0 全新升级
 > 只做一个可以自定义的轮播容器，不侵入UI ———— Banner 2.0
+
+```
+> 各位老铁反馈的问题我都有看，不是不解决，有时真的很难复现，
+> 如果能在提交问题时，有条件提供个demo发到我邮箱，方便定位问题，毕竟大家的场景和使用方式都有差异，
+> 我自己也在使用，在多个千万级APP上一直稳定运行，如果真有严重问题肯定第一时间就修复了
+```
 
 <a href="https://github.com/youth5201314/banner/tree/release-1.4.10" target="_blank">Banner 1.4.10(还想看老版本的可以点击这里)</a>
 
@@ -145,7 +149,7 @@ dependencies{
     //2.1.0以前jcenter的依赖
     //implementation 'com.youth.banner:banner:2.1.0'
     //现在Maven Central
-    implementation 'io.github.youth5201314:banner:2.2.2'
+    implementation 'io.github.youth5201314:banner:2.2.3'
 
 }
 ```

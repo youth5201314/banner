@@ -1,5 +1,5 @@
 <resources>
-    <string name="indicator_color_error">指示器的颜色只能设置成“@color/colorID or #000000”</string>
-    <string name="banner_adapter_null_error">Adapter为空！请检查下参数</string>
+    <string name="indicator_color_error">indicator color attribute : “@color/colorID or #000000”</string>
+    <string name="banner_adapter_null_error">Adapter is NULL!</string>
 
 </resources>

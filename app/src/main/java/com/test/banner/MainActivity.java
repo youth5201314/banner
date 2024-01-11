@@ -36,6 +36,8 @@ import com.youth.banner.util.LogUtils;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -54,13 +56,17 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
+        List<DataBean> datas =  DataBean.getTestData2();
+
         //自定义的图片适配器，也可以使用默认的BannerImageAdapter
-        ImageAdapter adapter = new ImageAdapter(DataBean.getTestData2());
+        ImageAdapter adapter = new ImageAdapter(datas);
 
         banner.setAdapter(adapter)
 //              .setCurrentItem(0,false)
-                .addBannerLifecycleObserver(this)//添加生命周期观察者
-                .setIndicator(new CircleIndicator(this))//设置指示器
+                //添加生命周期观察者
+                .addBannerLifecycleObserver(this)
+                //设置指示器
+                .setIndicator(new CircleIndicator(this))
                 .setOnBannerListener((data, position) -> {
                     Snackbar.make(banner, ((DataBean) data).title, Snackbar.LENGTH_SHORT).show();
                     LogUtils.d("position：" + position);
@@ -75,15 +81,19 @@ public class MainActivity extends AppCompatActivity {
             new Handler().postDelayed(() -> {
                 refresh.setRefreshing(false);
 
-                //给banner重新设置数据
+                //给banner重新设置数据（完全覆盖）
                 banner.setDatas(DataBean.getTestData());
+
+                //模拟请求成功（原数据减少） 刷新banner
+//                datas.remove(0);
+//                adapter.notifyDataSetChanged();
 
                 //对setDatas()方法不满意？你可以自己在adapter控制数据，参考setDatas()的实现修改
 //                adapter.updateData(DataBean.getTestData());
 //                banner.setCurrentItem(banner.getStartPosition(), false);
 //                banner.setIndicatorPageChange();
 
-            }, 3000);
+            }, 2000);
         });
 
     }
@@ -167,6 +177,8 @@ public class MainActivity extends AppCompatActivity {
             case R.id.topLine:
                 startActivity(new Intent(this, TouTiaoActivity.class));
                 break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + view.getId());
         }
     }
 }

@@ -1,5 +1,11 @@
 
 ## 更新说明
+#### v2.2.3
+    * 修改adapter 数据相关操作方法
+    * banner 去掉泛型返回
+    * demo 添加更新数据注释
+    * 更新viewpager2到beta2
+
 #### v2.2.1-2.2.2
    * 对kotlin使用的兼容支持
    * 对kotlin使用demo进行了修改

@@ -37,7 +37,8 @@ public abstract class BannerAdapter<T, VH extends RecyclerView.ViewHolder> exten
         if (datas == null) {
             datas = new ArrayList<>();
         }
-        mDatas = datas;
+        mDatas.clear();
+        mDatas.addAll(datas);
         notifyDataSetChanged();
     }
 
@@ -48,6 +49,9 @@ public abstract class BannerAdapter<T, VH extends RecyclerView.ViewHolder> exten
      * @return
      */
     public T getData(int position) {
+        if (position > mDatas.size()-1) {
+            return null;
+        }
         return mDatas.get(position);
     }
 
@@ -58,7 +62,11 @@ public abstract class BannerAdapter<T, VH extends RecyclerView.ViewHolder> exten
      * @return
      */
     public T getRealData(int position) {
-        return mDatas.get(getRealPosition(position));
+        int realPosition = getRealPosition(position);
+        if (realPosition > mDatas.size()-1) {
+            return null;
+        }
+        return mDatas.get(realPosition);
     }
 
 

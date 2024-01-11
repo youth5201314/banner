@@ -2,15 +2,15 @@ apply plugin: 'com.android.library'
 apply plugin: 'maven-publish'
 apply plugin: 'signing'
 
-version = '2.2.2'
+version = '2.2.3'
 
 android {
-    compileSdkVersion 30
+    compileSdk 33
 
     defaultConfig {
-        minSdkVersion 14
-        targetSdkVersion 30
-        versionCode 202002
+        minSdk 14
+        targetSdk 33
+        versionCode 202003
         versionName version
         consumerProguardFiles 'proguard-rules.pro'
     }
@@ -26,7 +26,7 @@ android {
 }
 
 dependencies {
-    implementation "androidx.viewpager2:viewpager2:1.1.0-alpha01"
+    implementation "androidx.viewpager2:viewpager2:1.1.0-beta02"
 }
 
 task androidSourcesJar(type: Jar) {
@@ -65,7 +65,7 @@ publishing {
                 // 开发者信息
                 developers {
                     developer {
-                        name = '王兴春'
+                        name = '春'
                         email = '1028729086@qq.com'
                     }
                 }
