@@ -1,5 +1,6 @@
 package com.youth.banner.adapter;
 
+import android.annotation.SuppressLint;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -13,9 +14,6 @@ import com.youth.banner.util.BannerUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 
 
 public abstract class BannerAdapter<T, VH extends RecyclerView.ViewHolder> extends RecyclerView.Adapter<VH> implements IViewHolder<T, VH> {
@@ -33,11 +31,33 @@ public abstract class BannerAdapter<T, VH extends RecyclerView.ViewHolder> exten
      *
      * @param datas
      */
+    @SuppressLint("NotifyDataSetChanged")
     public void setDatas(List<T> datas) {
-        if (datas == null) {
-            datas = new ArrayList<>();
+        if (BannerConfig.isIsUseBanerdata()) {
+            setList(datas);
+        } else {
+            if (datas == null) {
+                datas = new ArrayList<>();
+            }
+            mDatas = datas;
+            notifyDataSetChanged();
         }
-        mDatas = datas;
+
+    }
+
+    /***
+     * 设置数据
+     */
+    @SuppressLint("NotifyDataSetChanged")
+    public void setList(List<T> datas) {
+        if (mDatas == null) {
+            mDatas = new ArrayList<>();
+        } else {
+            mDatas.clear();
+        }
+        if (mDatas != null && datas != null) {
+            mDatas.addAll(datas);
+        }
         notifyDataSetChanged();
     }
 
@@ -48,7 +68,14 @@ public abstract class BannerAdapter<T, VH extends RecyclerView.ViewHolder> exten
      * @return
      */
     public T getData(int position) {
-        return mDatas.get(position);
+        if (mDatas == null) {
+            return null;
+        } else {
+            if (mDatas.size() > position) {
+                return mDatas.get(position);
+            }
+        }
+        return null;
     }
 
     /**
@@ -58,7 +85,16 @@ public abstract class BannerAdapter<T, VH extends RecyclerView.ViewHolder> exten
      * @return
      */
     public T getRealData(int position) {
-        return mDatas.get(getRealPosition(position));
+
+        if (mDatas == null) {
+            return null;
+        } else {
+            int realPosition = getRealPosition(position);
+            if (mDatas.size() > realPosition) {
+                return mDatas.get(realPosition);
+            }
+        }
+        return null;
     }
 
 
