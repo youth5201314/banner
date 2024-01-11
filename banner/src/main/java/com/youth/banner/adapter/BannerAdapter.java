@@ -71,7 +71,7 @@ public abstract class BannerAdapter<T, VH extends RecyclerView.ViewHolder> exten
         if (mDatas == null) {
             return null;
         } else {
-            if (mDatas.size() > position) {
+            if (mDatas.size() > position&&position!=-1) {
                 return mDatas.get(position);
             }
         }
@@ -90,7 +90,7 @@ public abstract class BannerAdapter<T, VH extends RecyclerView.ViewHolder> exten
             return null;
         } else {
             int realPosition = getRealPosition(position);
-            if (mDatas.size() > realPosition) {
+            if (mDatas.size() > realPosition&&position!=-1) {
                 return mDatas.get(realPosition);
             }
         }
