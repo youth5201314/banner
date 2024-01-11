@@ -359,6 +359,11 @@ public class Banner<T, BA extends BannerAdapter<T, ? extends RecyclerView.ViewHo
 
         @Override
         public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            if (position == getItemCount() - 1 && isInfiniteLoop()) {
+                setCurrentItem(1, false);
+            } else if (position == 0 && isInfiniteLoop() && positionOffset == 0.0f) {
+                setCurrentItem(getRealCount(), false);
+            }
             int realPosition = BannerUtils.getRealPosition(isInfiniteLoop(), position, getRealCount());
             if (mOnPageChangeListener != null && realPosition == getCurrentItem() - 1) {
                 mOnPageChangeListener.onPageScrolled(realPosition, positionOffset, positionOffsetPixels);
